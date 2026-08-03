@@ -89,6 +89,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "PrimeChoiceReviews" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "PrimeChoiceReviews — Honest Reviews. Smarter Choices." },
+      { name: "twitter:title", content: "PrimeChoiceReviews — Honest Reviews. Smarter Choices." },
+      { property: "og:description", content: "Independent, data-driven product reviews across health, AI tools, software and finance." },
+      { name: "twitter:description", content: "Independent, data-driven product reviews across health, AI tools, software and finance." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/961146d3-7684-4250-830f-24e6a9b55b61/id-preview-ea2ad72e--a86b3518-a9d5-4c77-9b3c-9aba4f523422.lovable.app-1785743282847.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/961146d3-7684-4250-830f-24e6a9b55b61/id-preview-ea2ad72e--a86b3518-a9d5-4c77-9b3c-9aba4f523422.lovable.app-1785743282847.png" },
     ],
     links: [
       {
