@@ -40,7 +40,7 @@ function ReviewsPage() {
         <Button
           variant={active === "all" ? "default" : "outline"}
           size="sm"
-          className="min-h-10 rounded-full"
+          className="min-h-10 rounded-lg"
           aria-pressed={active === "all"}
           onClick={() => setActive("all")}
         >
@@ -51,7 +51,7 @@ function ReviewsPage() {
             key={c.slug}
             variant={active === c.slug ? "default" : "outline"}
             size="sm"
-            className="min-h-10 rounded-full"
+            className="min-h-10 rounded-lg"
             aria-pressed={active === c.slug}
             onClick={() => setActive(c.slug)}
           >

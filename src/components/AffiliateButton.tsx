@@ -31,7 +31,7 @@ export function AffiliateButton({
         rel="nofollow sponsored noopener noreferrer"
         data-affiliate-network={affiliateConfig.network}
         className={cn(
-          "group inline-flex min-h-13 items-center justify-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          "group inline-flex min-h-13 items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           fullWidth && "w-full",
         )}
         style={{ backgroundImage: "var(--gradient-primary)" }}

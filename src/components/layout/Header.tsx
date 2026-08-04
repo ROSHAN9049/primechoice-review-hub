@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, Search, ShieldCheck } from "lucide-react";
+import { Menu, Search, ShieldCheck, Star, ArrowUpRight } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { siteConfig } from "@/config/site";
 
 const nav = [
-  { label: "Home", to: "/" },
   { label: "Reviews", to: "/reviews" },
   { label: "Categories", to: "/categories" },
   { label: "Blog", to: "/blog" },
@@ -41,7 +40,7 @@ function SearchForm({ onDone }: { onDone?: () => void }) {
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Search reviews…"
-        className="min-h-11 rounded-full bg-background/70 pl-10"
+        className="min-h-11 rounded-lg bg-secondary/60 pl-10"
       />
     </form>
   );
@@ -51,40 +50,52 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-xl">
+      <div className="bg-primary text-primary-foreground">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-1.5 text-[11px] sm:px-6 lg:px-8">
+          <p className="flex min-w-0 items-center gap-1.5 truncate">
+            <Star className="size-3 shrink-0 fill-current" aria-hidden="true" />
+            Independent testing since 2019 — we buy every product we review
+          </p>
+          <Link to="/about" className="hidden shrink-0 items-center gap-1 font-semibold sm:inline-flex">
+            Our methodology
+            <ArrowUpRight className="size-3" aria-hidden="true" />
+          </Link>
+        </div>
+      </div>
+
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" className="flex min-w-0 items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
           <span
-            className="grid size-10 shrink-0 place-items-center rounded-xl text-primary-foreground shadow-soft"
+            className="grid size-10 shrink-0 place-items-center rounded-lg text-primary-foreground shadow-soft"
             style={{ backgroundImage: "var(--gradient-primary)" }}
           >
             <ShieldCheck className="size-5" aria-hidden="true" />
           </span>
           <span className="min-w-0">
-            <span className="block truncate font-display text-base font-extrabold tracking-tight sm:text-lg">
-              PrimeChoice<span className="text-primary">Reviews</span>
+            <span className="block truncate font-display text-base font-bold tracking-tight sm:text-lg">
+              PrimeChoice<span className="text-primary-glow">Reviews</span>
             </span>
-            <span className="hidden text-[11px] text-muted-foreground sm:block">
+            <span className="hidden text-[10px] tracking-[0.14em] text-muted-foreground uppercase sm:block">
               {siteConfig.tagline}
             </span>
           </span>
         </Link>
 
         <div className="flex items-center gap-1.5">
-          <nav aria-label="Main" className="hidden items-center gap-0.5 lg:flex">
+          <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
             {nav.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                activeOptions={{ exact: item.to === "/" }}
-                activeProps={{ className: "bg-accent text-accent-foreground" }}
-                className="rounded-full px-3.5 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
+                activeProps={{ className: "text-primary-glow" }}
+                className="relative rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
-          <div className="hidden w-56 xl:block">
+          <div className="mx-1 hidden w-52 xl:block">
             <SearchForm />
           </div>
           <ThemeToggle />
@@ -94,28 +105,41 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 aria-label="Open menu"
-                className="min-h-11 min-w-11 rounded-full lg:hidden"
+                className="min-h-11 min-w-11 rounded-lg lg:hidden"
               >
                 <Menu className="size-5" aria-hidden="true" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[86vw] max-w-sm p-6">
-              <SheetTitle className="mb-5 text-left">Menu</SheetTitle>
+            <SheetContent side="right" className="w-[88vw] max-w-sm p-6">
+              <SheetTitle className="mb-5 text-left font-display tracking-tight">Menu</SheetTitle>
               <SearchForm onDone={() => setOpen(false)} />
-              <nav aria-label="Mobile" className="mt-5 flex flex-col gap-1">
+              <nav aria-label="Mobile" className="mt-5 flex flex-col">
+                <Link
+                  to="/"
+                  onClick={() => setOpen(false)}
+                  activeOptions={{ exact: true }}
+                  activeProps={{ className: "text-primary-glow" }}
+                  className="rule-line py-3.5 font-display text-lg font-bold tracking-tight transition-colors hover:text-primary-glow"
+                >
+                  Home
+                </Link>
                 {nav.map((item) => (
                   <Link
                     key={item.to}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    activeOptions={{ exact: item.to === "/" }}
-                    activeProps={{ className: "bg-accent text-accent-foreground" }}
-                    className="rounded-xl px-4 py-3 text-base font-medium transition-colors hover:bg-accent"
+                    activeProps={{ className: "text-primary-glow" }}
+                    className="rule-line py-3.5 font-display text-lg font-bold tracking-tight transition-colors hover:text-primary-glow"
                   >
                     {item.label}
                   </Link>
                 ))}
               </nav>
+              <Button asChild className="mt-6 min-h-12 w-full rounded-lg">
+                <Link to="/reviews" onClick={() => setOpen(false)}>
+                  Browse all reviews
+                </Link>
+              </Button>
             </SheetContent>
           </Sheet>
         </div>

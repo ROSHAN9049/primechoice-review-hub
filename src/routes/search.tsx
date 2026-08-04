@@ -66,9 +66,9 @@ function SearchPage() {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Search reviews and articles…"
-          className="min-h-12 rounded-full px-5"
+          className="min-h-12 rounded-lg px-5"
         />
-        <Button type="submit" size="lg" className="min-h-12 rounded-full px-6">
+        <Button type="submit" size="lg" className="min-h-12 rounded-lg px-6">
           <SearchIcon className="size-4" aria-hidden="true" />
           Search
         </Button>

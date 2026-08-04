@@ -91,7 +91,7 @@ function PostPage() {
             alt={post.title}
             width={1024}
             height={768}
-            className="mt-8 aspect-[16/9] w-full rounded-3xl object-cover shadow-soft"
+            className="mt-8 aspect-[16/9] w-full rounded-2xl object-cover shadow-soft"
           />
 
           <div className="mt-10 space-y-10">
@@ -107,7 +107,7 @@ function PostPage() {
             ))}
           </div>
 
-          <aside className="glass-card mt-12 flex gap-4 rounded-2xl p-6">
+          <aside className="card-surface mt-12 flex gap-4 rounded-xl p-6">
             <span className="grid size-12 shrink-0 place-items-center rounded-full bg-accent font-bold text-accent-foreground">
               {post.author.name
                 .split(" ")
@@ -123,7 +123,7 @@ function PostPage() {
         </div>
 
         <nav aria-label="Table of contents" className="lg:sticky lg:top-24 lg:self-start">
-          <div className="glass-card rounded-2xl p-5">
+          <div className="card-surface rounded-xl p-5">
             <h2 className="text-sm font-semibold tracking-wide uppercase">On this page</h2>
             <ol className="mt-3 space-y-2 text-sm">
               {post.sections.map((s) => (

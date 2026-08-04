@@ -47,7 +47,7 @@ function ContactPage() {
         {siteConfig.email}
       </p>
 
-      <form onSubmit={submit} className="glass-card mt-8 space-y-5 rounded-3xl p-6 sm:p-8">
+      <form onSubmit={submit} className="card-surface mt-8 space-y-5 rounded-2xl p-6 sm:p-8">
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="contact-name">Name</Label>
@@ -72,7 +72,7 @@ function ContactPage() {
           <Label htmlFor="contact-message">Message</Label>
           <Textarea id="contact-message" name="message" rows={6} required className="rounded-xl" />
         </div>
-        <Button type="submit" size="lg" className="min-h-12 rounded-full px-8">
+        <Button type="submit" size="lg" className="min-h-12 rounded-lg px-8">
           Send message
         </Button>
         <p aria-live="polite" className="text-sm text-muted-foreground">

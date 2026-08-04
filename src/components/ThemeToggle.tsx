@@ -27,7 +27,7 @@ export function ThemeToggle() {
       size="icon"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="min-h-11 min-w-11 rounded-full"
+      className="min-h-11 min-w-11 rounded-lg"
     >
       {dark ? <Moon className="size-5" aria-hidden="true" /> : <Sun className="size-5" aria-hidden="true" />}
     </Button>
