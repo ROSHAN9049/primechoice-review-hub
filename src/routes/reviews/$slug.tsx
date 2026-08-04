@@ -355,6 +355,26 @@ function ReviewPage() {
           </Link>
         </p>
       </section>
+
+      {/* Mobile sticky conversion bar */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden">
+        <div className="flex items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-display text-sm font-bold tracking-tight">
+              {review.product}
+            </p>
+            <p className="text-xs text-muted-foreground">Rated {review.rating.toFixed(1)}/5</p>
+          </div>
+          <AffiliateButton
+            productId={review.productId}
+            label="Check price"
+            showDisclosure={false}
+            fullWidth={false}
+            className="shrink-0"
+          />
+        </div>
+      </div>
+      <div className="h-20 lg:hidden" aria-hidden="true" />
     </div>
   );
 }
