@@ -41,7 +41,7 @@ function BlogPage() {
         <Button
           variant={active === "all" ? "default" : "outline"}
           size="sm"
-          className="min-h-10 rounded-full"
+          className="min-h-10 rounded-lg"
           aria-pressed={active === "all"}
           onClick={() => setActive("all")}
         >
@@ -52,7 +52,7 @@ function BlogPage() {
             key={slug}
             variant={active === slug ? "default" : "outline"}
             size="sm"
-            className="min-h-10 rounded-full"
+            className="min-h-10 rounded-lg"
             aria-pressed={active === slug}
             onClick={() => setActive(slug)}
           >

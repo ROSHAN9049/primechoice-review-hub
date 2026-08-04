@@ -132,7 +132,7 @@ function ReviewPage() {
             </p>
           </div>
 
-          <div className="glass-card rounded-3xl p-6">
+          <div className="card-surface rounded-2xl p-6">
             <img
               src={review.image}
               alt={`${review.product} packaging and product shot`}
@@ -190,7 +190,7 @@ function ReviewPage() {
             Pros & cons
           </h2>
           <div className="mt-5 grid gap-5 sm:grid-cols-2">
-            <div className="glass-card rounded-2xl p-6">
+            <div className="card-surface rounded-xl p-6">
               <h3 className="font-semibold text-success">What we liked</h3>
               <ul className="mt-4 space-y-2.5">
                 {review.pros.map((p) => (
@@ -201,7 +201,7 @@ function ReviewPage() {
                 ))}
               </ul>
             </div>
-            <div className="glass-card rounded-2xl p-6">
+            <div className="card-surface rounded-xl p-6">
               <h3 className="font-semibold text-destructive">What could be better</h3>
               <ul className="mt-4 space-y-2.5">
                 {review.cons.map((c) => (
@@ -221,7 +221,7 @@ function ReviewPage() {
           </h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             {review.features.map((f) => (
-              <div key={f.title} className="glass-card rounded-2xl p-5">
+              <div key={f.title} className="card-surface rounded-xl p-5">
                 <h3 className="font-semibold">{f.title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{f.description}</p>
               </div>
@@ -237,7 +237,7 @@ function ReviewPage() {
             {review.pricing.map((p) => (
               <div
                 key={p.plan}
-                className={`glass-card rounded-2xl p-6 ${p.best ? "ring-2 ring-primary" : ""}`}
+                className={`card-surface rounded-xl p-6 ${p.best ? "ring-2 ring-primary" : ""}`}
               >
                 {p.best && (
                   <Badge className="mb-3 rounded-full">Best value</Badge>
