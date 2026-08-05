@@ -155,6 +155,8 @@ function RootComponent() {
           <Outlet />
         </main>
         <Footer />
+        <ScrollToTop />
+        <CookieConsent />
       </div>
     </QueryClientProvider>
   );
