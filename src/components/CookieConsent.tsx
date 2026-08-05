@@ -33,7 +33,7 @@ export function CookieConsent() {
       aria-label="Cookie consent"
       className="fixed inset-x-3 bottom-3 z-60 mx-auto max-w-3xl animate-rise"
     >
-      <div className="glass-card flex flex-col gap-4 rounded-xl p-4 sm:flex-row sm:items-center sm:p-5">
+      <div className="card-surface flex flex-col gap-4 rounded-xl bg-card p-4 sm:flex-row sm:items-center sm:p-5">
         <Cookie className="size-5 shrink-0 text-primary-glow" aria-hidden="true" />
         <p className="min-w-0 flex-1 text-sm leading-relaxed text-muted-foreground">
           We use cookies to measure traffic and improve our reviews. See our{" "}
