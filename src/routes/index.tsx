@@ -272,12 +272,44 @@ function Index() {
       </div>
 
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-14 sm:px-6 lg:space-y-24 lg:px-8">
+        {/* Featured categories */}
+        <section aria-labelledby="categories-heading">
+          <SectionHead
+            id="categories-heading"
+            kicker="Browse"
+            heading="Featured categories"
+            sub="Every category has its own testing protocol and scoring rubric."
+            linkTo="/categories"
+            linkLabel="All categories"
+          />
+          <div className="mt-8">
+            <CategoryGrid />
+          </div>
+        </section>
+
+        {/* Trending */}
+        <section aria-labelledby="trending-heading">
+          <SectionHead
+            id="trending-heading"
+            kicker="Most read"
+            heading="Trending reviews"
+            sub="The verdicts readers are checking most this week."
+            linkTo="/reviews"
+            linkLabel="All reviews"
+          />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {trending.map((r, i) => (
+              <ReviewCard key={r.slug} review={r} index={i} />
+            ))}
+          </div>
+        </section>
+
         {/* Featured — magazine lead + grid */}
         <section aria-labelledby="featured-heading">
           <SectionHead
             id="featured-heading"
             kicker="Top rated"
-            heading="Featured reviews"
+            heading="Editor's Choice"
             sub="Our highest-scoring verdicts from the last 90 days of testing."
             linkTo="/reviews"
             linkLabel="All reviews"
@@ -352,19 +384,93 @@ function Index() {
           </div>
         </section>
 
-        {/* Categories */}
-        <section aria-labelledby="categories-heading">
+        {/* Latest reviews */}
+        <section aria-labelledby="latest-heading">
           <SectionHead
-            id="categories-heading"
-            kicker="Browse"
-            heading="Top categories"
-            sub="Nine areas we cover in depth, each with its own testing protocol."
-            linkTo="/categories"
-            linkLabel="All categories"
+            id="latest-heading"
+            kicker="Just published"
+            heading="Latest reviews"
+            sub="Freshly tested products, newest verdicts first."
+            linkTo="/reviews"
+            linkLabel="All reviews"
           />
-          <div className="mt-8">
-            <CategoryGrid />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {latest.map((r, i) => (
+              <ReviewCard key={r.slug} review={r} index={i} />
+            ))}
           </div>
+        </section>
+
+        {/* Best deals */}
+        <section aria-labelledby="deals-heading">
+          <SectionHead
+            id="deals-heading"
+            kicker="Save more"
+            heading="Best deals right now"
+            sub="Current vendor pricing we verified at checkout. Prices change without notice."
+          />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {deals.map((r) => {
+              const best = r.pricing.find((p) => p.best) ?? r.pricing[0];
+              return (
+                <article
+                  key={r.slug}
+                  className="card-surface relative flex flex-col gap-3 rounded-xl p-6 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated"
+                >
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md bg-success/12 px-2.5 py-1 font-display text-[10px] font-bold tracking-[0.16em] text-success uppercase">
+                    <Tag className="size-3" aria-hidden="true" />
+                    Best value tier
+                  </span>
+                  <h3 className="font-display text-lg leading-snug font-bold tracking-tight">
+                    <Link
+                      to="/reviews/$slug"
+                      params={{ slug: r.slug }}
+                      className="editorial-underline"
+                    >
+                      <span className="absolute inset-0" aria-hidden="true" />
+                      {r.product}
+                    </Link>
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{best?.detail}</p>
+                  <p className="mt-auto flex items-baseline gap-2 rule-line pt-4">
+                    <span className="font-display text-2xl font-bold tracking-tight text-primary-glow">
+                      {best?.price}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{best?.plan} package</span>
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+          <div className="card-surface mt-6 flex flex-col items-start gap-3 rounded-xl p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="flex items-center gap-2.5 text-sm text-muted-foreground">
+              <Flame className="size-5 shrink-0 text-warning" aria-hidden="true" />
+              Deal alerts and coupon drops go out to our newsletter first — no spam, unsubscribe any
+              time.
+            </p>
+            <Button asChild variant="outline" className="min-h-11 rounded-lg">
+              <Link to="/reviews">See all discounted picks</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Popular brands */}
+        <section aria-labelledby="brands-heading">
+          <SectionHead
+            id="brands-heading"
+            kicker="Vendors"
+            heading="Popular brands we've tested"
+          />
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {brands.map((b) => (
+              <li
+                key={b}
+                className="card-surface grid min-h-20 place-items-center rounded-xl px-4 py-5 text-center font-display text-sm font-bold tracking-tight"
+              >
+                {b}
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Why trust us */}
