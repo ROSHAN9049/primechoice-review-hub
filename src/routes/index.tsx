@@ -3,18 +3,27 @@ import {
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
+  Flame,
   FlaskConical,
   Quote,
   Scale,
   ShieldCheck,
+  Tag,
   Users,
 } from "lucide-react";
 import heroImage from "@/assets/hero.jpg";
 import { BlogCard } from "@/components/BlogCard";
 import { CategoryGrid } from "@/components/CategoryGrid";
+import { HomeSearch } from "@/components/HomeSearch";
 import { Newsletter } from "@/components/Newsletter";
 import { ReviewCard, ScoreBadge } from "@/components/ReviewCard";
 import { StarRating } from "@/components/StarRating";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { getCategory } from "@/data/categories";
@@ -22,9 +31,37 @@ import { posts } from "@/data/posts";
 import { featuredReviews, reviews } from "@/data/reviews";
 import { testimonials } from "@/data/testimonials";
 
-const title = "PrimeChoiceReviews — Honest Reviews. Smarter Choices.";
+const title = "Find the Best Products Before You Buy — PrimeChoiceReviews";
 const description =
-  "Independent, hands-on product reviews across health, AI tools, software, finance and fitness. Real testing, transparent scoring, no hype.";
+  "Independent, hands-on product reviews, comparisons and buying guides. Real testing, transparent scoring, no paid placements.";
+
+const homeFaq = [
+  {
+    question: "How does PrimeChoiceReviews make money?",
+    answer:
+      "We earn affiliate commissions when readers buy through links on this site, at no extra cost to you. Commissions never influence a score or ranking.",
+  },
+  {
+    question: "Do you actually test the products you review?",
+    answer:
+      "Yes. Every product is bought at full retail price through normal checkout and tested against a fixed rubric before we publish a verdict.",
+  },
+  {
+    question: "How are your ratings calculated?",
+    answer:
+      "Each product is scored on effectiveness, quality, value and support using the same weighting, so scores stay comparable across a category.",
+  },
+  {
+    question: "How often are reviews updated?",
+    answer:
+      "We revisit reviews when pricing, formulation or features change, and every published review shows its last-updated date.",
+  },
+  {
+    question: "Can brands pay for a better review?",
+    answer:
+      "No. We accept no paid placements, and we regularly publish low scores for products that pay high commissions.",
+  },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,6 +77,20 @@ export const Route = createFileRoute("/")({
     links: [
       { rel: "canonical", href: "/" },
       { rel: "preload", as: "image", href: heroImage },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: homeFaq.map((f) => ({
+            "@type": "Question",
+            name: f.question,
+            acceptedAnswer: { "@type": "Answer", text: f.answer },
+          })),
+        }),
+      },
     ],
   }),
   component: Index,
@@ -113,6 +164,12 @@ function Index() {
   const [lead, ...rest] = featured;
   const leadCategory = lead ? getCategory(lead.category) : undefined;
   const [leadPost, ...otherPosts] = posts;
+  const trending = [...reviews].sort((a, b) => b.rating - a.rating).slice(0, 3);
+  const latest = [...reviews]
+    .sort((a, b) => b.updated.localeCompare(a.updated))
+    .slice(0, 3);
+  const deals = reviews.slice(0, 3);
+  const brands = Array.from(new Set(reviews.map((r) => r.vendor))).slice(0, 10);
 
   return (
     <>
@@ -124,15 +181,18 @@ function Index() {
               <ShieldCheck className="size-3.5 text-primary-glow" aria-hidden="true" />
               Independent · Reader-funded
             </span>
-            <h1 className="mt-6 text-[2.6rem] leading-[0.98] font-bold sm:text-6xl lg:text-[4.25rem]">
-              Honest reviews.
+            <h1 className="mt-6 text-[2.4rem] leading-[1.02] font-bold sm:text-5xl lg:text-[3.75rem]">
+              Find the best products
               <br />
-              <span className="text-primary-glow">Smarter choices.</span>
+              <span className="text-primary-glow">before you buy</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              We buy the products, run them through a fixed 90-day methodology and publish what we
-              actually found — including the parts vendors would rather we left out.
+              Trusted, independently tested product reviews and comparisons. We buy every product at
+              retail, score it against a fixed rubric and publish exactly what we found.
             </p>
+            <div className="mt-7">
+              <HomeSearch />
+            </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button asChild size="lg" className="min-h-12 rounded-lg px-7 text-base">
                 <Link to="/reviews">
@@ -212,12 +272,44 @@ function Index() {
       </div>
 
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-14 sm:px-6 lg:space-y-24 lg:px-8">
+        {/* Featured categories */}
+        <section aria-labelledby="categories-heading">
+          <SectionHead
+            id="categories-heading"
+            kicker="Browse"
+            heading="Featured categories"
+            sub="Every category has its own testing protocol and scoring rubric."
+            linkTo="/categories"
+            linkLabel="All categories"
+          />
+          <div className="mt-8">
+            <CategoryGrid />
+          </div>
+        </section>
+
+        {/* Trending */}
+        <section aria-labelledby="trending-heading">
+          <SectionHead
+            id="trending-heading"
+            kicker="Most read"
+            heading="Trending reviews"
+            sub="The verdicts readers are checking most this week."
+            linkTo="/reviews"
+            linkLabel="All reviews"
+          />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {trending.map((r, i) => (
+              <ReviewCard key={r.slug} review={r} index={i} />
+            ))}
+          </div>
+        </section>
+
         {/* Featured — magazine lead + grid */}
         <section aria-labelledby="featured-heading">
           <SectionHead
             id="featured-heading"
             kicker="Top rated"
-            heading="Featured reviews"
+            heading="Editor's Choice"
             sub="Our highest-scoring verdicts from the last 90 days of testing."
             linkTo="/reviews"
             linkLabel="All reviews"
@@ -292,19 +384,93 @@ function Index() {
           </div>
         </section>
 
-        {/* Categories */}
-        <section aria-labelledby="categories-heading">
+        {/* Latest reviews */}
+        <section aria-labelledby="latest-heading">
           <SectionHead
-            id="categories-heading"
-            kicker="Browse"
-            heading="Top categories"
-            sub="Nine areas we cover in depth, each with its own testing protocol."
-            linkTo="/categories"
-            linkLabel="All categories"
+            id="latest-heading"
+            kicker="Just published"
+            heading="Latest reviews"
+            sub="Freshly tested products, newest verdicts first."
+            linkTo="/reviews"
+            linkLabel="All reviews"
           />
-          <div className="mt-8">
-            <CategoryGrid />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {latest.map((r, i) => (
+              <ReviewCard key={r.slug} review={r} index={i} />
+            ))}
           </div>
+        </section>
+
+        {/* Best deals */}
+        <section aria-labelledby="deals-heading">
+          <SectionHead
+            id="deals-heading"
+            kicker="Save more"
+            heading="Best deals right now"
+            sub="Current vendor pricing we verified at checkout. Prices change without notice."
+          />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {deals.map((r) => {
+              const best = r.pricing.find((p) => p.best) ?? r.pricing[0];
+              return (
+                <article
+                  key={r.slug}
+                  className="card-surface relative flex flex-col gap-3 rounded-xl p-6 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated"
+                >
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md bg-success/12 px-2.5 py-1 font-display text-[10px] font-bold tracking-[0.16em] text-success uppercase">
+                    <Tag className="size-3" aria-hidden="true" />
+                    Best value tier
+                  </span>
+                  <h3 className="font-display text-lg leading-snug font-bold tracking-tight">
+                    <Link
+                      to="/reviews/$slug"
+                      params={{ slug: r.slug }}
+                      className="editorial-underline"
+                    >
+                      <span className="absolute inset-0" aria-hidden="true" />
+                      {r.product}
+                    </Link>
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{best?.detail}</p>
+                  <p className="mt-auto flex items-baseline gap-2 rule-line pt-4">
+                    <span className="font-display text-2xl font-bold tracking-tight text-primary-glow">
+                      {best?.price}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{best?.plan} package</span>
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+          <div className="card-surface mt-6 flex flex-col items-start gap-3 rounded-xl p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="flex items-center gap-2.5 text-sm text-muted-foreground">
+              <Flame className="size-5 shrink-0 text-warning" aria-hidden="true" />
+              Deal alerts and coupon drops go out to our newsletter first — no spam, unsubscribe any
+              time.
+            </p>
+            <Button asChild variant="outline" className="min-h-11 rounded-lg">
+              <Link to="/reviews">See all discounted picks</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Popular brands */}
+        <section aria-labelledby="brands-heading">
+          <SectionHead
+            id="brands-heading"
+            kicker="Vendors"
+            heading="Popular brands we've tested"
+          />
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {brands.map((b) => (
+              <li
+                key={b}
+                className="card-surface grid min-h-20 place-items-center rounded-xl px-4 py-5 text-center font-display text-sm font-bold tracking-tight"
+              >
+                {b}
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Why trust us */}
@@ -388,6 +554,59 @@ function Index() {
         </section>
 
         <Newsletter />
+
+        {/* FAQ */}
+        <section aria-labelledby="faq-heading">
+          <SectionHead
+            id="faq-heading"
+            kicker="Good to know"
+            heading="Frequently asked questions"
+            sub="How we test, how we score and how we stay independent."
+          />
+          <Accordion type="single" collapsible className="mt-8 max-w-3xl">
+            {homeFaq.map((f) => (
+              <AccordionItem key={f.question} value={f.question}>
+                <AccordionTrigger className="text-left font-display font-bold tracking-tight">
+                  {f.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+                  {f.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+
+        {/* CTA */}
+        <section
+          aria-labelledby="cta-heading"
+          className="overflow-hidden rounded-2xl border border-border p-8 text-center text-primary-foreground sm:p-14"
+          style={{ backgroundImage: "var(--gradient-primary)" }}
+        >
+          <h2 id="cta-heading" className="text-3xl font-bold sm:text-4xl">
+            Buy with confidence, not guesswork
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-primary-foreground/80">
+            Start with our highest-scoring picks, or compare the shortlist side by side before you
+            spend a cent.
+          </p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg" variant="secondary" className="min-h-12 rounded-lg px-7 text-base">
+              <Link to="/reviews">
+                Browse all reviews
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="min-h-12 rounded-lg border-primary-foreground/40 bg-transparent px-7 text-base text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            >
+              <Link to="/categories">Explore categories</Link>
+            </Button>
+          </div>
+        </section>
       </div>
     </>
   );

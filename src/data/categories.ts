@@ -60,6 +60,66 @@ export const categories: Category[] = [
     description: "Training programs, gear and recovery tools tested over real training blocks.",
     icon: "Dumbbell",
   },
+  {
+    slug: "electronics",
+    name: "Electronics",
+    description: "Audio, wearables, smart home and everyday tech put through real-world use.",
+    icon: "Cpu",
+  },
+  {
+    slug: "home-kitchen",
+    name: "Home & Kitchen",
+    description: "Appliances, cookware and home essentials judged on durability and value.",
+    icon: "CookingPot",
+  },
+  {
+    slug: "health-fitness",
+    name: "Health & Fitness",
+    description: "Trackers, recovery gear and wellness devices measured against real data.",
+    icon: "Activity",
+  },
+  {
+    slug: "beauty",
+    name: "Beauty",
+    description: "Skincare, haircare and grooming products reviewed on ingredients and results.",
+    icon: "Sparkle",
+  },
+  {
+    slug: "sports",
+    name: "Sports",
+    description: "Outdoor and team-sport equipment tested across full seasons of use.",
+    icon: "Trophy",
+  },
+  {
+    slug: "office",
+    name: "Office",
+    description: "Desks, chairs, printers and workspace tools rated for daily comfort.",
+    icon: "Briefcase",
+  },
+  {
+    slug: "fashion",
+    name: "Fashion",
+    description: "Everyday apparel, footwear and accessories checked for fit and longevity.",
+    icon: "Shirt",
+  },
+  {
+    slug: "baby",
+    name: "Baby",
+    description: "Strollers, monitors and nursery gear assessed for safety and practicality.",
+    icon: "Baby",
+  },
+  {
+    slug: "automotive",
+    name: "Automotive",
+    description: "Car care, accessories and in-vehicle tech tested on the road.",
+    icon: "Car",
+  },
+  {
+    slug: "pet-supplies",
+    name: "Pet Supplies",
+    description: "Food, gear and health products reviewed with real pets over weeks.",
+    icon: "PawPrint",
+  },
 ];
 
 export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
