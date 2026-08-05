@@ -554,6 +554,59 @@ function Index() {
         </section>
 
         <Newsletter />
+
+        {/* FAQ */}
+        <section aria-labelledby="faq-heading">
+          <SectionHead
+            id="faq-heading"
+            kicker="Good to know"
+            heading="Frequently asked questions"
+            sub="How we test, how we score and how we stay independent."
+          />
+          <Accordion type="single" collapsible className="mt-8 max-w-3xl">
+            {homeFaq.map((f) => (
+              <AccordionItem key={f.question} value={f.question}>
+                <AccordionTrigger className="text-left font-display font-bold tracking-tight">
+                  {f.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+                  {f.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+
+        {/* CTA */}
+        <section
+          aria-labelledby="cta-heading"
+          className="overflow-hidden rounded-2xl border border-border p-8 text-center text-primary-foreground sm:p-14"
+          style={{ backgroundImage: "var(--gradient-primary)" }}
+        >
+          <h2 id="cta-heading" className="text-3xl font-bold sm:text-4xl">
+            Buy with confidence, not guesswork
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-primary-foreground/80">
+            Start with our highest-scoring picks, or compare the shortlist side by side before you
+            spend a cent.
+          </p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg" variant="secondary" className="min-h-12 rounded-lg px-7 text-base">
+              <Link to="/reviews">
+                Browse all reviews
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="min-h-12 rounded-lg border-primary-foreground/40 bg-transparent px-7 text-base text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            >
+              <Link to="/categories">Explore categories</Link>
+            </Button>
+          </div>
+        </section>
       </div>
     </>
   );
