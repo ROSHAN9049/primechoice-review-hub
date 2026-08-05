@@ -3,18 +3,27 @@ import {
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
+  Flame,
   FlaskConical,
   Quote,
   Scale,
   ShieldCheck,
+  Tag,
   Users,
 } from "lucide-react";
 import heroImage from "@/assets/hero.jpg";
 import { BlogCard } from "@/components/BlogCard";
 import { CategoryGrid } from "@/components/CategoryGrid";
+import { HomeSearch } from "@/components/HomeSearch";
 import { Newsletter } from "@/components/Newsletter";
 import { ReviewCard, ScoreBadge } from "@/components/ReviewCard";
 import { StarRating } from "@/components/StarRating";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { getCategory } from "@/data/categories";
@@ -22,9 +31,37 @@ import { posts } from "@/data/posts";
 import { featuredReviews, reviews } from "@/data/reviews";
 import { testimonials } from "@/data/testimonials";
 
-const title = "PrimeChoiceReviews — Honest Reviews. Smarter Choices.";
+const title = "Find the Best Products Before You Buy — PrimeChoiceReviews";
 const description =
-  "Independent, hands-on product reviews across health, AI tools, software, finance and fitness. Real testing, transparent scoring, no hype.";
+  "Independent, hands-on product reviews, comparisons and buying guides. Real testing, transparent scoring, no paid placements.";
+
+const homeFaq = [
+  {
+    question: "How does PrimeChoiceReviews make money?",
+    answer:
+      "We earn affiliate commissions when readers buy through links on this site, at no extra cost to you. Commissions never influence a score or ranking.",
+  },
+  {
+    question: "Do you actually test the products you review?",
+    answer:
+      "Yes. Every product is bought at full retail price through normal checkout and tested against a fixed rubric before we publish a verdict.",
+  },
+  {
+    question: "How are your ratings calculated?",
+    answer:
+      "Each product is scored on effectiveness, quality, value and support using the same weighting, so scores stay comparable across a category.",
+  },
+  {
+    question: "How often are reviews updated?",
+    answer:
+      "We revisit reviews when pricing, formulation or features change, and every published review shows its last-updated date.",
+  },
+  {
+    question: "Can brands pay for a better review?",
+    answer:
+      "No. We accept no paid placements, and we regularly publish low scores for products that pay high commissions.",
+  },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,6 +77,20 @@ export const Route = createFileRoute("/")({
     links: [
       { rel: "canonical", href: "/" },
       { rel: "preload", as: "image", href: heroImage },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: homeFaq.map((f) => ({
+            "@type": "Question",
+            name: f.question,
+            acceptedAnswer: { "@type": "Answer", text: f.answer },
+          })),
+        }),
+      },
     ],
   }),
   component: Index,
@@ -113,6 +164,12 @@ function Index() {
   const [lead, ...rest] = featured;
   const leadCategory = lead ? getCategory(lead.category) : undefined;
   const [leadPost, ...otherPosts] = posts;
+  const trending = [...reviews].sort((a, b) => b.rating - a.rating).slice(0, 3);
+  const latest = [...reviews]
+    .sort((a, b) => b.updated.localeCompare(a.updated))
+    .slice(0, 3);
+  const deals = reviews.slice(0, 3);
+  const brands = Array.from(new Set(reviews.map((r) => r.vendor))).slice(0, 10);
 
   return (
     <>
@@ -124,15 +181,18 @@ function Index() {
               <ShieldCheck className="size-3.5 text-primary-glow" aria-hidden="true" />
               Independent · Reader-funded
             </span>
-            <h1 className="mt-6 text-[2.6rem] leading-[0.98] font-bold sm:text-6xl lg:text-[4.25rem]">
-              Honest reviews.
+            <h1 className="mt-6 text-[2.4rem] leading-[1.02] font-bold sm:text-5xl lg:text-[3.75rem]">
+              Find the best products
               <br />
-              <span className="text-primary-glow">Smarter choices.</span>
+              <span className="text-primary-glow">before you buy</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              We buy the products, run them through a fixed 90-day methodology and publish what we
-              actually found — including the parts vendors would rather we left out.
+              Trusted, independently tested product reviews and comparisons. We buy every product at
+              retail, score it against a fixed rubric and publish exactly what we found.
             </p>
+            <div className="mt-7">
+              <HomeSearch />
+            </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button asChild size="lg" className="min-h-12 rounded-lg px-7 text-base">
                 <Link to="/reviews">
