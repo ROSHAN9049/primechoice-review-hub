@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { categories } from "@/data/categories";
+import { comparisons } from "@/data/comparisons";
+import { guides } from "@/data/guides";
 import { posts } from "@/data/posts";
 import { reviews } from "@/data/reviews";
 
 // TODO: replace with your project URL once a project name or custom domain is set.
-const BASE_URL = "";
+const BASE_URL = "https://primechoice-review-hub.lovable.app";
 
 interface SitemapEntry {
   path: string;
@@ -22,6 +24,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/reviews", changefreq: "weekly", priority: "0.9" },
           { path: "/categories", changefreq: "monthly", priority: "0.8" },
           { path: "/blog", changefreq: "weekly", priority: "0.8" },
+          { path: "/guides", changefreq: "weekly", priority: "0.8" },
+          { path: "/compare", changefreq: "weekly", priority: "0.8" },
           { path: "/about", changefreq: "yearly", priority: "0.5" },
           { path: "/contact", changefreq: "yearly", priority: "0.5" },
           { path: "/privacy-policy", changefreq: "yearly", priority: "0.3" },
@@ -41,6 +45,16 @@ export const Route = createFileRoute("/sitemap.xml")({
             path: `/blog/${p.slug}`,
             changefreq: "monthly" as const,
             priority: "0.7",
+          })),
+          ...guides.map((g) => ({
+            path: `/guides/${g.slug}`,
+            changefreq: "monthly" as const,
+            priority: "0.8",
+          })),
+          ...comparisons.map((c) => ({
+            path: `/compare/${c.slug}`,
+            changefreq: "monthly" as const,
+            priority: "0.8",
           })),
         ];
 
