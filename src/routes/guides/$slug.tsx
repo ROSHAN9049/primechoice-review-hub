@@ -59,7 +59,7 @@ export const Route = createFileRoute("/guides/$slug")({
               "@type": "ListItem",
               position: i + 1,
               name: p.name,
-￼            })),
+            })),
           }),
         },
         {
