@@ -20,6 +20,18 @@ export interface ComparisonRow {
   guarantee: string;
 }
 
+export interface SpecRow {
+  label: string;
+  value: string;
+}
+
+export interface DealInfo {
+  headline: string;
+  detail: string;
+  coupon?: string;
+  expires?: string;
+}
+
 export interface Review {
   slug: string;
   title: string;
@@ -37,6 +49,13 @@ export interface Review {
   pricing: { plan: string; price: string; detail: string; best?: boolean }[];
   faq: FaqItem[];
   comparison: ComparisonRow[];
+  /** Optional deep-review data. Sensible fallbacks are derived when omitted. */
+  specs?: SpecRow[];
+  analysis?: { performance?: string[]; design?: string[]; easeOfUse?: string[]; value?: string[] };
+  whoShouldBuy?: string[];
+  whoShouldAvoid?: string[];
+  verdict?: string;
+  deal?: DealInfo;
   /** Digistore24 product id — leave undefined to use the placeholder link. */
   productId?: string;
   featured?: boolean;
