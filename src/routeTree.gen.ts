@@ -23,6 +23,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as CategoriesIndexRouteImport } from './routes/categories/index'
 import { Route as CategoriesSlugRouteImport } from './routes/categories/$slug'
 import { Route as GuidesIndexRouteImport } from './routes/guides/index'
+import { Route as GuidesSlugRouteImport } from './routes/guides/$slug'
 import { Route as ReviewsIndexRouteImport } from './routes/reviews/index'
 import { Route as ReviewsSlugRouteImport } from './routes/reviews/$slug'
 
@@ -96,6 +97,11 @@ const GuidesIndexRoute = GuidesIndexRouteImport.update({
   path: '/guides/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuidesSlugRoute = GuidesSlugRouteImport.update({
+  id: '/guides/$slug',
+  path: '/guides/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewsIndexRoute = ReviewsIndexRouteImport.update({
   id: '/reviews/',
   path: '/reviews/',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/categories/': typeof CategoriesIndexRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/blog': typeof BlogIndexRoute
   '/categories': typeof CategoriesIndexRoute
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/categories/': typeof CategoriesIndexRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/guides/$slug'
     | '/reviews/$slug'
     | '/blog/'
     | '/categories/'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/guides/$slug'
     | '/reviews/$slug'
     | '/blog'
     | '/categories'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/guides/$slug'
     | '/reviews/$slug'
     | '/blog/'
     | '/categories/'
@@ -231,6 +243,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CategoriesSlugRoute: typeof CategoriesSlugRoute
+  GuidesSlugRoute: typeof GuidesSlugRoute
   ReviewsSlugRoute: typeof ReviewsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CategoriesIndexRoute: typeof CategoriesIndexRoute
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guides/$slug': {
+      id: '/guides/$slug'
+      path: '/guides/$slug'
+      fullPath: '/guides/$slug'
+      preLoaderRoute: typeof GuidesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reviews/': {
       id: '/reviews/'
       path: '/reviews'
@@ -367,6 +387,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   BlogSlugRoute: BlogSlugRoute,
   CategoriesSlugRoute: CategoriesSlugRoute,
+  GuidesSlugRoute: GuidesSlugRoute,
   ReviewsSlugRoute: ReviewsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   CategoriesIndexRoute: CategoriesIndexRoute,
