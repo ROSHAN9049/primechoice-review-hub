@@ -23,6 +23,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as CategoriesIndexRouteImport } from './routes/categories/index'
 import { Route as CategoriesSlugRouteImport } from './routes/categories/$slug'
 import { Route as CompareIndexRouteImport } from './routes/compare/index'
+import { Route as CompareSlugRouteImport } from './routes/compare/$slug'
 import { Route as GuidesIndexRouteImport } from './routes/guides/index'
 import { Route as GuidesSlugRouteImport } from './routes/guides/$slug'
 import { Route as ReviewsIndexRouteImport } from './routes/reviews/index'
@@ -98,6 +99,11 @@ const CompareIndexRoute = CompareIndexRouteImport.update({
   path: '/compare/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompareSlugRoute = CompareSlugRouteImport.update({
+  id: '/compare/$slug',
+  path: '/compare/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuidesIndexRoute = GuidesIndexRouteImport.update({
   id: '/guides/',
   path: '/guides/',
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/compare/$slug': typeof CompareSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -151,6 +158,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/compare/$slug': typeof CompareSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/compare/$slug': typeof CompareSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/reviews/$slug': typeof ReviewsSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/compare/$slug'
     | '/guides/$slug'
     | '/reviews/$slug'
     | '/blog/'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/compare/$slug'
     | '/guides/$slug'
     | '/reviews/$slug'
     | '/blog'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/compare/$slug'
     | '/guides/$slug'
     | '/reviews/$slug'
     | '/blog/'
@@ -255,6 +267,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CategoriesSlugRoute: typeof CategoriesSlugRoute
+  CompareSlugRoute: typeof CompareSlugRoute
   GuidesSlugRoute: typeof GuidesSlugRoute
   ReviewsSlugRoute: typeof ReviewsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -364,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compare/$slug': {
+      id: '/compare/$slug'
+      path: '/compare/$slug'
+      fullPath: '/compare/$slug'
+      preLoaderRoute: typeof CompareSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guides/': {
       id: '/guides/'
       path: '/guides'
@@ -407,6 +427,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   BlogSlugRoute: BlogSlugRoute,
   CategoriesSlugRoute: CategoriesSlugRoute,
+  CompareSlugRoute: CompareSlugRoute,
   GuidesSlugRoute: GuidesSlugRoute,
   ReviewsSlugRoute: ReviewsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
