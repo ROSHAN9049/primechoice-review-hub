@@ -6,6 +6,8 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ReviewCard } from "@/components/ReviewCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import type { Post } from "@/data/posts";
+import type { Review } from "@/data/reviews";
 import { fetchSiteContent } from "@/lib/content.functions";
 
 const title = "Search — PrimeChoiceReviews";
@@ -32,7 +34,7 @@ export const Route = createFileRoute("/search")({
 });
 
 function SearchPage() {
-  const { reviews, posts } = Route.useLoaderData();
+  const { reviews, posts } = Route.useLoaderData() as { reviews: Review[]; posts: Post[] };
   const { q } = Route.useSearch();
   const navigate = useNavigate();
   const [value, setValue] = useState(q);

@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ReviewCard } from "@/components/ReviewCard";
 import { Button } from "@/components/ui/button";
 import { categories } from "@/data/categories";
+import type { Review } from "@/data/reviews";
 import { fetchReviews } from "@/lib/content.functions";
 
 const title = "All Product Reviews — PrimeChoiceReviews";
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/reviews/")({
 });
 
 function ReviewsPage() {
-  const reviews = Route.useLoaderData();
+  const reviews = Route.useLoaderData() as Review[];
   const [active, setActive] = useState<string>("all");
   const list = active === "all" ? reviews : reviews.filter((r) => r.category === active);
 
