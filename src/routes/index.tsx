@@ -194,7 +194,7 @@ function Index() {
               retail, score it against a fixed rubric and publish exactly what we found.
             </p>
             <div className="mt-7">
-              <HomeSearch />
+              <HomeSearch reviews={reviews} posts={posts} />
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button asChild size="lg" className="min-h-12 rounded-lg px-7 text-base">

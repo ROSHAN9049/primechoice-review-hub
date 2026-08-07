@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
-import { categories } from "@/data/categories";
-import { comparisons } from "@/data/comparisons";
-import { guides } from "@/data/guides";
-import { posts } from "@/data/posts";
-import { reviews } from "@/data/reviews";
+import {
+  fetchCategories,
+  fetchComparisons,
+  fetchGuides,
+  fetchPosts,
+  fetchReviews,
+} from "@/lib/content.functions";
 
 // TODO: replace with your project URL once a project name or custom domain is set.
 const BASE_URL = "https://primechoice-review-hub.lovable.app";
@@ -19,6 +21,13 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
+        const [reviews, posts, guides, comparisons, categories] = await Promise.all([
+          fetchReviews(),
+          fetchPosts(),
+          fetchGuides(),
+          fetchComparisons(),
+          fetchCategories(),
+        ]);
         const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/reviews", changefreq: "weekly", priority: "0.9" },
