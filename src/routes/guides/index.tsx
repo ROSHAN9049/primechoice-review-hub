@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumbs, breadcrumbSchema } from "@/components/Breadcrumbs";
 import { GuideCard } from "@/components/ContentCards";
-import { guides } from "@/data/guides";
+import type { Guide } from "@/data/guides";
+import { fetchGuides } from "@/lib/content.functions";
 
 const title = "Buying Guides — Best Product Picks | PrimeChoiceReviews";
 const description =
   "Independent buying guides with tested top picks, comparison tables and expert advice across electronics, home, health and more.";
 
 export const Route = createFileRoute("/guides/")({
+  loader: () => fetchGuides(),
   head: () => ({
     meta: [
       { title },
