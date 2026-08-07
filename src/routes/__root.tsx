@@ -15,6 +15,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { CookieConsent } from "@/components/CookieConsent";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/hooks/useAuth";
 import { fetchCategories } from "@/lib/content.functions";
 import { setCategories } from "@/data/categories";
 
@@ -159,6 +161,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <div className="flex min-h-dvh flex-col">
         <Header />
         <main className="flex-1">
@@ -168,7 +171,9 @@ function RootComponent() {
         <Footer />
         <ScrollToTop />
         <CookieConsent />
+        <Toaster />
       </div>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
