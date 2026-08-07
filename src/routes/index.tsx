@@ -27,8 +27,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { getCategory } from "@/data/categories";
-import { posts } from "@/data/posts";
-import { featuredReviews, reviews } from "@/data/reviews";
+import type { Post } from "@/data/posts";
+import type { Review } from "@/data/reviews";
+import { fetchSiteContent } from "@/lib/content.functions";
 import { testimonials } from "@/data/testimonials";
 
 const title = "Find the Best Products Before You Buy — PrimeChoiceReviews";
@@ -64,6 +65,7 @@ const homeFaq = [
 ];
 
 export const Route = createFileRoute("/")({
+  loader: () => fetchSiteContent(),
   head: () => ({
     meta: [
       { title },
@@ -160,7 +162,8 @@ function SectionHead({
 }
 
 function Index() {
-  const featured = featuredReviews();
+  const { reviews, posts } = Route.useLoaderData() as { reviews: Review[]; posts: Post[] };
+  const featured = reviews.filter((r) => r.featured);
   const [lead, ...rest] = featured;
   const leadCategory = lead ? getCategory(lead.category) : undefined;
   const [leadPost, ...otherPosts] = posts;
