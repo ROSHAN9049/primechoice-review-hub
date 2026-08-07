@@ -31,7 +31,10 @@ function AdminDashboard() {
 
   const claimAdmin = async () => {
     const { data, error } = await supabase.rpc("claim_admin");
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast[data ? "success" : "error"](
       data ? "You are now an admin. Reload to continue." : "An admin already exists.",
     );
