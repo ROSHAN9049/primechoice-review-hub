@@ -3,13 +3,16 @@ import { Clock } from "lucide-react";
 import { BlogCard } from "@/components/BlogCard";
 import { Breadcrumbs, breadcrumbSchema } from "@/components/Breadcrumbs";
 import { getCategory } from "@/data/categories";
-import { getPost, posts, type Post } from "@/data/posts";
+import type { Post } from "@/data/posts";
+import { fetchPosts } from "@/lib/content.functions";
+import { relatedPosts } from "@/lib/related";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = getPost(params.slug);
+  loader: async ({ params }) => {
+    const all = await fetchPosts();
+    const post = all.find((p) => p.slug === params.slug);
     if (!post) throw notFound();
-    return { post };
+    return { post, related: relatedPosts(all, post.category, post.slug) };
   },
   head: ({ params, loaderData }) => {
     if (!loaderData) {
@@ -58,9 +61,8 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function PostPage() {
-  const { post } = Route.useLoaderData() as { post: Post };
+  const { post, related } = Route.useLoaderData() as { post: Post; related: Post[] };
   const category = getCategory(post.category);
-  const related = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">

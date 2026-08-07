@@ -14,13 +14,16 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { affiliateConfig } from "@/config/site";
 import { getCategory } from "@/data/categories";
-import { getReview, reviews, type Review } from "@/data/reviews";
+import type { Review } from "@/data/reviews";
+import { fetchReviews } from "@/lib/content.functions";
+import { relatedReviews } from "@/lib/related";
 
 export const Route = createFileRoute("/reviews/$slug")({
-  loader: ({ params }) => {
-    const review = getReview(params.slug);
+  loader: async ({ params }) => {
+    const all = await fetchReviews();
+    const review = all.find((r) => r.slug === params.slug);
     if (!review) throw notFound();
-    return { review };
+    return { review, related: relatedReviews(all, review.category, review.slug) };
   },
   head: ({ params, loaderData }) => {
     if (!loaderData) {
@@ -86,12 +89,8 @@ export const Route = createFileRoute("/reviews/$slug")({
 });
 
 function ReviewPage() {
-  const { review } = Route.useLoaderData() as { review: Review };
+  const { review, related } = Route.useLoaderData() as { review: Review; related: Review[] };
   const category = getCategory(review.category);
-  const related = reviews
-    .filter((r) => r.slug !== review.slug && r.category === review.category)
-    .concat(reviews.filter((r) => r.slug !== review.slug && r.category !== review.category))
-    .slice(0, 3);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">

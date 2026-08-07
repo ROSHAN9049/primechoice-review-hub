@@ -5,7 +5,7 @@ export interface Category {
   icon: string;
 }
 
-export const categories: Category[] = [
+const fallbackCategories: Category[] = [
   {
     slug: "health-supplements",
     name: "Health & Supplements",
@@ -122,4 +122,24 @@ export const categories: Category[] = [
   },
 ];
 
-export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
+/**
+ * Category taxonomy is stored in the database; the static list is the
+ * build-time fallback. The root route hydrates the registry on every request.
+ */
+let registry: Category[] = fallbackCategories;
+
+export const categories: Category[] = new Proxy([] as Category[], {
+  get: (_t, prop, receiver) => Reflect.get(registry, prop, receiver),
+  has: (_t, prop) => Reflect.has(registry, prop),
+  ownKeys: () => Reflect.ownKeys(registry),
+  getOwnPropertyDescriptor: (_t, prop) => {
+    const d = Reflect.getOwnPropertyDescriptor(registry, prop);
+    return d ? { ...d, configurable: true } : d;
+  },
+}) as Category[];
+
+export function setCategories(next: Category[]) {
+  if (next.length > 0) registry = next;
+}
+
+export const getCategory = (slug: string) => registry.find((c) => c.slug === slug);

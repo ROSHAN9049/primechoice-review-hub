@@ -2,13 +2,15 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Breadcrumbs, breadcrumbSchema } from "@/components/Breadcrumbs";
 import { ReviewCard } from "@/components/ReviewCard";
 import { getCategory, type Category } from "@/data/categories";
-import { reviewsByCategory } from "@/data/reviews";
+import type { Review } from "@/data/reviews";
+import { fetchReviews } from "@/lib/content.functions";
 
 export const Route = createFileRoute("/categories/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const category = getCategory(params.slug);
     if (!category) throw notFound();
-    return { category };
+    const all = await fetchReviews();
+    return { category, reviews: all.filter((r) => r.category === params.slug) };
   },
   head: ({ params, loaderData }) => {
     if (!loaderData) {
@@ -45,8 +47,10 @@ export const Route = createFileRoute("/categories/$slug")({
 });
 
 function CategoryPage() {
-  const { category } = Route.useLoaderData() as { category: Category };
-  const list = reviewsByCategory(category.slug);
+  const { category, reviews: list } = Route.useLoaderData() as {
+    category: Category;
+    reviews: Review[];
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">

@@ -16,16 +16,28 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { affiliateConfig } from "@/config/site";
 import { getCategory } from "@/data/categories";
-import { getComparison, type Comparison, type ComparisonSide } from "@/data/comparisons";
+import type { Comparison, ComparisonSide } from "@/data/comparisons";
+import type { Guide } from "@/data/guides";
+import type { Review } from "@/data/reviews";
+import { fetchComparisons, fetchGuides, fetchReviews } from "@/lib/content.functions";
 import { relatedGuides, relatedReviews } from "@/lib/related";
 
 const SITE = "https://primechoice-review-hub.lovable.app";
 
 export const Route = createFileRoute("/compare/$slug")({
-  loader: ({ params }) => {
-    const comparison = getComparison(params.slug);
+  loader: async ({ params }) => {
+    const [comparisons, reviews, guides] = await Promise.all([
+      fetchComparisons(),
+      fetchReviews(),
+      fetchGuides(),
+    ]);
+    const comparison = comparisons.find((c) => c.slug === params.slug);
     if (!comparison) throw notFound();
-    return { comparison };
+    return {
+      comparison,
+      reviews: relatedReviews(reviews, comparison.category),
+      guides: relatedGuides(guides, comparison.category),
+    };
   },
   head: ({ params, loaderData }) => {
     if (!loaderData) {
@@ -120,7 +132,11 @@ function Cell({ value }: { value: boolean | string }) {
 }
 
 function ComparePage() {
-  const { comparison } = Route.useLoaderData() as { comparison: Comparison };
+  const { comparison, ...related } = Route.useLoaderData() as {
+    comparison: Comparison;
+    reviews: Review[];
+    guides: Guide[];
+  };
   const c = comparison;
   const category = getCategory(c.category);
   const toc = [
@@ -292,7 +308,7 @@ function ComparePage() {
       <section aria-labelledby="related-reviews" className="mt-16">
         <h2 id="related-reviews" className="text-2xl font-bold">Related reviews</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {relatedReviews(c.category).map((r) => (
+          {related.reviews.map((r) => (
             <ReviewCard key={r.slug} review={r} />
           ))}
         </div>
@@ -301,7 +317,7 @@ function ComparePage() {
       <section aria-labelledby="related-guides" className="mt-16">
         <h2 id="related-guides" className="text-2xl font-bold">Related buying guides</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {relatedGuides(c.category).map((g) => (
+          {related.guides.map((g) => (
             <GuideCard key={g.slug} guide={g} />
           ))}
         </div>

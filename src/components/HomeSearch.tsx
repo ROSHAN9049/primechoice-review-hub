@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Search, TrendingUp } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
-import { posts } from "@/data/posts";
-import { reviews } from "@/data/reviews";
+import type { Post } from "@/data/posts";
+import type { Review } from "@/data/reviews";
 
 interface Suggestion {
   label: string;
@@ -10,15 +10,16 @@ interface Suggestion {
   kind: "review" | "article";
 }
 
-const index: Suggestion[] = [
-  ...reviews.map((r) => ({ label: r.product, slug: r.slug, kind: "review" as const })),
-  ...posts.map((p) => ({ label: p.title, slug: p.slug, kind: "article" as const })),
-];
-
-const popular = reviews.slice(0, 4).map((r) => r.product);
-
-export function HomeSearch() {
+export function HomeSearch({ reviews = [], posts = [] }: { reviews?: Review[]; posts?: Post[] }) {
   const navigate = useNavigate();
+  const index: Suggestion[] = useMemo(
+    () => [
+      ...reviews.map((r) => ({ label: r.product, slug: r.slug, kind: "review" as const })),
+      ...posts.map((p) => ({ label: p.title, slug: p.slug, kind: "article" as const })),
+    ],
+    [reviews, posts],
+  );
+  const popular = reviews.slice(0, 4).map((r) => r.product);
   const [q, setQ] = useState("");
   const [focused, setFocused] = useState(false);
 
@@ -26,7 +27,7 @@ export function HomeSearch() {
     const term = q.trim().toLowerCase();
     if (term.length < 2) return [];
     return index.filter((s) => s.label.toLowerCase().includes(term)).slice(0, 6);
-  }, [q]);
+  }, [q, index]);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();

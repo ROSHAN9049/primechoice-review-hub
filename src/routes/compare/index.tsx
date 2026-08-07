@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumbs, breadcrumbSchema } from "@/components/Breadcrumbs";
 import { ComparisonCard } from "@/components/ContentCards";
-import { comparisons } from "@/data/comparisons";
+import type { Comparison } from "@/data/comparisons";
+import { fetchComparisons } from "@/lib/content.functions";
 
 const title = "Product Comparisons — Head-to-Head Tests | PrimeChoiceReviews";
 const description =
   "Side-by-side product comparisons with spec tables, feature checklists, performance notes and a clear winner for every match-up.";
 
 export const Route = createFileRoute("/compare/")({
+  loader: () => fetchComparisons(),
   head: () => ({
     meta: [
       { title },
@@ -34,6 +36,7 @@ export const Route = createFileRoute("/compare/")({
 });
 
 function CompareIndex() {
+  const comparisons = Route.useLoaderData() as Comparison[];
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Comparisons" }]} />
