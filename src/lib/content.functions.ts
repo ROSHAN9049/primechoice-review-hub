@@ -91,11 +91,12 @@ export const fetchCategories = createServerFn({ method: "GET" }).handler(async (
 });
 
 export const fetchReviews = createServerFn({ method: "GET" }).handler(async () => {
-  const { data } = await publicClient()
+  const { data, error } = await publicClient()
     .from("reviews")
     .select(REVIEW_COLS)
     .eq("status", "published")
     .order("publish_date", { ascending: false });
+  if (error) console.error("fetchReviews", error);
   return (data ?? []).map(toReview);
 });
 
