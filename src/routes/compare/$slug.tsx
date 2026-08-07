@@ -132,7 +132,11 @@ function Cell({ value }: { value: boolean | string }) {
 }
 
 function ComparePage() {
-  const { comparison } = Route.useLoaderData() as { comparison: Comparison };
+  const { comparison, ...related } = Route.useLoaderData() as {
+    comparison: Comparison;
+    reviews: Review[];
+    guides: Guide[];
+  };
   const c = comparison;
   const category = getCategory(c.category);
   const toc = [

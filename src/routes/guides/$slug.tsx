@@ -103,7 +103,11 @@ export const Route = createFileRoute("/guides/$slug")({
 });
 
 function GuidePage() {
-  const { guide } = Route.useLoaderData() as { guide: Guide };
+  const { guide, ...related } = Route.useLoaderData() as {
+    guide: Guide;
+    reviews: Review[];
+    comparisons: Comparison[];
+  };
   const category = getCategory(guide.category);
   const toc = [
     { id: "top-picks", label: "Top picks" },
