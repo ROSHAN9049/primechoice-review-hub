@@ -15,6 +15,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { CookieConsent } from "@/components/CookieConsent";
+import { fetchCategories } from "@/lib/content.functions";
+import { setCategories } from "@/data/categories";
 
 function NotFoundComponent() {
   return (
@@ -77,6 +79,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async () => {
+    const categories = await fetchCategories();
+    setCategories(categories);
+    return { categories };
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -147,6 +154,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { categories } = Route.useLoaderData();
+  setCategories(categories);
 
   return (
     <QueryClientProvider client={queryClient}>
