@@ -28,7 +28,8 @@ function publicClient() {
   });
 }
 
-type Row = Record<string, any>;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type Row = any;
 
 const toReview = (r: Row): Review => ({
   ...(r.content ?? {}),
