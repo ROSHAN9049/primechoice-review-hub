@@ -4,13 +4,14 @@ import { BlogCard } from "@/components/BlogCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { getCategory } from "@/data/categories";
-import { posts } from "@/data/posts";
+import { fetchPosts } from "@/lib/content.functions";
 
 const title = "Blog — Buying Guides & Review Methodology | PrimeChoiceReviews";
 const description =
   "Buying guides, testing methodology and category deep-dives from the PrimeChoiceReviews research team.";
 
 export const Route = createFileRoute("/blog/")({
+  loader: () => fetchPosts(),
   head: () => ({
     meta: [
       { title },
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogPage() {
+  const posts = Route.useLoaderData();
   const used = Array.from(new Set(posts.map((p) => p.category)));
   const [active, setActive] = useState("all");
   const list = active === "all" ? posts : posts.filter((p) => p.category === active);

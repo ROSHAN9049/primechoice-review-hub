@@ -6,8 +6,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ReviewCard } from "@/components/ReviewCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { posts } from "@/data/posts";
-import { reviews } from "@/data/reviews";
+import { fetchSiteContent } from "@/lib/content.functions";
 
 const title = "Search — PrimeChoiceReviews";
 const description = "Search product reviews, buying guides and articles on PrimeChoiceReviews.";
@@ -16,6 +15,7 @@ export const Route = createFileRoute("/search")({
   validateSearch: (search: Record<string, unknown>) => ({
     q: typeof search['q'] === "string" ? (search['q'] as string) : "",
   }),
+  loader: () => fetchSiteContent(),
   head: () => ({
     meta: [
       { title },
@@ -32,6 +32,7 @@ export const Route = createFileRoute("/search")({
 });
 
 function SearchPage() {
+  const { reviews, posts } = Route.useLoaderData();
   const { q } = Route.useSearch();
   const navigate = useNavigate();
   const [value, setValue] = useState(q);
