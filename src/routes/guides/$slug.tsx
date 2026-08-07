@@ -17,16 +17,28 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { affiliateConfig } from "@/config/site";
 import { getCategory } from "@/data/categories";
-import { getGuide, type Guide } from "@/data/guides";
+import type { Comparison } from "@/data/comparisons";
+import type { Guide } from "@/data/guides";
+import type { Review } from "@/data/reviews";
+import { fetchComparisons, fetchGuides, fetchReviews } from "@/lib/content.functions";
 import { relatedComparisons, relatedReviews } from "@/lib/related";
 
 const SITE = "https://primechoice-review-hub.lovable.app";
 
 export const Route = createFileRoute("/guides/$slug")({
-  loader: ({ params }) => {
-    const guide = getGuide(params.slug);
+  loader: async ({ params }) => {
+    const [guides, reviews, comparisons] = await Promise.all([
+      fetchGuides(),
+      fetchReviews(),
+      fetchComparisons(),
+    ]);
+    const guide = guides.find((g) => g.slug === params.slug);
     if (!guide) throw notFound();
-    return { guide };
+    return {
+      guide,
+      reviews: relatedReviews(reviews, guide.category),
+      comparisons: relatedComparisons(comparisons, guide.category),
+    };
   },
   head: ({ params, loaderData }) => {
     if (!loaderData) {
@@ -296,7 +308,7 @@ function GuidePage() {
           Related reviews
         </h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {relatedReviews(guide.category).map((r) => (
+          {related.reviews.map((r) => (
             <ReviewCard key={r.slug} review={r} />
           ))}
         </div>
@@ -307,7 +319,7 @@ function GuidePage() {
           Related comparisons
         </h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {relatedComparisons(guide.category).map((c) => (
+          {related.comparisons.map((c) => (
             <ComparisonCard key={c.slug} comparison={c} />
           ))}
         </div>
