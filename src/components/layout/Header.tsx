@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, Search, ShieldCheck, Star, ArrowUpRight } from "lucide-react";
+import { LayoutDashboard, LogIn, Menu, Search, ShieldCheck, Star, ArrowUpRight } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { siteConfig } from "@/config/site";
+import { useAuth } from "@/hooks/useAuth";
 
 const nav = [
   { label: "Reviews", to: "/reviews" },
@@ -48,6 +49,7 @@ function SearchForm({ onDone }: { onDone?: () => void }) {
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-xl">
@@ -99,6 +101,17 @@ export function Header() {
             <SearchForm />
           </div>
           <ThemeToggle />
+          <Link
+            to={user ? "/admin" : "/auth"}
+            aria-label={user ? "Open admin dashboard" : "Sign in"}
+            className="grid min-h-11 min-w-11 place-items-center rounded-lg text-foreground/75 transition-colors hover:text-primary-glow"
+          >
+            {user ? (
+              <LayoutDashboard className="size-5" aria-hidden="true" />
+            ) : (
+              <LogIn className="size-5" aria-hidden="true" />
+            )}
+          </Link>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button

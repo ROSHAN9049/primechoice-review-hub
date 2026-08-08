@@ -21,7 +21,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as CategoriesIndexRouteImport } from './routes/categories/index'
@@ -32,6 +32,18 @@ import { Route as GuidesIndexRouteImport } from './routes/guides/index'
 import { Route as GuidesSlugRouteImport } from './routes/guides/$slug'
 import { Route as ReviewsIndexRouteImport } from './routes/reviews/index'
 import { Route as ReviewsSlugRouteImport } from './routes/reviews/$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminBrandsRouteImport } from './routes/_authenticated/admin/brands'
+import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin/categories'
+import { Route as AuthenticatedAdminComparisonsRouteImport } from './routes/_authenticated/admin/comparisons'
+import { Route as AuthenticatedAdminDealsRouteImport } from './routes/_authenticated/admin/deals'
+import { Route as AuthenticatedAdminGuidesRouteImport } from './routes/_authenticated/admin/guides'
+import { Route as AuthenticatedAdminNetworksRouteImport } from './routes/_authenticated/admin/networks'
+import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authenticated/admin/posts'
+import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
+import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin/reviews'
+import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin/subscribers'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -92,7 +104,7 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
@@ -147,6 +159,74 @@ const ReviewsSlugRoute = ReviewsSlugRouteImport.update({
   path: '/reviews/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminBrandsRoute =
+  AuthenticatedAdminBrandsRouteImport.update({
+    id: '/brands',
+    path: '/brands',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminCategoriesRoute =
+  AuthenticatedAdminCategoriesRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminComparisonsRoute =
+  AuthenticatedAdminComparisonsRouteImport.update({
+    id: '/comparisons',
+    path: '/comparisons',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminDealsRoute = AuthenticatedAdminDealsRouteImport.update({
+  id: '/deals',
+  path: '/deals',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminGuidesRoute =
+  AuthenticatedAdminGuidesRouteImport.update({
+    id: '/guides',
+    path: '/guides',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminNetworksRoute =
+  AuthenticatedAdminNetworksRouteImport.update({
+    id: '/networks',
+    path: '/networks',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminPostsRoute = AuthenticatedAdminPostsRouteImport.update({
+  id: '/posts',
+  path: '/posts',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminProductsRoute =
+  AuthenticatedAdminProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminReviewsRoute =
+  AuthenticatedAdminReviewsRouteImport.update({
+    id: '/reviews',
+    path: '/reviews',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminSubscribersRoute =
+  AuthenticatedAdminSubscribersRouteImport.update({
+    id: '/subscribers',
+    path: '/subscribers',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -160,7 +240,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/compare/$slug': typeof CompareSlugRoute
@@ -171,6 +251,18 @@ export interface FileRoutesByFullPath {
   '/compare/': typeof CompareIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/reviews/': typeof ReviewsIndexRoute
+  '/admin/brands': typeof AuthenticatedAdminBrandsRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/comparisons': typeof AuthenticatedAdminComparisonsRoute
+  '/admin/deals': typeof AuthenticatedAdminDealsRoute
+  '/admin/guides': typeof AuthenticatedAdminGuidesRoute
+  '/admin/networks': typeof AuthenticatedAdminNetworksRoute
+  '/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -184,7 +276,6 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/compare/$slug': typeof CompareSlugRoute
@@ -195,6 +286,18 @@ export interface FileRoutesByTo {
   '/compare': typeof CompareIndexRoute
   '/guides': typeof GuidesIndexRoute
   '/reviews': typeof ReviewsIndexRoute
+  '/admin/brands': typeof AuthenticatedAdminBrandsRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/comparisons': typeof AuthenticatedAdminComparisonsRoute
+  '/admin/deals': typeof AuthenticatedAdminDealsRoute
+  '/admin/guides': typeof AuthenticatedAdminGuidesRoute
+  '/admin/networks': typeof AuthenticatedAdminNetworksRoute
+  '/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -210,7 +313,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/compare/$slug': typeof CompareSlugRoute
@@ -221,6 +324,18 @@ export interface FileRoutesById {
   '/compare/': typeof CompareIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/reviews/': typeof ReviewsIndexRoute
+  '/_authenticated/admin/brands': typeof AuthenticatedAdminBrandsRoute
+  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/_authenticated/admin/comparisons': typeof AuthenticatedAdminComparisonsRoute
+  '/_authenticated/admin/deals': typeof AuthenticatedAdminDealsRoute
+  '/_authenticated/admin/guides': typeof AuthenticatedAdminGuidesRoute
+  '/_authenticated/admin/networks': typeof AuthenticatedAdminNetworksRoute
+  '/_authenticated/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/_authenticated/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -247,6 +362,18 @@ export interface FileRouteTypes {
     | '/compare/'
     | '/guides/'
     | '/reviews/'
+    | '/admin/brands'
+    | '/admin/categories'
+    | '/admin/comparisons'
+    | '/admin/deals'
+    | '/admin/guides'
+    | '/admin/networks'
+    | '/admin/posts'
+    | '/admin/products'
+    | '/admin/reviews'
+    | '/admin/subscribers'
+    | '/admin/users'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -260,7 +387,6 @@ export interface FileRouteTypes {
     | '/search'
     | '/sitemap.xml'
     | '/terms'
-    | '/admin'
     | '/blog/$slug'
     | '/categories/$slug'
     | '/compare/$slug'
@@ -271,6 +397,18 @@ export interface FileRouteTypes {
     | '/compare'
     | '/guides'
     | '/reviews'
+    | '/admin/brands'
+    | '/admin/categories'
+    | '/admin/comparisons'
+    | '/admin/deals'
+    | '/admin/guides'
+    | '/admin/networks'
+    | '/admin/posts'
+    | '/admin/products'
+    | '/admin/reviews'
+    | '/admin/subscribers'
+    | '/admin/users'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -296,6 +434,18 @@ export interface FileRouteTypes {
     | '/compare/'
     | '/guides/'
     | '/reviews/'
+    | '/_authenticated/admin/brands'
+    | '/_authenticated/admin/categories'
+    | '/_authenticated/admin/comparisons'
+    | '/_authenticated/admin/deals'
+    | '/_authenticated/admin/guides'
+    | '/_authenticated/admin/networks'
+    | '/_authenticated/admin/posts'
+    | '/_authenticated/admin/products'
+    | '/_authenticated/admin/reviews'
+    | '/_authenticated/admin/subscribers'
+    | '/_authenticated/admin/users'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -413,7 +563,7 @@ declare module '@tanstack/react-router' {
       id: '/_authenticated/admin'
       path: '/admin'
       fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/blog/': {
@@ -486,15 +636,135 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/brands': {
+      id: '/_authenticated/admin/brands'
+      path: '/brands'
+      fullPath: '/admin/brands'
+      preLoaderRoute: typeof AuthenticatedAdminBrandsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/categories': {
+      id: '/_authenticated/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/comparisons': {
+      id: '/_authenticated/admin/comparisons'
+      path: '/comparisons'
+      fullPath: '/admin/comparisons'
+      preLoaderRoute: typeof AuthenticatedAdminComparisonsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/deals': {
+      id: '/_authenticated/admin/deals'
+      path: '/deals'
+      fullPath: '/admin/deals'
+      preLoaderRoute: typeof AuthenticatedAdminDealsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/guides': {
+      id: '/_authenticated/admin/guides'
+      path: '/guides'
+      fullPath: '/admin/guides'
+      preLoaderRoute: typeof AuthenticatedAdminGuidesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/networks': {
+      id: '/_authenticated/admin/networks'
+      path: '/networks'
+      fullPath: '/admin/networks'
+      preLoaderRoute: typeof AuthenticatedAdminNetworksRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/posts': {
+      id: '/_authenticated/admin/posts'
+      path: '/posts'
+      fullPath: '/admin/posts'
+      preLoaderRoute: typeof AuthenticatedAdminPostsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/products': {
+      id: '/_authenticated/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/reviews': {
+      id: '/_authenticated/admin/reviews'
+      path: '/reviews'
+      fullPath: '/admin/reviews'
+      preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/subscribers': {
+      id: '/_authenticated/admin/subscribers'
+      path: '/subscribers'
+      fullPath: '/admin/subscribers'
+      preLoaderRoute: typeof AuthenticatedAdminSubscribersRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminBrandsRoute: typeof AuthenticatedAdminBrandsRoute
+  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
+  AuthenticatedAdminComparisonsRoute: typeof AuthenticatedAdminComparisonsRoute
+  AuthenticatedAdminDealsRoute: typeof AuthenticatedAdminDealsRoute
+  AuthenticatedAdminGuidesRoute: typeof AuthenticatedAdminGuidesRoute
+  AuthenticatedAdminNetworksRoute: typeof AuthenticatedAdminNetworksRoute
+  AuthenticatedAdminPostsRoute: typeof AuthenticatedAdminPostsRoute
+  AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
+  AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
+  AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminBrandsRoute: AuthenticatedAdminBrandsRoute,
+    AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
+    AuthenticatedAdminComparisonsRoute: AuthenticatedAdminComparisonsRoute,
+    AuthenticatedAdminDealsRoute: AuthenticatedAdminDealsRoute,
+    AuthenticatedAdminGuidesRoute: AuthenticatedAdminGuidesRoute,
+    AuthenticatedAdminNetworksRoute: AuthenticatedAdminNetworksRoute,
+    AuthenticatedAdminPostsRoute: AuthenticatedAdminPostsRoute,
+    AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
+    AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
+    AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
+    AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
