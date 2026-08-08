@@ -17,17 +17,17 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 const nav = [
   { to: "/admin", label: "Dashboard", exact: true },
-  { to: "/admin/products", label: "Products" },
-  { to: "/admin/reviews", label: "Reviews" },
-  { to: "/admin/posts", label: "Blog posts" },
-  { to: "/admin/guides", label: "Guides" },
-  { to: "/admin/comparisons", label: "Comparisons" },
-  { to: "/admin/categories", label: "Categories" },
-  { to: "/admin/brands", label: "Brands" },
-  { to: "/admin/deals", label: "Deals" },
-  { to: "/admin/networks", label: "Affiliate links" },
-  { to: "/admin/subscribers", label: "Subscribers" },
-  { to: "/admin/users", label: "Users & roles" },
+  { to: "/admin/products", label: "Products", exact: false },
+  { to: "/admin/reviews", label: "Reviews", exact: false },
+  { to: "/admin/posts", label: "Blog posts", exact: false },
+  { to: "/admin/guides", label: "Guides", exact: false },
+  { to: "/admin/comparisons", label: "Comparisons", exact: false },
+  { to: "/admin/categories", label: "Categories", exact: false },
+  { to: "/admin/brands", label: "Brands", exact: false },
+  { to: "/admin/deals", label: "Deals", exact: false },
+  { to: "/admin/networks", label: "Affiliate links", exact: false },
+  { to: "/admin/subscribers", label: "Subscribers", exact: false },
+  { to: "/admin/users", label: "Users & roles", exact: false },
 ] as const;
 
 function AdminLayout() {
@@ -36,7 +36,10 @@ function AdminLayout() {
 
   const claimAdmin = async () => {
     const { data, error } = await supabase.rpc("claim_admin");
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     if (data) {
       toast.success("You are now an admin. Reloading…");
       setTimeout(() => window.location.reload(), 800);
@@ -89,7 +92,7 @@ function AdminLayout() {
             <Link
               key={n.to}
               to={n.to}
-              activeOptions={{ exact: n.exact ?? false }}
+              activeOptions={{ exact: n.exact }}
               activeProps={{ className: "bg-secondary font-semibold text-foreground" }}
               className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary/70"
             >
