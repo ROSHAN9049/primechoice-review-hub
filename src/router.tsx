@@ -27,3 +27,4 @@ const routeTree = rootRoute.addChildren([indexRoute, adminRoute]);
 
 // Export router
 export const router = createRouter({ routeTree });
+
