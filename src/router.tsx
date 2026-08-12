@@ -1,16 +1,18 @@
-import { QueryClient } from "@tanstack/react-query";
-import { createRouter } from "@tanstack/react-router";
+// src/router.tsx
+import { createRouter } from "@emstrack/react-start";
 import { routeTree } from "./routeTree.gen";
 
-export const getRouter = () => {
-  const queryClient = new QueryClient();
+// Manually admin route define kar rahe hain (route tree generate na ho tab bhi kaam karega)
+const router = createRouter({
+  routeTree,
+  // Admin route ko force add karo
+  routes: {
+    ...routeTree.routes,
+    admin: {
+      path: '/admin',
+      component: () => import('./routes/admin').then(m => m.Route.component),
+    },
+  },
+});
 
-  const router = createRouter({
-    routeTree,
-    context: { queryClient },
-    scrollRestoration: true,
-    defaultPreloadStaleTime: 0,
-  });
-
-  return router;
-};
+export { router };
