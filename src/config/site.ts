@@ -18,14 +18,13 @@ export const siteConfig = {
 
 /**
  * Digistore24 affiliate configuration.
- * Replace AFFILIATE_ID with your real Digistore24 ID once approved.
+ * ROSHANpratibha is the user's Digistore24 affiliate ID.
+ * A product ID is still required to build a valid product promolink.
  */
 export const affiliateConfig = {
   network: "Digistore24",
-  affiliateId: "YOUR_DIGISTORE24_ID",
-  /** Base vendor URL pattern. {productId} and {affiliateId} are replaced. */
-  linkTemplate: "https://www.digistore24.com/redir/{productId}/{affiliateId}/",
-  /** Fallback used when a product has no configured productId yet. */
+  affiliateId: "ROSHANpratibha",
+  linkTemplate: "https://www.checkout-ds24.com/redir/{productId}/{affiliateId}/",
   placeholderUrl: "https://www.digistore24.com/",
   disclosure:
     "We may earn a commission if you buy through links on this page — at no extra cost to you.",
@@ -34,6 +33,6 @@ export const affiliateConfig = {
 export function buildAffiliateUrl(productId?: string): string {
   if (!productId) return affiliateConfig.placeholderUrl;
   return affiliateConfig.linkTemplate
-    .replace("{productId}", productId)
-    .replace("{affiliateId}", affiliateConfig.affiliateId);
+    .replace("{productId}", encodeURIComponent(productId))
+    .replace("{affiliateId}", encodeURIComponent(affiliateConfig.affiliateId));
 }
