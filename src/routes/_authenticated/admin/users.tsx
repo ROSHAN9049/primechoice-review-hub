@@ -1,10 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { setUserRole } from "@/lib/admin-users.functions";
 import { useAuth, type AppRole } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/_authenticated/admin/users")({
@@ -14,11 +11,9 @@ export const Route = createFileRoute("/_authenticated/admin/users")({
 const ROLES: AppRole[] = ["admin", "editor", "author", "subscriber"];
 
 function UsersAdmin() {
-  const qc = useQueryClient();
   const { isAdmin } = useAuth();
-  const mutateRole = useServerFn(setUserRole);
 
-  const { data: users = [] } = useQuery({
+  const { data: users = [], isLoading } = useQuery({
     queryKey: ["admin", "users"],
     queryFn: async () => {
       const [{ data: profiles }, { data: roles }] = await Promise.all([
@@ -32,22 +27,14 @@ function UsersAdmin() {
     },
   });
 
-  const toggle = useMutation({
-    mutationFn: (vars: { userId: string; role: AppRole; action: "grant" | "revoke" }) =>
-      mutateRole({ data: vars }),
-    onSuccess: () => {
-      toast.success("Roles updated");
-      void qc.invalidateQueries({ queryKey: ["admin", "users"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
   return (
     <div>
       <p className="kicker">People</p>
       <h1 className="font-display text-2xl font-extrabold">Users & roles</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        {isAdmin ? "Click a role to grant or revoke it." : "Only admins can change roles."}
+        {isAdmin
+          ? "User roles are displayed here. Role changes can be managed from Supabase until the secure server-side role manager is enabled."
+          : "Only admins can manage roles."}
       </p>
 
       <div className="card-surface mt-6 overflow-x-auto rounded-xl">
@@ -67,31 +54,16 @@ function UsersAdmin() {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-1.5">
-                    {ROLES.map((role) => {
-                      const has = u.roles.includes(role);
-                      return (
-                        <Button
-                          key={role}
-                          size="sm"
-                          variant={has ? "default" : "outline"}
-                          disabled={!isAdmin || toggle.isPending}
-                          onClick={() =>
-                            toggle.mutate({
-                              userId: u.id,
-                              role,
-                              action: has ? "revoke" : "grant",
-                            })
-                          }
-                        >
-                          {role}
-                        </Button>
-                      );
-                    })}
+                    {ROLES.map((role) => (
+                      <Button key={role} size="sm" variant={u.roles.includes(role) ? "default" : "outline"} disabled>
+                        {role}
+                      </Button>
+                    ))}
                   </div>
                 </td>
               </tr>
             ))}
-            {users.length === 0 && (
+            {!isLoading && users.length === 0 && (
               <tr>
                 <td className="px-4 py-6 text-muted-foreground" colSpan={2}>
                   No users yet.
