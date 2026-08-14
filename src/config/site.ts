@@ -16,15 +16,10 @@ export const siteConfig = {
   },
 } as const;
 
-/**
- * Digistore24 affiliate configuration.
- * ROSHANpratibha is the user's Digistore24 affiliate ID.
- * A product ID is still required to build a valid product promolink.
- */
 export const affiliateConfig = {
   network: "Digistore24",
   affiliateId: "ROSHANpratibha",
-  linkTemplate: "https://www.checkout-ds24.com/redir/{productId}/{affiliateId}/",
+  linkTemplate: "https://www.digistore24.com/redir/{productId}/{affiliateId}/",
   placeholderUrl: "https://www.digistore24.com/",
   disclosure:
     "We may earn a commission if you buy through links on this page — at no extra cost to you.",
