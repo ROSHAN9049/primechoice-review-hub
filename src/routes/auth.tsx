@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 
 const title = "Sign in — PrimeChoiceReviews";
@@ -53,12 +52,16 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: `${window.location.origin}/auth`,
             data: { display_name: name },
           },
         });
         if (error) throw error;
-        if (!data.session) toast.success("Check your email to confirm your account.");
+        if (data.session) {
+          navigate({ to: "/admin", replace: true });
+        } else {
+          toast.success("Check your email to confirm your account.");
+        }
       } else {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/reset-password`,
@@ -74,15 +77,25 @@ function AuthPage() {
   };
 
   const google = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
-      toast.error("Google sign-in failed.");
-      return;
+    if (busy) return;
+    setBusy(true);
+    try {
+      // Use Supabase OAuth directly. The previous Lovable Cloud OAuth flow
+      // could return to a non-existent callback URL on the Vercel deployment.
+      // Returning to the existing /auth route lets AuthProvider restore the
+      // Supabase session and then redirect to /admin.
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth`,
+        },
+      });
+      if (error) throw error;
+      // Supabase redirects the browser to Google automatically.
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Google sign-in failed.");
+      setBusy(false);
     }
-    if (result.redirected) return;
-    navigate({ to: "/admin", replace: true });
   };
 
   return (
@@ -97,29 +110,17 @@ function AuthPage() {
       <form onSubmit={submit} className="mt-8 space-y-4">
         {mode === "signup" && (
           <div>
-            <label htmlFor="name" className="text-sm font-medium">
-              Display name
-            </label>
+            <label htmlFor="name" className="text-sm font-medium">Display name</label>
             <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
         )}
         <div>
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <label htmlFor="email" className="text-sm font-medium">Email</label>
+          <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
         {mode !== "forgot" && (
           <div>
-            <label htmlFor="password" className="text-sm font-medium">
-              Password
-            </label>
+            <label htmlFor="password" className="text-sm font-medium">Password</label>
             <Input
               id="password"
               type="password"
@@ -136,7 +137,7 @@ function AuthPage() {
       </form>
 
       {mode !== "forgot" && (
-        <Button type="button" variant="outline" className="mt-3 w-full" onClick={google}>
+        <Button type="button" variant="outline" className="mt-3 w-full" onClick={google} disabled={busy}>
           Continue with Google
         </Button>
       )}
@@ -149,9 +150,7 @@ function AuthPage() {
           Forgot password?
         </button>
       </div>
-      <Link to="/" className="mt-8 text-sm text-muted-foreground underline">
-        Back to site
-      </Link>
+      <Link to="/" className="mt-8 text-sm text-muted-foreground underline">Back to site</Link>
     </div>
   );
 }
