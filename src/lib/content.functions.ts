@@ -5,19 +5,19 @@ import { categories as staticCategories, type Category } from "@/data/categories
 import type { Comparison } from "@/data/comparisons";
 import { comparisons as staticComparisons } from "@/data/comparisons";
 import type { Guide } from "@/data/guides";
-import { guides as staticGuides } from "@/data/guides";
-import { posts as staticPosts, type Post } from "@/data/posts";
-import { reviews as staticReviews, type Review } from "@/data/reviews";
-import { imageFor } from "@/lib/images";
-
 function publicClient() {
-  const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
-  if (!url || !key) throw new Error("Supabase environment variables are not configured");
-  return createClient<Database>(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-    global: {
-      fetch: (input, init) => {
+    const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
+    const key = process.env["SUPABASE_ANON_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
+    if (!url || !key) throw new Error("Supabase environment variables not set");
+    return createClient<Database>(url, key, {
+        auth: { persistSession: false, autoRefreshToken: false },
+        global: {
+            headers: {
+                'apikey': key,
+            },
+        },
+    });
+}
         const headers = new Headers(init?.headers);
         if (key.startsWith("sb_") && headers.get("Authorization") === `Bearer ${key}`) headers.delete("Authorization");
         headers.set("apikey", key);
