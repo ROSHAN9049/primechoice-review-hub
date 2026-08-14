@@ -14,15 +14,12 @@ function publicClient() {
   const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
   if (!url || !key) throw new Error("Supabase environment variables are not configured");
-
   return createClient<Database>(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: {
       fetch: (input, init) => {
         const headers = new Headers(init?.headers);
-        if (key.startsWith("sb_") && headers.get("Authorization") === `Bearer ${key}`) {
-          headers.delete("Authorization");
-        }
+        if (key.startsWith("sb_") && headers.get("Authorization") === `Bearer ${key}`) headers.delete("Authorization");
         headers.set("apikey", key);
         return fetch(input, { ...init, headers });
       },
@@ -32,6 +29,23 @@ function publicClient() {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Row = any;
+
+export interface Product {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  images: string[];
+  category?: string;
+  brand?: string;
+  rating: number;
+  price?: number | null;
+  currency: string;
+  region: string;
+  affiliateLinks: Array<{ network?: string; productId?: string; affiliateId?: string; campaignKey?: string; enabled?: boolean }>;
+  reviewSlug?: string;
+  status: string;
+}
 
 const toReview = (r: Row): Review => ({
   ...(r.content ?? {}),
@@ -61,143 +75,130 @@ const toPost = (r: Row): Post => ({
 });
 
 const toGuide = (r: Row): Guide => ({
-  ...(r.payload ?? {}),
-  slug: r.slug,
-  title: r.title,
-  excerpt: r.excerpt,
-  category: r.category,
-  image: imageFor(r.payload?.image),
-  updated: r.publish_date,
+  ...(r.payload ?? {}), slug: r.slug, title: r.title, excerpt: r.excerpt,
+  category: r.category, image: imageFor(r.payload?.image), updated: r.publish_date,
 });
 
 const toComparison = (r: Row): Comparison => ({
-  ...(r.payload ?? {}),
-  slug: r.slug,
-  title: r.title,
-  excerpt: r.excerpt,
-  category: r.category,
-  image: imageFor(r.payload?.image),
-  updated: r.publish_date,
+  ...(r.payload ?? {}), slug: r.slug, title: r.title, excerpt: r.excerpt,
+  category: r.category, image: imageFor(r.payload?.image), updated: r.publish_date,
 });
 
-const REVIEW_COLS =
-  "slug,title,product,vendor,category,image,excerpt,rating,featured,affiliate_product_id,publish_date,content";
+const toProduct = (r: Row, reviewByProductId: Map<string, string>, reviewByProductName: Map<string, string>): Product => ({
+  id: r.id,
+  slug: r.slug,
+  title: r.title,
+  description: r.description ?? "",
+  images: Array.isArray(r.images) ? r.images : [],
+  category: r.category ?? undefined,
+  brand: r.brand ?? undefined,
+  rating: Number(r.rating ?? 0),
+  price: r.price == null ? null : Number(r.price),
+  currency: r.currency ?? "USD",
+  region: r.region ?? "global",
+  affiliateLinks: Array.isArray(r.affiliate_links) ? r.affiliate_links : [],
+  reviewSlug: reviewByProductId.get(r.id) ?? reviewByProductName.get(String(r.title).trim().toLowerCase()),
+  status: r.status,
+});
+
+const REVIEW_COLS = "slug,title,product,vendor,category,image,excerpt,rating,featured,affiliate_product_id,publish_date,content,product_ref";
 const POST_COLS = "slug,title,excerpt,category,image,author,reading_time,publish_date,sections";
 
 export const fetchCategories = createServerFn({ method: "GET" }).handler(async () => {
   try {
-    const { data, error } = await publicClient()
-      .from("categories")
-      .select("slug,name,description,icon")
-      .order("sort_order");
+    const { data, error } = await publicClient().from("categories").select("slug,name,description,icon").order("sort_order");
     if (error) throw error;
     return data?.length ? (data as Category[]) : staticCategories;
-  } catch (error) {
-    console.error("fetchCategories: using static fallback", error);
-    return staticCategories;
-  }
+  } catch (error) { console.error("fetchCategories: using static fallback", error); return staticCategories; }
 });
 
 export const fetchReviews = createServerFn({ method: "GET" }).handler(async () => {
   try {
-    const { data, error } = await publicClient()
-      .from("reviews")
-      .select(REVIEW_COLS)
-      .eq("status", "published")
-      .order("publish_date", { ascending: false });
+    const { data, error } = await publicClient().from("reviews").select(REVIEW_COLS).eq("status", "published").order("publish_date", { ascending: false });
     if (error) throw error;
     const reviews = (data ?? []).map(toReview);
     return reviews.length ? reviews : staticReviews;
-  } catch (error) {
-    console.error("fetchReviews: using static fallback", error);
-    return staticReviews;
-  }
+  } catch (error) { console.error("fetchReviews: using static fallback", error); return staticReviews; }
 });
 
 export const fetchPosts = createServerFn({ method: "GET" }).handler(async () => {
   try {
-    const { data, error } = await publicClient()
-      .from("blog_posts")
-      .select(POST_COLS)
-      .eq("status", "published")
-      .order("publish_date", { ascending: false });
+    const { data, error } = await publicClient().from("blog_posts").select(POST_COLS).eq("status", "published").order("publish_date", { ascending: false });
     if (error) throw error;
     const posts = (data ?? []).map(toPost);
     return posts.length ? posts : staticPosts;
-  } catch (error) {
-    console.error("fetchPosts: using static fallback", error);
-    return staticPosts;
-  }
+  } catch (error) { console.error("fetchPosts: using static fallback", error); return staticPosts; }
 });
 
 export const fetchGuides = createServerFn({ method: "GET" }).handler(async () => {
   try {
-    const { data, error } = await publicClient()
-      .from("guides")
-      .select("slug,title,excerpt,category,publish_date,payload")
-      .eq("status", "published")
-      .order("publish_date", { ascending: false });
+    const { data, error } = await publicClient().from("guides").select("slug,title,excerpt,category,publish_date,payload").eq("status", "published").order("publish_date", { ascending: false });
     if (error) throw error;
     const guides = (data ?? []).map(toGuide);
     return guides.length ? guides : staticGuides;
-  } catch (error) {
-    console.error("fetchGuides: using static fallback", error);
-    return staticGuides;
-  }
+  } catch (error) { console.error("fetchGuides: using static fallback", error); return staticGuides; }
 });
 
 export const fetchComparisons = createServerFn({ method: "GET" }).handler(async () => {
   try {
-    const { data, error } = await publicClient()
-      .from("comparisons")
-      .select("slug,title,excerpt,category,publish_date,payload")
-      .eq("status", "published")
-      .order("publish_date", { ascending: false });
+    const { data, error } = await publicClient().from("comparisons").select("slug,title,excerpt,category,publish_date,payload").eq("status", "published").order("publish_date", { ascending: false });
     if (error) throw error;
     const comparisons = (data ?? []).map(toComparison);
     return comparisons.length ? comparisons : staticComparisons;
+  } catch (error) { console.error("fetchComparisons: using static fallback", error); return staticComparisons; }
+});
+
+export const fetchProducts = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    const supabase = publicClient();
+    const [{ data: products, error: productError }, { data: reviews, error: reviewError }] = await Promise.all([
+      supabase.from("products").select("id,slug,title,description,images,category,brand,rating,price,currency,region,affiliate_links,status").eq("status", "published").order("created_at", { ascending: false }),
+      supabase.from("reviews").select("slug,product,product_ref").eq("status", "published"),
+    ]);
+    if (productError) throw productError;
+    if (reviewError) throw reviewError;
+    const reviewByProductId = new Map<string, string>();
+    const reviewByProductName = new Map<string, string>();
+    for (const review of reviews ?? []) {
+      if (review.product_ref) reviewByProductId.set(review.product_ref, review.slug);
+      if (review.product) reviewByProductName.set(String(review.product).trim().toLowerCase(), review.slug);
+    }
+    return (products ?? []).map((p) => toProduct(p, reviewByProductId, reviewByProductName));
   } catch (error) {
-    console.error("fetchComparisons: using static fallback", error);
-    return staticComparisons;
+    console.error("fetchProducts: returning empty product list", error);
+    return [] as Product[];
   }
 });
 
-/** Everything the homepage and search need in a single round-trip. */
 export const fetchSiteContent = createServerFn({ method: "GET" }).handler(async () => {
   try {
     const supabase = publicClient();
-    const [reviews, posts, categories] = await Promise.all([
-      supabase
-        .from("reviews")
-        .select(REVIEW_COLS)
-        .eq("status", "published")
-        .order("publish_date", { ascending: false }),
-      supabase
-        .from("blog_posts")
-        .select(POST_COLS)
-        .eq("status", "published")
-        .order("publish_date", { ascending: false }),
+    const [reviews, posts, categories, products] = await Promise.all([
+      supabase.from("reviews").select(REVIEW_COLS).eq("status", "published").order("publish_date", { ascending: false }),
+      supabase.from("blog_posts").select(POST_COLS).eq("status", "published").order("publish_date", { ascending: false }),
       supabase.from("categories").select("slug,name,description,icon").order("sort_order"),
+      supabase.from("products").select("id,slug,title,description,images,category,brand,rating,price,currency,region,affiliate_links,status").eq("status", "published").order("created_at", { ascending: false }),
     ]);
-
     if (reviews.error) throw reviews.error;
     if (posts.error) throw posts.error;
     if (categories.error) throw categories.error;
-
+    if (products.error) throw products.error;
     const reviewRows = (reviews.data ?? []).map(toReview);
     const postRows = (posts.data ?? []).map(toPost);
-
+    const reviewByProductId = new Map<string, string>();
+    const reviewByProductName = new Map<string, string>();
+    for (const review of reviews.data ?? []) {
+      if (review.product_ref) reviewByProductId.set(review.product_ref, review.slug);
+      if (review.product) reviewByProductName.set(String(review.product).trim().toLowerCase(), review.slug);
+    }
     return {
       reviews: reviewRows.length ? reviewRows : staticReviews,
       posts: postRows.length ? postRows : staticPosts,
       categories: categories.data?.length ? (categories.data as Category[]) : staticCategories,
+      products: (products.data ?? []).map((p) => toProduct(p, reviewByProductId, reviewByProductName)),
     };
   } catch (error) {
     console.error("fetchSiteContent: using static fallback", error);
-    return {
-      reviews: staticReviews,
-      posts: staticPosts,
-      categories: staticCategories,
-    };
+    return { reviews: staticReviews, posts: staticPosts, categories: staticCategories, products: [] as Product[] };
   }
 });
