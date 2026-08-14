@@ -1,20 +1,20 @@
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { affiliateConfig, buildAffiliateUrl } from "@/config/site";
+import { trackAffiliateClick } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 interface AffiliateButtonProps {
-  /** Digistore24 product id. Omit to use the configured placeholder link. */
+  /** Digistore24 product id. */
   productId?: string | undefined;
   label?: string;
   subLabel?: string;
   showDisclosure?: boolean;
   className?: string;
   fullWidth?: boolean;
+  path?: string;
 }
 
-/**
- * Reusable affiliate CTA. All URLs come from src/config/site.ts.
- */
+/** Reusable affiliate CTA with best-effort click tracking. */
 export function AffiliateButton({
   productId,
   label = "Check Official Price",
@@ -22,14 +22,19 @@ export function AffiliateButton({
   showDisclosure = true,
   className,
   fullWidth = true,
+  path,
 }: AffiliateButtonProps) {
+  const href = buildAffiliateUrl(productId);
+
   return (
     <div className={cn("space-y-2", fullWidth && "w-full", className)}>
       <a
-        href={buildAffiliateUrl(productId)}
+        href={href}
         target="_blank"
         rel="nofollow sponsored noopener noreferrer"
         data-affiliate-network={affiliateConfig.network}
+        data-product-id={productId ?? ""}
+        onClick={() => trackAffiliateClick(productId, path)}
         className={cn(
           "group inline-flex min-h-13 items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           fullWidth && "w-full",
