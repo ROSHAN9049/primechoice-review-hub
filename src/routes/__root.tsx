@@ -1,6 +1,17 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { siteConfig } from "@/config/site";
+import { AuthProvider } from "@/hooks/useAuth";
 import "../styles.css";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 30_000,
+      retry: 1,
+    },
+  },
+});
 
 export const Route = createRootRoute({
   head: () => ({
@@ -16,10 +27,12 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <>
-      <HeadContent />
-      <Outlet />
-      <Scripts />
-    </>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <HeadContent />
+        <Outlet />
+        <Scripts />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
