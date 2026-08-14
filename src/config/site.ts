@@ -19,15 +19,17 @@ export const siteConfig = {
 export const affiliateConfig = {
   network: "Digistore24",
   affiliateId: "ROSHANpratibha",
-  linkTemplate: "https://www.digistore24.com/redir/{productId}/{affiliateId}/",
+  campaignKey: "site",
+  linkTemplate: "https://www.checkout-ds24.com/redir/{productId}/{affiliateId}/{campaignKey}",
   placeholderUrl: "https://www.digistore24.com/",
   disclosure:
     "We may earn a commission if you buy through links on this page — at no extra cost to you.",
 } as const;
 
-export function buildAffiliateUrl(productId?: string): string {
+export function buildAffiliateUrl(productId?: string, campaignKey = affiliateConfig.campaignKey): string {
   if (!productId) return affiliateConfig.placeholderUrl;
   return affiliateConfig.linkTemplate
     .replace("{productId}", encodeURIComponent(productId))
-    .replace("{affiliateId}", encodeURIComponent(affiliateConfig.affiliateId));
+    .replace("{affiliateId}", encodeURIComponent(affiliateConfig.affiliateId))
+    .replace("{campaignKey}", encodeURIComponent(campaignKey));
 }
