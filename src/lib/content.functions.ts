@@ -10,7 +10,6 @@ import { posts as staticPosts, type Post } from "@/data/posts";
 import { reviews as staticReviews, type Review } from "@/data/reviews";
 import { imageFor } from "@/lib/images";
 
-/** Publishable-key client for public, read-only content. */
 function publicClient() {
   const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
@@ -92,7 +91,7 @@ export const fetchCategories = createServerFn({ method: "GET" }).handler(async (
       .select("slug,name,description,icon")
       .order("sort_order");
     if (error) throw error;
-    return (data ?? []) as Category[];
+    return data?.length ? (data as Category[]) : staticCategories;
   } catch (error) {
     console.error("fetchCategories: using static fallback", error);
     return staticCategories;
@@ -107,7 +106,8 @@ export const fetchReviews = createServerFn({ method: "GET" }).handler(async () =
       .eq("status", "published")
       .order("publish_date", { ascending: false });
     if (error) throw error;
-    return (data ?? []).map(toReview);
+    const reviews = (data ?? []).map(toReview);
+    return reviews.length ? reviews : staticReviews;
   } catch (error) {
     console.error("fetchReviews: using static fallback", error);
     return staticReviews;
@@ -122,7 +122,8 @@ export const fetchPosts = createServerFn({ method: "GET" }).handler(async () => 
       .eq("status", "published")
       .order("publish_date", { ascending: false });
     if (error) throw error;
-    return (data ?? []).map(toPost);
+    const posts = (data ?? []).map(toPost);
+    return posts.length ? posts : staticPosts;
   } catch (error) {
     console.error("fetchPosts: using static fallback", error);
     return staticPosts;
@@ -137,7 +138,8 @@ export const fetchGuides = createServerFn({ method: "GET" }).handler(async () =>
       .eq("status", "published")
       .order("publish_date", { ascending: false });
     if (error) throw error;
-    return (data ?? []).map(toGuide);
+    const guides = (data ?? []).map(toGuide);
+    return guides.length ? guides : staticGuides;
   } catch (error) {
     console.error("fetchGuides: using static fallback", error);
     return staticGuides;
@@ -152,7 +154,8 @@ export const fetchComparisons = createServerFn({ method: "GET" }).handler(async 
       .eq("status", "published")
       .order("publish_date", { ascending: false });
     if (error) throw error;
-    return (data ?? []).map(toComparison);
+    const comparisons = (data ?? []).map(toComparison);
+    return comparisons.length ? comparisons : staticComparisons;
   } catch (error) {
     console.error("fetchComparisons: using static fallback", error);
     return staticComparisons;
@@ -181,10 +184,13 @@ export const fetchSiteContent = createServerFn({ method: "GET" }).handler(async 
     if (posts.error) throw posts.error;
     if (categories.error) throw categories.error;
 
+    const reviewRows = (reviews.data ?? []).map(toReview);
+    const postRows = (posts.data ?? []).map(toPost);
+
     return {
-      reviews: (reviews.data ?? []).map(toReview),
-      posts: (posts.data ?? []).map(toPost),
-      categories: (categories.data ?? []) as Category[],
+      reviews: reviewRows.length ? reviewRows : staticReviews,
+      posts: postRows.length ? postRows : staticPosts,
+      categories: categories.data?.length ? (categories.data as Category[]) : staticCategories,
     };
   } catch (error) {
     console.error("fetchSiteContent: using static fallback", error);
