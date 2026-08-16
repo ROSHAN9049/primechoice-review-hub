@@ -10,16 +10,28 @@ import { posts as staticPosts, type Post } from "@/data/posts";
 import { reviews as staticReviews, type Review } from "@/data/reviews";
 import { imageFor } from "@/lib/images";
 
+const DEFAULT_SUPABASE_URL = "https://whtbrmzkbtlnndpnxgyz.supabase.co";
+const DEFAULT_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_pwtvSMbXIvjhZerLBBs0nA_BliSKeVX";
+
 function publicClient() {
-  const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
-  if (!url || !key) throw new Error("Supabase environment variables are not configured");
+  // Server-side Vercel runtime: support both the current publishable-key names
+  // and legacy anon-key names, with a safe publishable fallback for production.
+  const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"] ?? DEFAULT_SUPABASE_URL;
+  const key =
+    process.env["SUPABASE_PUBLISHABLE_KEY"] ??
+    process.env["SUPABASE_ANON_KEY"] ??
+    process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ??
+    process.env["VITE_SUPABASE_ANON_KEY"] ??
+    DEFAULT_SUPABASE_PUBLISHABLE_KEY;
+
   return createClient<Database>(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: {
       fetch: (input, init) => {
         const headers = new Headers(init?.headers);
-        if (key.startsWith("sb_") && headers.get("Authorization") === `Bearer ${key}`) headers.delete("Authorization");
+        if (key.startsWith("sb_") && headers.get("Authorization") === `Bearer ${key}`) {
+          headers.delete("Authorization");
+        }
         headers.set("apikey", key);
         return fetch(input, { ...init, headers });
       },
