@@ -84,6 +84,7 @@ const fallbackCategories: Category[] = [
     name: "Beauty",
     description: "Skincare, haircare and grooming products reviewed on ingredients and results.",
     icon: "Sparkle",
+    affiliateUrl: "https://www.amazon.in/gp/browse.html?node=1355016031&ref_=nav_em_sbc_bhg_beauty_all_0_2_13_2&tag=rehanroshan08-21",
   },
   {
     slug: "sports",
