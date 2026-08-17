@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, ExternalLink, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { AffiliateButton } from "@/components/AffiliateButton";
 import { Badge } from "@/components/ui/badge";
 import { fetchProducts, type Product } from "@/lib/content.functions";
