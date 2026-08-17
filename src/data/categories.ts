@@ -3,6 +3,7 @@ export interface Category {
   name: string;
   description: string;
   icon: string;
+  affiliateUrl?: string;
 }
 
 const fallbackCategories: Category[] = [
@@ -101,6 +102,7 @@ const fallbackCategories: Category[] = [
     name: "Fashion",
     description: "Everyday apparel, footwear and accessories checked for fit and longevity.",
     icon: "Shirt",
+    affiliateUrl: "https://www.amazon.in/gp/goldbox/all-deals/?ie=UTF8&ref_=sv_gb_1&tag=rehanroshan08-21&discounts-widget=%2522%257B%255C%2522state%255C%2522%253A%257B%255C%2522refinementFilters%255C%2522%253A%257B%255C%2522departments%255C%2522%253A%255B%255C%25226648218031%255C%2522%255D%257D%257D%252C%255C%2522version%255C%2522%253A1%257D%2522",
   },
   {
     slug: "baby",
@@ -122,10 +124,6 @@ const fallbackCategories: Category[] = [
   },
 ];
 
-/**
- * Category taxonomy is stored in the database; the static list is the
- * build-time fallback. The root route hydrates the registry on every request.
- */
 let registry: Category[] = fallbackCategories;
 
 export const categories: Category[] = new Proxy([] as Category[], {
