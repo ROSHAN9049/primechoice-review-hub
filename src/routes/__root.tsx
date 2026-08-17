@@ -1,5 +1,6 @@
 import { createRootRoute, HeadContent, Outlet, Scripts, useLocation } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "@/config/site";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -35,6 +36,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <HeadContent />
+        <Analytics />
         {!isPrivate && <SiteHeader />}
         <Outlet />
         {!isPrivate && isHome && <AffiliateProductStrip />}
