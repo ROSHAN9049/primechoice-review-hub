@@ -90,6 +90,7 @@ const fallbackCategories: Category[] = [
     name: "Sports",
     description: "Outdoor and team-sport equipment tested across full seasons of use.",
     icon: "Trophy",
+    affiliateUrl: "https://www.amazon.in/s?k=sports+bra+for+women&crid=55KVH7UYG7CS&sprefix=Sport%2Caps%2C432&ref=nb_sb_ss_mvt-t11-ranker_2_5&tag=rehanroshan08-21",
   },
   {
     slug: "office",
