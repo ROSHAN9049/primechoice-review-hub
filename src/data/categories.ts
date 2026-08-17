@@ -25,7 +25,7 @@ const fallbackCategories: Category[] = [
   { slug: "fashion", name: "Fashion", description: "Everyday apparel, footwear and accessories checked for fit and longevity.", icon: "Shirt", affiliateUrl: "https://www.amazon.in/gp/goldbox/all-deals/?ie=UTF8&ref_=sv_gb_1&tag=rehanroshan08-21&discounts-widget=%2522%257B%255C%2522state%255C%2522%253A%257B%255C%2522refinementFilters%255C%2522%253A%257B%255C%2522departments%255C%2522%253A%255B%255C%25226648218031%255C%2522%255D%257D%257D%252C%255C%2522version%255C%2522%253A1%257D%2522" },
   { slug: "baby", name: "Baby", description: "Strollers, monitors and nursery gear assessed for safety and practicality.", icon: "Baby", affiliateUrl: "https://www.amazon.in/s?k=baby+carrier+for+0+to+3+year+baby&crid=F5A6TR5ZNW8W&sprefix=Baby%2Caps%2C414&ref=nb_sb_ss_mvt-t11-ranker_2_4&tag=rehanroshan08-21" },
   { slug: "automotive", name: "Automotive", description: "Car care, accessories and in-vehicle tech tested on the road.", icon: "Car", affiliateUrl: "https://www.amazon.in/s?k=Automotive+Car+care%2C+accessories&crid=9OESSV5MUQ23&sprefix=automotive+car+care%2C+accessories+%2Caps%2C673&ref=nb_sb_noss&tag=rehanroshan08-21" },
-  { slug: "pet-supplies", name: "Pet Supplies", description: "Food, gear and health products reviewed with real pets over weeks.", icon: "PawPrint" },
+  { slug: "pet-supplies", name: "Pet Supplies", description: "Food, gear and health products reviewed with real pets over weeks.", icon: "PawPrint", affiliateUrl: "https://www.amazon.in/s?k=Pet+Supplies+Food%2C+gear+and+health&crid=37ADJ5JRQHS9I&sprefix=pet+supplies+food%2C+gear+and+health+%2Caps%2C1017&ref=nb_sb_noss&tag=rehanroshan08-21" },
 ];
 
 let registry: Category[] = fallbackCategories;
