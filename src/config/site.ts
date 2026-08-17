@@ -26,6 +26,44 @@ export const affiliateConfig = {
     "We may earn a commission if you buy through links on this page — at no extra cost to you.",
 } as const;
 
+export const amazonAffiliateConfig = {
+  india: {
+    marketplace: "amazon.in",
+    associateTag: "rehanroshan08-21",
+  },
+  us: {
+    marketplace: "amazon.com",
+    associateTag: "rehanroshan90-20",
+  },
+} as const;
+
+export type AmazonMarketplace = keyof typeof amazonAffiliateConfig;
+
+export function getAmazonMarketplace(url: string): AmazonMarketplace | null {
+  try {
+    const hostname = new URL(url).hostname.toLowerCase().replace(/^www\./, "");
+    if (hostname === "amazon.in" || hostname.endsWith(".amazon.in")) return "india";
+    if (hostname === "amazon.com" || hostname.endsWith(".amazon.com")) return "us";
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/** Adds the correct Amazon Associates tag to Amazon.in/Amazon.com URLs. */
+export function buildAmazonAffiliateUrl(url: string): string {
+  const marketplace = getAmazonMarketplace(url);
+  if (!marketplace) return url;
+
+  try {
+    const parsed = new URL(url);
+    parsed.searchParams.set("tag", amazonAffiliateConfig[marketplace].associateTag);
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 export function buildAffiliateUrl(productId?: string, campaignKey = affiliateConfig.campaignKey): string {
   if (!productId) return affiliateConfig.placeholderUrl;
   return affiliateConfig.linkTemplate
