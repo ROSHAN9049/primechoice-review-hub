@@ -1,5 +1,5 @@
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
-import { affiliateConfig, buildAffiliateUrl } from "@/config/site";
+import { affiliateConfig, buildAffiliateUrl, buildAmazonAffiliateUrl } from "@/config/site";
 import { trackAffiliateClick } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +27,10 @@ export function AffiliateButton({
   fullWidth = true,
   path,
 }: AffiliateButtonProps) {
-  const href = directHref || buildAffiliateUrl(productId);
+  const rawHref = directHref || buildAffiliateUrl(productId);
+  const href = buildAmazonAffiliateUrl(rawHref);
+  const isAmazon = href !== rawHref;
+  const network = isAmazon ? "Amazon Associates" : affiliateConfig.network;
 
   return (
     <div className={cn("space-y-2", fullWidth && "w-full", className)}>
@@ -35,7 +38,7 @@ export function AffiliateButton({
         href={href}
         target="_blank"
         rel="nofollow sponsored noopener noreferrer"
-        data-affiliate-network={affiliateConfig.network}
+        data-affiliate-network={network}
         data-product-id={productId ?? ""}
         onClick={() => trackAffiliateClick(productId, path)}
         className={cn(
