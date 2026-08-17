@@ -2,13 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ResourceManager } from "@/components/admin/ResourceManager";
 
 const DIGISTORE_DEFAULT = JSON.stringify([{ network: "digistore24", productId: "", affiliateId: "ROSHANpratibha", campaignKey: "site", enabled: true }], null, 2);
+const IMAGE_FALLBACK = JSON.stringify(["/product-placeholder.svg"], null, 2);
 
 export const Route = createFileRoute("/_authenticated/admin/products")({
   component: () => (
     <ResourceManager
       table="products"
       title="Products"
-      description="Paste one affiliate/product link to prepare a product draft. Review the details, image, SEO and affiliate URL, then publish when ready."
+      description="Paste one affiliate/product link to prepare a product draft. The product gets a homepage image fallback automatically; add the real product image when available, then publish."
       labelField="title"
       fields={[
         { name: "title", label: "Product Title", required: true, list: true, placeholder: "Product name" },
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/_authenticated/admin/products")({
         { name: "currency", label: "Currency", default: "USD", placeholder: "USD / INR" },
         { name: "rating", label: "Rating", type: "number", placeholder: "e.g. 4.5" },
         { name: "region", label: "Region", type: "select", options: ["global", "us", "in"], default: "global" },
-        { name: "images", label: "Product Image URL", type: "json", default: "[]", help: "Paste one or more direct image URLs as a JSON array. Example: [\"https://example.com/product.jpg\"]" },
+        { name: "images", label: "Product Image URL", type: "json", default: IMAGE_FALLBACK, help: "A homepage image is added automatically. Replace it with one or more approved direct image URLs when available." },
         { name: "description", label: "Description", type: "textarea", placeholder: "Short useful product description" },
         { name: "affiliate_links", label: "Affiliate links (JSON)", type: "json", default: DIGISTORE_DEFAULT, help: "Generated automatically from the pasted product URL." },
         { name: "specifications", label: "Specifications (JSON)", type: "json", default: "[]", help: '[{"name":"Feature","value":"Value"}]' },
