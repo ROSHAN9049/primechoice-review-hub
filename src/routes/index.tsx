@@ -35,6 +35,7 @@ import { testimonials } from "@/data/testimonials";
 const title = "Find the Best Products Before You Buy — PrimeChoiceReviews";
 const description =
   "Independent, hands-on product reviews, comparisons and buying guides. Real testing, transparent scoring, no paid placements.";
+const amazonDealsUrl = "https://www.amazon.in/deals?ref_=nav_cs_gb";
 
 const homeFaq = [
   {
@@ -259,20 +260,36 @@ function Index() {
       <div className="border-b border-border bg-secondary/40">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 py-3 text-center font-display text-[11px] font-bold tracking-[0.16em] text-muted-foreground uppercase sm:px-6 lg:px-8">
           <span>Bought at retail</span>
-          <span aria-hidden="true" className="text-border">
-            ●
-          </span>
+          <span aria-hidden="true" className="text-border">●</span>
           <span>Multi-week panels</span>
-          <span aria-hidden="true" className="text-border">
-            ●
-          </span>
+          <span aria-hidden="true" className="text-border">●</span>
           <span>Fixed scoring rubric</span>
-          <span aria-hidden="true" className="hidden text-border sm:inline">
-            ●
-          </span>
+          <span aria-hidden="true" className="hidden text-border sm:inline">●</span>
           <span className="hidden sm:inline">Disclosure on every page</span>
         </div>
       </div>
+
+      {/* Today's Best Deal */}
+      <section aria-labelledby="today-deal-heading" className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
+        <a
+          href={amazonDealsUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          aria-label="Today's Best Deal — open Amazon Deals"
+          className="group relative block overflow-hidden rounded-2xl border border-border bg-black shadow-elevated transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl"
+        >
+          <img
+            src="/amazon-todays-best-deal.svg"
+            alt="Today's Best Deal — shop Amazon Deals"
+            width={1600}
+            height={520}
+            loading="eager"
+            decoding="async"
+            className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.01]"
+          />
+          <span id="today-deal-heading" className="sr-only">Today's Best Deal</span>
+        </a>
+      </section>
 
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-14 sm:px-6 lg:space-y-24 lg:px-8">
         {/* Featured categories */}
@@ -285,9 +302,7 @@ function Index() {
             linkTo="/categories"
             linkLabel="All categories"
           />
-          <div className="mt-8">
-            <CategoryGrid />
-          </div>
+          <div className="mt-8"><CategoryGrid /></div>
         </section>
 
         {/* Trending */}
@@ -301,9 +316,7 @@ function Index() {
             linkLabel="All reviews"
           />
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {trending.map((r, i) => (
-              <ReviewCard key={r.slug} review={r} index={i} />
-            ))}
+            {trending.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}
           </div>
         </section>
 
@@ -317,242 +330,93 @@ function Index() {
             linkTo="/reviews"
             linkLabel="All reviews"
           />
-
           {lead && (
             <article className="card-surface group relative mt-8 grid overflow-hidden rounded-2xl lg:grid-cols-2 hover:border-primary/30 hover:shadow-elevated">
-              <Link
-                to="/reviews/$slug"
-                params={{ slug: lead.slug }}
-                tabIndex={-1}
-                aria-hidden="true"
-                className="relative block overflow-hidden bg-secondary"
-              >
-                <img
-                  src={lead.image}
-                  alt=""
-                  width={1024}
-                  height={768}
-                  decoding="async"
-                  className="h-full min-h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                />
-                <span className="absolute top-4 left-4 rounded-md bg-primary px-3 py-1.5 font-display text-[10px] font-bold tracking-[0.16em] text-primary-foreground uppercase">
-                  Editor's pick
-                </span>
+              <Link to="/reviews/$slug" params={{ slug: lead.slug }} tabIndex={-1} aria-hidden="true" className="relative block overflow-hidden bg-secondary">
+                <img src={lead.image} alt="" width={1024} height={768} decoding="async" className="h-full min-h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <span className="absolute top-4 left-4 rounded-md bg-primary px-3 py-1.5 font-display text-[10px] font-bold tracking-[0.16em] text-primary-foreground uppercase">Editor's pick</span>
               </Link>
               <div className="flex flex-col justify-center gap-4 p-6 sm:p-10">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="kicker">{leadCategory?.name}</span>
-                  <ScoreBadge rating={lead.rating} />
-                </div>
+                <div className="flex flex-wrap items-center gap-3"><span className="kicker">{leadCategory?.name}</span><ScoreBadge rating={lead.rating} /></div>
                 <h3 className="font-display text-2xl leading-tight font-bold tracking-tight sm:text-3xl">
-                  <Link
-                    to="/reviews/$slug"
-                    params={{ slug: lead.slug }}
-                    className="editorial-underline"
-                  >
-                    <span className="absolute inset-0" aria-hidden="true" />
-                    {lead.title}
-                  </Link>
+                  <Link to="/reviews/$slug" params={{ slug: lead.slug }} className="editorial-underline"><span className="absolute inset-0" aria-hidden="true" />{lead.title}</Link>
                 </h3>
                 <StarRating rating={lead.rating} />
-                <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  {lead.excerpt}
-                </p>
+                <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">{lead.excerpt}</p>
                 <ul className="grid gap-2 text-sm sm:grid-cols-2">
-                  {lead.pros.slice(0, 4).map((pro) => (
-                    <li key={pro} className="flex items-start gap-2 text-muted-foreground">
-                      <BadgeCheck
-                        className="mt-0.5 size-4 shrink-0 text-success"
-                        aria-hidden="true"
-                      />
-                      <span className="line-clamp-1">{pro}</span>
-                    </li>
-                  ))}
+                  {lead.pros.slice(0, 4).map((pro) => <li key={pro} className="flex items-start gap-2 text-muted-foreground"><BadgeCheck className="mt-0.5 size-4 shrink-0 text-success" aria-hidden="true" /><span className="line-clamp-1">{pro}</span></li>)}
                 </ul>
-                <span className="inline-flex items-center gap-1.5 font-display text-sm font-bold tracking-wide text-primary-glow uppercase">
-                  Read the full verdict
-                  <ArrowUpRight
-                    className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    aria-hidden="true"
-                  />
-                </span>
+                <span className="inline-flex items-center gap-1.5 font-display text-sm font-bold tracking-wide text-primary-glow uppercase">Read the full verdict<ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" /></span>
               </div>
             </article>
           )}
-
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.map((r, i) => (
-              <ReviewCard key={r.slug} review={r} index={i} />
-            ))}
+            {rest.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}
           </div>
         </section>
 
         {/* Latest reviews */}
         <section aria-labelledby="latest-heading">
-          <SectionHead
-            id="latest-heading"
-            kicker="Just published"
-            heading="Latest reviews"
-            sub="Freshly tested products, newest verdicts first."
-            linkTo="/reviews"
-            linkLabel="All reviews"
-          />
+          <SectionHead id="latest-heading" kicker="Just published" heading="Latest reviews" sub="Freshly tested products, newest verdicts first." linkTo="/reviews" linkLabel="All reviews" />
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {latest.map((r, i) => (
-              <ReviewCard key={r.slug} review={r} index={i} />
-            ))}
+            {latest.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}
           </div>
         </section>
 
         {/* Best deals */}
         <section aria-labelledby="deals-heading">
-          <SectionHead
-            id="deals-heading"
-            kicker="Save more"
-            heading="Best deals right now"
-            sub="Current vendor pricing we verified at checkout. Prices change without notice."
-          />
+          <SectionHead id="deals-heading" kicker="Save more" heading="Best deals right now" sub="Current vendor pricing we verified at checkout. Prices change without notice." />
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {deals.map((r) => {
               const best = r.pricing.find((p) => p.best) ?? r.pricing[0];
               return (
-                <article
-                  key={r.slug}
-                  className="card-surface relative flex flex-col gap-3 rounded-xl p-6 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated"
-                >
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md bg-success/12 px-2.5 py-1 font-display text-[10px] font-bold tracking-[0.16em] text-success uppercase">
-                    <Tag className="size-3" aria-hidden="true" />
-                    Best value tier
-                  </span>
-                  <h3 className="font-display text-lg leading-snug font-bold tracking-tight">
-                    <Link
-                      to="/reviews/$slug"
-                      params={{ slug: r.slug }}
-                      className="editorial-underline"
-                    >
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      {r.product}
-                    </Link>
-                  </h3>
+                <article key={r.slug} className="card-surface relative flex flex-col gap-3 rounded-xl p-6 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated">
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md bg-success/12 px-2.5 py-1 font-display text-[10px] font-bold tracking-[0.16em] text-success uppercase"><Tag className="size-3" aria-hidden="true" />Best value tier</span>
+                  <h3 className="font-display text-lg leading-snug font-bold tracking-tight"><Link to="/reviews/$slug" params={{ slug: r.slug }} className="editorial-underline"><span className="absolute inset-0" aria-hidden="true" />{r.product}</Link></h3>
                   <p className="text-sm text-muted-foreground">{best?.detail}</p>
-                  <p className="mt-auto flex items-baseline gap-2 rule-line pt-4">
-                    <span className="font-display text-2xl font-bold tracking-tight text-primary-glow">
-                      {best?.price}
-                    </span>
-                    <span className="text-xs text-muted-foreground">{best?.plan} package</span>
-                  </p>
+                  <p className="mt-auto flex items-baseline gap-2 rule-line pt-4"><span className="font-display text-2xl font-bold tracking-tight text-primary-glow">{best?.price}</span><span className="text-xs text-muted-foreground">{best?.plan} package</span></p>
                 </article>
               );
             })}
           </div>
           <div className="card-surface mt-6 flex flex-col items-start gap-3 rounded-xl p-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="flex items-center gap-2.5 text-sm text-muted-foreground">
-              <Flame className="size-5 shrink-0 text-warning" aria-hidden="true" />
-              Deal alerts and coupon drops go out to our newsletter first — no spam, unsubscribe any
-              time.
-            </p>
-            <Button asChild variant="outline" className="min-h-11 rounded-lg">
-              <Link to="/reviews">See all discounted picks</Link>
-            </Button>
+            <p className="flex items-center gap-2.5 text-sm text-muted-foreground"><Flame className="size-5 shrink-0 text-warning" aria-hidden="true" />Deal alerts and coupon drops go out to our newsletter first — no spam, unsubscribe any time.</p>
+            <Button asChild variant="outline" className="min-h-11 rounded-lg"><Link to="/reviews">See all discounted picks</Link></Button>
           </div>
         </section>
 
         {/* Popular brands */}
         <section aria-labelledby="brands-heading">
-          <SectionHead
-            id="brands-heading"
-            kicker="Vendors"
-            heading="Popular brands we've tested"
-          />
+          <SectionHead id="brands-heading" kicker="Vendors" heading="Popular brands we've tested" />
           <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {brands.map((b) => (
-              <li
-                key={b}
-                className="card-surface grid min-h-20 place-items-center rounded-xl px-4 py-5 text-center font-display text-sm font-bold tracking-tight"
-              >
-                {b}
-              </li>
-            ))}
+            {brands.map((b) => <li key={b} className="card-surface grid min-h-20 place-items-center rounded-xl px-4 py-5 text-center font-display text-sm font-bold tracking-tight">{b}</li>)}
           </ul>
         </section>
 
         {/* Why trust us */}
-        <section
-          aria-labelledby="trust-heading"
-          className="overflow-hidden rounded-2xl border border-border bg-primary p-8 text-primary-foreground sm:p-12"
-        >
+        <section aria-labelledby="trust-heading" className="overflow-hidden rounded-2xl border border-border bg-primary p-8 text-primary-foreground sm:p-12">
           <span className="kicker text-primary-foreground/70">Our methodology</span>
-          <h2 id="trust-heading" className="mt-2 text-3xl font-bold sm:text-4xl">
-            Why readers trust us
-          </h2>
-          <p className="mt-3 max-w-2xl text-primary-foreground/75">
-            {siteConfig.name} exists because most affiliate reviews are rewritten sales pages. Here
-            is how we do it differently.
-          </p>
+          <h2 id="trust-heading" className="mt-2 text-3xl font-bold sm:text-4xl">Why readers trust us</h2>
+          <p className="mt-3 max-w-2xl text-primary-foreground/75">{siteConfig.name} exists because most affiliate reviews are rewritten sales pages. Here is how we do it differently.</p>
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            {trust.map(({ icon: Icon, title: t, body }) => (
-              <div key={t} className="flex gap-4 border-t border-primary-foreground/15 pt-5">
-                <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary-foreground/12 ring-1 ring-primary-foreground/20">
-                  <Icon className="size-5" aria-hidden="true" />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="font-display font-bold tracking-tight">{t}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-primary-foreground/70">
-                    {body}
-                  </p>
-                </div>
-              </div>
-            ))}
+            {trust.map(({ icon: Icon, title: t, body }) => <div key={t} className="flex gap-4 border-t border-primary-foreground/15 pt-5"><span className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary-foreground/12 ring-1 ring-primary-foreground/20"><Icon className="size-5" aria-hidden="true" /></span><div className="min-w-0"><h3 className="font-display font-bold tracking-tight">{t}</h3><p className="mt-1.5 text-sm leading-relaxed text-primary-foreground/70">{body}</p></div></div>)}
           </div>
         </section>
 
         {/* Blog — magazine lead + list */}
         <section aria-labelledby="blog-heading">
-          <SectionHead
-            id="blog-heading"
-            kicker="Insights"
-            heading="Latest from the blog"
-            sub="Buying guides, methodology notes and category deep-dives."
-            linkTo="/blog"
-            linkLabel="All articles"
-          />
+          <SectionHead id="blog-heading" kicker="Insights" heading="Latest from the blog" sub="Buying guides, methodology notes and category deep-dives." linkTo="/blog" linkLabel="All articles" />
           <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr]">
             {leadPost && <BlogCard post={leadPost} />}
-            <div className="flex flex-col">
-              {otherPosts.map((p) => (
-                <BlogCard key={p.slug} post={p} compact />
-              ))}
-            </div>
+            <div className="flex flex-col">{otherPosts.map((p) => <BlogCard key={p.slug} post={p} compact />)}</div>
           </div>
         </section>
 
         {/* Testimonials */}
         <section aria-labelledby="testimonials-heading">
-          <SectionHead
-            id="testimonials-heading"
-            kicker="Reader voices"
-            heading="What readers say"
-          />
+          <SectionHead id="testimonials-heading" kicker="Reader voices" heading="What readers say" />
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {testimonials.map((t) => (
-              <figure key={t.name} className="card-surface flex h-full flex-col rounded-xl p-6">
-                <Quote className="size-6 text-primary-glow" aria-hidden="true" />
-                <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  “{t.quote}”
-                </blockquote>
-                <figcaption className="mt-5 flex items-center gap-3 rule-line pt-4">
-                  <span className="grid size-10 place-items-center rounded-full bg-accent font-display text-sm font-bold text-accent-foreground">
-                    {t.initials}
-                  </span>
-                  <span>
-                    <span className="block font-display text-sm font-bold tracking-tight">
-                      {t.name}
-                    </span>
-                    <span className="block text-xs text-muted-foreground">{t.location}</span>
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
+            {testimonials.map((t) => <figure key={t.name} className="card-surface flex h-full flex-col rounded-xl p-6"><Quote className="size-6 text-primary-glow" aria-hidden="true" /><blockquote className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">“{t.quote}”</blockquote><figcaption className="mt-5 flex items-center gap-3 rule-line pt-4"><span className="grid size-10 place-items-center rounded-full bg-accent font-display text-sm font-bold text-accent-foreground">{t.initials}</span><span><span className="block font-display text-sm font-bold tracking-tight">{t.name}</span><span className="block text-xs text-muted-foreground">{t.location}</span></span></figcaption></figure>)}
           </div>
         </section>
 
@@ -560,54 +424,19 @@ function Index() {
 
         {/* FAQ */}
         <section aria-labelledby="faq-heading">
-          <SectionHead
-            id="faq-heading"
-            kicker="Good to know"
-            heading="Frequently asked questions"
-            sub="How we test, how we score and how we stay independent."
-          />
+          <SectionHead id="faq-heading" kicker="Good to know" heading="Frequently asked questions" sub="How we test, how we score and how we stay independent." />
           <Accordion type="single" collapsible className="mt-8 max-w-3xl">
-            {homeFaq.map((f) => (
-              <AccordionItem key={f.question} value={f.question}>
-                <AccordionTrigger className="text-left font-display font-bold tracking-tight">
-                  {f.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
-                  {f.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+            {homeFaq.map((f) => <AccordionItem key={f.question} value={f.question}><AccordionTrigger className="text-left font-display font-bold tracking-tight">{f.question}</AccordionTrigger><AccordionContent className="text-sm leading-relaxed text-muted-foreground">{f.answer}</AccordionContent></AccordionItem>)}
           </Accordion>
         </section>
 
         {/* CTA */}
-        <section
-          aria-labelledby="cta-heading"
-          className="overflow-hidden rounded-2xl border border-border p-8 text-center text-primary-foreground sm:p-14"
-          style={{ backgroundImage: "var(--gradient-primary)" }}
-        >
-          <h2 id="cta-heading" className="text-3xl font-bold sm:text-4xl">
-            Buy with confidence, not guesswork
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-primary-foreground/80">
-            Start with our highest-scoring picks, or compare the shortlist side by side before you
-            spend a cent.
-          </p>
+        <section aria-labelledby="cta-heading" className="overflow-hidden rounded-2xl border border-border p-8 text-center text-primary-foreground sm:p-14" style={{ backgroundImage: "var(--gradient-primary)" }}>
+          <h2 id="cta-heading" className="text-3xl font-bold sm:text-4xl">Buy with confidence, not guesswork</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-primary-foreground/80">Start with our highest-scoring picks, or compare the shortlist side by side before you spend a cent.</p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button asChild size="lg" variant="secondary" className="min-h-12 rounded-lg px-7 text-base">
-              <Link to="/reviews">
-                Browse all reviews
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="min-h-12 rounded-lg border-primary-foreground/40 bg-transparent px-7 text-base text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-            >
-              <Link to="/categories">Explore categories</Link>
-            </Button>
+            <Button asChild size="lg" variant="secondary" className="min-h-12 rounded-lg px-7 text-base"><Link to="/reviews">Browse all reviews<ArrowRight className="size-4" aria-hidden="true" /></Link></Button>
+            <Button asChild size="lg" variant="outline" className="min-h-12 rounded-lg border-primary-foreground/40 bg-transparent px-7 text-base text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"><Link to="/categories">Explore categories</Link></Button>
           </div>
         </section>
       </div>
