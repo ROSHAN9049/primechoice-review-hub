@@ -3,24 +3,17 @@ import { ArrowLeft, Check, ExternalLink, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AffiliateButton } from "@/components/AffiliateButton";
 import { Button } from "@/components/ui/button";
-import { fetchPublicProduct, type PublicProduct } from "@/lib/product.functions";
+import type { PublicProduct } from "@/lib/product.functions";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/products/$slug")({
-  loader: async ({ params }) => {
-    const product = await fetchPublicProduct({ data: params.slug });
-    if (!product) throw notFound();
-    return { product };
-  },
-  head: ({ loaderData }) => loaderData ? {
+  loader: ({ params }) => ({ slug: params.slug }),
+  head: () => ({
     meta: [
-      { title: `${loaderData.product.title} | PrimeChoiceReviews` },
-      { name: "description", content: loaderData.product.description },
-      { property: "og:title", content: loaderData.product.title },
-      { property: "og:description", content: loaderData.product.description },
+      { title: "Product Review | PrimeChoiceReviews" },
+      { name: "description", content: "Product details, pricing, features and affiliate offer from PrimeChoiceReviews." },
     ],
-    links: [{ rel: "canonical", href: `/products/${loaderData.product.slug}` }],
-  } : { meta: [{ title: "Product not found" }] },
+  }),
   component: ProductPage,
 });
 
@@ -30,22 +23,72 @@ function productFallback(slug: string) {
   return "/favicon.ico";
 }
 
+function mapProduct(row: Record<string, unknown>): PublicProduct {
+  return {
+    id: String(row.id),
+    slug: String(row.slug),
+    title: String(row.title),
+    description: String(row.description ?? ""),
+    images: Array.isArray(row.images) ? row.images.filter((v): v is string => typeof v === "string") : [],
+    category: row.category ? String(row.category) : undefined,
+    brand: row.brand ? String(row.brand) : undefined,
+    rating: Number(row.rating ?? 0),
+    price: row.price == null ? null : Number(row.price),
+    currency: String(row.currency ?? "USD"),
+    region: String(row.region ?? "global"),
+    affiliateLinks: Array.isArray(row.affiliate_links) ? row.affiliate_links as PublicProduct["affiliateLinks"] : [],
+    status: String(row.status ?? "published"),
+  };
+}
+
 function ProductPage() {
-  const { product } = Route.useLoaderData() as { product: PublicProduct };
-  const [affiliateUrl, setAffiliateUrl] = useState(product.affiliateLinks.find((link) => link.enabled !== false && link.url)?.url);
+  const { slug } = Route.useLoaderData();
+  const [product, setProduct] = useState<PublicProduct | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     let active = true;
-    void supabase.from("products").select("affiliate_links").eq("id", product.id).maybeSingle().then(({ data }) => {
-      if (!active || !data) return;
-      const links = Array.isArray(data.affiliate_links) ? data.affiliate_links as Array<{ url?: string; enabled?: boolean }> : [];
-      setAffiliateUrl(links.find((link) => link.enabled !== false && link.url)?.url);
-    });
+    setLoading(true);
+    setLoadError(false);
+    void supabase
+      .from("products")
+      .select("id,slug,title,description,images,category,brand,rating,price,currency,region,affiliate_links,status")
+      .eq("slug", slug)
+      .eq("status", "published")
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error || !data) {
+          setLoadError(true);
+          setProduct(null);
+        } else {
+          setProduct(mapProduct(data as Record<string, unknown>));
+        }
+        setLoading(false);
+      });
     return () => { active = false; };
-  }, [product.id]);
+  }, [slug]);
 
+  if (loading) {
+    return <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8"><div className="rounded-2xl border border-border bg-secondary/40 p-8 text-center text-muted-foreground">Loading product…</div></main>;
+  }
+
+  if (loadError || !product) {
+    return (
+      <main className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
+        <p className="gradient-text font-display text-6xl font-extrabold">404</p>
+        <h1 className="mt-4 text-3xl font-bold">Product not found</h1>
+        <p className="mt-3 text-muted-foreground">This product may have been removed, unpublished, or the link may be incorrect.</p>
+        <Button asChild className="mt-7 min-h-11 rounded-lg"><Link to="/">Back to home</Link></Button>
+      </main>
+    );
+  }
+
+  const affiliateUrl = product.affiliateLinks.find((link) => link.enabled !== false && link.url)?.url;
   const rawImage = product.images[0] || "";
   const image = rawImage && !rawImage.includes("via.placeholder.com") ? rawImage : productFallback(product.slug);
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <Button asChild variant="ghost" className="mb-6 min-h-11 rounded-lg"><Link to="/"><ArrowLeft className="size-4" /> Back to home</Link></Button>
