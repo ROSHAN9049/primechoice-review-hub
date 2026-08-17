@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://primechoice-review-hub.vercel.app/sitemap.xml
