@@ -116,6 +116,7 @@ const fallbackCategories: Category[] = [
     name: "Automotive",
     description: "Car care, accessories and in-vehicle tech tested on the road.",
     icon: "Car",
+    affiliateUrl: "https://www.amazon.in/s?k=Automotive+Car+care%2C+accessories&crid=9OESSV5MUQ23&sprefix=automotive+car+care%2C+accessories+%2Caps%2C673&ref=nb_sb_noss&tag=rehanroshan08-21",
   },
   {
     slug: "pet-supplies",
