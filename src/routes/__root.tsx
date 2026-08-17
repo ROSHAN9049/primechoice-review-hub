@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { siteConfig } from "@/config/site";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SiteHeader } from "@/components/SiteHeader";
+import { AffiliateProductStrip } from "@/components/AffiliateProductStrip";
 import "../styles.css";
 
 const queryClient = new QueryClient({
@@ -29,12 +30,14 @@ export const Route = createRootRoute({
 function RootComponent() {
   const location = useLocation();
   const isPrivate = location.pathname.startsWith("/admin") || location.pathname.startsWith("/auth");
+  const isHome = location.pathname === "/";
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <HeadContent />
         {!isPrivate && <SiteHeader />}
         <Outlet />
+        {!isPrivate && isHome && <AffiliateProductStrip />}
         <Scripts />
       </AuthProvider>
     </QueryClientProvider>
