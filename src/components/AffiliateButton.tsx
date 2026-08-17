@@ -4,8 +4,10 @@ import { trackAffiliateClick } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 interface AffiliateButtonProps {
-  /** Digistore24 product id. */
+  /** Digistore24 product id when no direct URL is supplied. */
   productId?: string | undefined;
+  /** Optional direct affiliate URL from the product record. */
+  href?: string | undefined;
   label?: string;
   subLabel?: string;
   showDisclosure?: boolean;
@@ -17,6 +19,7 @@ interface AffiliateButtonProps {
 /** Reusable affiliate CTA with best-effort click tracking. */
 export function AffiliateButton({
   productId,
+  href: directHref,
   label = "Check Official Price",
   subLabel,
   showDisclosure = true,
@@ -24,7 +27,7 @@ export function AffiliateButton({
   fullWidth = true,
   path,
 }: AffiliateButtonProps) {
-  const href = buildAffiliateUrl(productId);
+  const href = directHref || buildAffiliateUrl(productId);
 
   return (
     <div className={cn("space-y-2", fullWidth && "w-full", className)}>
