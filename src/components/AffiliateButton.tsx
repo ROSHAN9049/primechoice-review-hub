@@ -1,12 +1,10 @@
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
-import { affiliateConfig, buildAffiliateUrl } from "@/config/site";
+import { affiliateConfig, buildAffiliateUrl, buildAmazonAffiliateUrl } from "@/config/site";
 import { trackAffiliateClick } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 interface AffiliateButtonProps {
-  /** Digistore24 product id when no direct URL is supplied. */
   productId?: string | undefined;
-  /** Optional direct affiliate URL from the product record. */
   href?: string | undefined;
   label?: string;
   subLabel?: string;
@@ -16,7 +14,6 @@ interface AffiliateButtonProps {
   path?: string;
 }
 
-/** Reusable affiliate CTA with best-effort click tracking. */
 export function AffiliateButton({
   productId,
   href: directHref,
@@ -27,7 +24,9 @@ export function AffiliateButton({
   fullWidth = true,
   path,
 }: AffiliateButtonProps) {
-  const href = directHref || buildAffiliateUrl(productId);
+  const rawHref = directHref || buildAffiliateUrl(productId);
+  const href = buildAmazonAffiliateUrl(rawHref);
+  const network = href !== rawHref ? "Amazon Associates" : affiliateConfig.network;
 
   return (
     <div className={cn("space-y-2", fullWidth && "w-full", className)}>
@@ -35,7 +34,7 @@ export function AffiliateButton({
         href={href}
         target="_blank"
         rel="nofollow sponsored noopener noreferrer"
-        data-affiliate-network={affiliateConfig.network}
+        data-affiliate-network={network}
         data-product-id={productId ?? ""}
         onClick={() => trackAffiliateClick(productId, path)}
         className={cn(
@@ -53,9 +52,7 @@ export function AffiliateButton({
           {subLabel}
         </p>
       )}
-      {showDisclosure && (
-        <p className="text-center text-xs text-muted-foreground">{affiliateConfig.disclosure}</p>
-      )}
+      {showDisclosure && <p className="text-center text-xs text-muted-foreground">{affiliateConfig.disclosure}</p>}
     </div>
   );
 }
