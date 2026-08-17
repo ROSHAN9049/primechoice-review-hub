@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520" role="img" aria-labelledby="title desc">
+<title id="title">All in One Problem Solve</title>
+<desc id="desc">Discover useful digital solutions and products on Digistore24.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#101828"/><stop offset="0.55" stop-color="#243b73"/><stop offset="1" stop-color="#6d28d9"/></linearGradient>
+  <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+  <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-opacity=".28"/></filter>
+</defs>
+<rect width="1600" height="520" rx="32" fill="url(#bg)"/>
+<circle cx="1390" cy="80" r="180" fill="#fff" opacity=".05"/>
+<circle cx="1510" cy="430" r="260" fill="#38bdf8" opacity=".06"/>
+<g filter="url(#shadow)">
+  <rect x="980" y="80" width="430" height="360" rx="28" fill="#fff" opacity=".1" stroke="#fff" stroke-opacity=".18"/>
+  <rect x="1025" y="125" width="340" height="62" rx="16" fill="#fff" opacity=".12"/>
+  <circle cx="1060" cy="156" r="13" fill="#38bdf8"/>
+  <rect x="1090" y="145" width="220" height="20" rx="10" fill="#fff" opacity=".7"/>
+  <rect x="1025" y="215" width="155" height="175" rx="18" fill="#fff" opacity=".1" stroke="#fff" stroke-opacity=".12"/>
+  <rect x="1200" y="215" width="165" height="80" rx="18" fill="#fff" opacity=".1" stroke="#fff" stroke-opacity=".12"/>
+  <rect x="1200" y="310" width="165" height="80" rx="18" fill="#fff" opacity=".1" stroke="#fff" stroke-opacity=".12"/>
+  <path d="M1060 355l25-35 25 20 38-60 35 38" fill="none" stroke="url(#glow)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1060" cy="355" r="8" fill="#38bdf8"/><circle cx="1148" cy="280" r="8" fill="#a78bfa"/>
+</g>
+<g fill="#fff">
+  <text x="100" y="135" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="700" letter-spacing="5" opacity=".72">DIGISTORE24 MARKETPLACE</text>
+  <text x="100" y="225" font-family="Arial,Helvetica,sans-serif" font-size="68" font-weight="800">All in One</text>
+  <text x="100" y="305" font-family="Arial,Helvetica,sans-serif" font-size="68" font-weight="800" fill="#67e8f9">Problem Solve</text>
+  <text x="100" y="355" font-family="Arial,Helvetica,sans-serif" font-size="25" opacity=".78">Explore digital solutions, tools, guides &amp; more.</text>
+</g>
+<g transform="translate(100 395)">
+  <rect width="285" height="64" rx="32" fill="#fff"/>
+  <text x="142" y="41" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="800" fill="#18233b">Explore Solutions  →</text>
+</g>
+</svg>
