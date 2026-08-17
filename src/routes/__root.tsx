@@ -1,7 +1,8 @@
-import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet, Scripts, useLocation } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { siteConfig } from "@/config/site";
 import { AuthProvider } from "@/hooks/useAuth";
+import { SiteHeader } from "@/components/SiteHeader";
 import "../styles.css";
 
 const queryClient = new QueryClient({
@@ -26,10 +27,13 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  const location = useLocation();
+  const isPrivate = location.pathname.startsWith("/admin") || location.pathname.startsWith("/auth");
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <HeadContent />
+        {!isPrivate && <SiteHeader />}
         <Outlet />
         <Scripts />
       </AuthProvider>
