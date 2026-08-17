@@ -17,7 +17,7 @@ const fallbackCategories: Category[] = [
   { slug: "vision", name: "Vision", description: "Eye-health formulas and screen-strain solutions reviewed in depth.", icon: "Eye" },
   { slug: "fitness", name: "Fitness", description: "Training programs, gear and recovery tools tested over real training blocks.", icon: "Dumbbell" },
   { slug: "electronics", name: "Electronics", description: "Audio, wearables, smart home and everyday tech put through real-world use.", icon: "Cpu" },
-  { slug: "home-kitchen", name: "Home & Kitchen", description: "Appliances, cookware and home essentials judged on durability and value.", icon: "CookingPot" },
+  { slug: "home-kitchen", name: "Home & Kitchen", description: "Appliances, cookware and home essentials judged on durability and value.", icon: "CookingPot", affiliateUrl: "https://www.amazon.in/s?k=home+kitchen+accessories&crid=Y4X0TR3BHMDH&sprefix=Home+kitchen+%2Caps%2C6029&ref=nb_sb_ss_mvt-t11-ranker_3_13&tag=rehanroshan08-21" },
   { slug: "health-fitness", name: "Health & Fitness", description: "Trackers, recovery gear and wellness devices measured against real data.", icon: "Activity" },
   { slug: "beauty", name: "Beauty", description: "Skincare, haircare and grooming products reviewed on ingredients and results.", icon: "Sparkle", affiliateUrl: "https://www.amazon.in/gp/browse.html?node=1355016031&ref_=nav_em_sbc_bhg_beauty_all_0_2_13_2&tag=rehanroshan08-21" },
   { slug: "sports", name: "Sports", description: "Outdoor and team-sport equipment tested across full seasons of use.", icon: "Trophy", affiliateUrl: "https://www.amazon.in/s?k=sports+bra+for+women&crid=55KVH7UYG7CS&sprefix=Sport%2Caps%2C432&ref=nb_sb_ss_mvt-t11-ranker_2_5&tag=rehanroshan08-21" },
