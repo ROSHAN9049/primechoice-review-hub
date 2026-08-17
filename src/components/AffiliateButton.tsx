@@ -14,44 +14,18 @@ interface AffiliateButtonProps {
   path?: string;
 }
 
-export function AffiliateButton({
-  productId,
-  href: directHref,
-  label = "Check Official Price",
-  subLabel,
-  showDisclosure = true,
-  className,
-  fullWidth = true,
-  path,
-}: AffiliateButtonProps) {
+export function AffiliateButton({ productId, href: directHref, label = "Check Official Price", subLabel, showDisclosure = true, className, fullWidth = true, path }: AffiliateButtonProps) {
   const rawHref = directHref || buildAffiliateUrl(productId);
   const href = buildAmazonAffiliateUrl(rawHref);
-  const network = href !== rawHref ? "Amazon Associates" : affiliateConfig.network;
+  let network = href !== rawHref ? "Amazon Associates" : affiliateConfig.network;
+  try { const host = new URL(rawHref).hostname.toLowerCase(); if (host.includes("digistore24")) network = "Digistore24"; } catch { /* keep configured network */ }
 
   return (
     <div className={cn("space-y-2", fullWidth && "w-full", className)}>
-      <a
-        href={href}
-        target="_blank"
-        rel="nofollow sponsored noopener noreferrer"
-        data-affiliate-network={network}
-        data-product-id={productId ?? ""}
-        onClick={() => trackAffiliateClick(productId, path)}
-        className={cn(
-          "group inline-flex min-h-13 items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-          fullWidth && "w-full",
-        )}
-        style={{ backgroundImage: "var(--gradient-primary)" }}
-      >
-        <span>{label}</span>
-        <ArrowUpRight className="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+      <a href={href} target="_blank" rel="nofollow sponsored noopener noreferrer" data-affiliate-network={network} data-product-id={productId ?? ""} onClick={() => trackAffiliateClick(productId, path, network)} className={cn("group inline-flex min-h-13 items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-base font-semibold text-primary-foreground shadow-elevated transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring", fullWidth && "w-full")} style={{ backgroundImage: "var(--gradient-primary)" }}>
+        <span>{label}</span><ArrowUpRight className="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
       </a>
-      {subLabel && (
-        <p className="flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground">
-          <ShieldCheck className="size-3.5 text-success" aria-hidden="true" />
-          {subLabel}
-        </p>
-      )}
+      {subLabel && <p className="flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground"><ShieldCheck className="size-3.5 text-success" aria-hidden="true" />{subLabel}</p>}
       {showDisclosure && <p className="text-center text-xs text-muted-foreground">{affiliateConfig.disclosure}</p>}
     </div>
   );
