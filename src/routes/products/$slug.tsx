@@ -24,6 +24,12 @@ export const Route = createFileRoute("/products/$slug")({
   component: ProductPage,
 });
 
+function productFallback(slug: string) {
+  if (slug.includes("iphone-14-pro")) return "/product-iphone-14-pro.svg";
+  if (slug.includes("samsung-galaxy-s23")) return "/product-samsung-galaxy-s23.svg";
+  return "/favicon.ico";
+}
+
 function ProductPage() {
   const { product } = Route.useLoaderData() as { product: PublicProduct };
   const [affiliateUrl, setAffiliateUrl] = useState(product.affiliateLinks.find((link) => link.enabled !== false && link.url)?.url);
@@ -38,7 +44,8 @@ function ProductPage() {
     return () => { active = false; };
   }, [product.id]);
 
-  const image = product.images[0] || "/favicon.ico";
+  const rawImage = product.images[0] || "";
+  const image = rawImage && !rawImage.includes("via.placeholder.com") ? rawImage : productFallback(product.slug);
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <Button asChild variant="ghost" className="mb-6 min-h-11 rounded-lg"><Link to="/"><ArrowLeft className="size-4" /> Back to home</Link></Button>
