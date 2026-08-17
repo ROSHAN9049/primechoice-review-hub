@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://primechoice-review-hub.vercel.app/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/contact</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/disclaimer</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/guides</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/compare</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/health-supplements</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/ai-tools</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/software</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/finance</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/education</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/mens-health</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/weight-loss</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/vision</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/fitness</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/electronics</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/home-kitchen</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/health-fitness</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/beauty</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/sports</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/office</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/fashion</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/baby</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/automotive</loc><priority>0.7</priority></url>
+  <url><loc>https://primechoice-review-hub.vercel.app/categories/pet-supplies</loc><priority>0.7</priority></url>
+</urlset>
