@@ -36,6 +36,7 @@ const title = "Find the Best Products Before You Buy — PrimeChoiceReviews";
 const description =
   "Independent, hands-on product reviews, comparisons and buying guides. Real testing, transparent scoring, no paid placements.";
 const amazonDealsUrl = "https://www.amazon.in/deals?ref_=nav_cs_gb";
+const digistoreMarketplaceUrl = "https://www.digistore24-app.com/app/en/affiliate/account/marketplace/all";
 
 const homeFaq = [
   {
@@ -288,6 +289,28 @@ function Index() {
             className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.01]"
           />
           <span id="today-deal-heading" className="sr-only">Today's Best Deal</span>
+        </a>
+      </section>
+
+      {/* All in One Problem Solve */}
+      <section aria-labelledby="digistore-all-in-one-heading" className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <a
+          href={digistoreMarketplaceUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          aria-label="All in One Problem Solve — open Digistore24 Marketplace"
+          className="group relative block overflow-hidden rounded-2xl border border-border bg-background shadow-elevated transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl"
+        >
+          <img
+            src="/digistore-all-in-one.svg"
+            alt="All in One Problem Solve — explore Digistore24 digital solutions"
+            width={1600}
+            height={520}
+            loading="eager"
+            decoding="async"
+            className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.01]"
+          />
+          <span id="digistore-all-in-one-heading" className="sr-only">All in One Problem Solve</span>
         </a>
       </section>
 
