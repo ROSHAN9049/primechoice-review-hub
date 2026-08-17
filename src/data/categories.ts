@@ -15,7 +15,7 @@ const fallbackCategories: Category[] = [
   { slug: "mens-health", name: "Men's Health", description: "Performance, prostate and hormone support products under the microscope.", icon: "Shield" },
   { slug: "weight-loss", name: "Weight Loss", description: "Metabolism, appetite and body-composition programs that actually hold up.", icon: "Flame" },
   { slug: "vision", name: "Vision", description: "Eye-health formulas and screen-strain solutions reviewed in depth.", icon: "Eye" },
-  { slug: "fitness", name: "Fitness", description: "Training programs, gear and recovery tools tested over real training blocks.", icon: "Dumbbell" },
+  { slug: "fitness", name: "Fitness", description: "Training programs, gear and recovery tools tested over real training blocks.", icon: "Dumbbell", affiliateUrl: "https://www.amazon.in/s?k=fitness+equipment+for+home+workout&crid=1DFP688OUB0M9&sprefix=Fitness+%2Caps%2C2075&ref=nb_sb_ss_mvt-t11-ranker_5_8&tag=rehanroshan08-21" },
   { slug: "electronics", name: "Electronics", description: "Audio, wearables, smart home and everyday tech put through real-world use.", icon: "Cpu" },
   { slug: "home-kitchen", name: "Home & Kitchen", description: "Appliances, cookware and home essentials judged on durability and value.", icon: "CookingPot", affiliateUrl: "https://www.amazon.in/s?k=home+kitchen+accessories&crid=Y4X0TR3BHMDH&sprefix=Home+kitchen+%2Caps%2C6029&ref=nb_sb_ss_mvt-t11-ranker_3_13&tag=rehanroshan08-21" },
   { slug: "health-fitness", name: "Health & Fitness", description: "Trackers, recovery gear and wellness devices measured against real data.", icon: "Activity" },
