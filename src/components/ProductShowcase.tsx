@@ -20,6 +20,12 @@ interface ProductRow {
 
 type AffiliateLink = { url?: string; enabled?: boolean; network?: string };
 
+function productFallback(slug: string) {
+  if (slug.includes("iphone-14-pro")) return "/product-iphone-14-pro.svg";
+  if (slug.includes("samsung-galaxy-s23")) return "/product-samsung-galaxy-s23.svg";
+  return "/favicon.ico";
+}
+
 export function ProductShowcase() {
   const [products, setProducts] = useState<ProductRow[]>([]);
 
@@ -35,9 +41,7 @@ export function ProductShowcase() {
         if (!active || error) return;
         setProducts((data ?? []) as ProductRow[]);
       });
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, []);
 
   if (!products.length) return null;
@@ -54,7 +58,8 @@ export function ProductShowcase() {
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => {
           const images = Array.isArray(product.images) ? product.images : [];
-          const image = typeof images[0] === "string" ? images[0] : "/favicon.ico";
+          const dbImage = typeof images[0] === "string" ? images[0] : "";
+          const image = dbImage && !dbImage.includes("via.placeholder.com") ? dbImage : productFallback(product.slug);
           const links = Array.isArray(product.affiliate_links) ? (product.affiliate_links as AffiliateLink[]) : [];
           const url = links.find((link) => link.enabled !== false && link.url)?.url;
           return (
