@@ -8,6 +8,7 @@ type ServerEntry = {
 };
 
 let serverEntryPromise: Promise<ServerEntry> | undefined;
+const GOOGLE_VERIFICATION_TAG = '<meta name="google-site-verification" content="wm4AeiXbmH4mS1J17pPHJES1n7vmmF0Csq0hY-mKUqE" />';
 
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
@@ -16,6 +17,22 @@ async function getServerEntry(): Promise<ServerEntry> {
     );
   }
   return serverEntryPromise;
+}
+
+async function ensureGoogleVerificationMeta(response: Response): Promise<Response> {
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.includes("text/html")) return response;
+
+  const html = await response.text();
+  if (html.includes('name="google-site-verification"')) return new Response(html, response);
+
+  const headMarker = /<head(?:\s[^>]*)?>/i;
+  if (!headMarker.test(html)) return new Response(html, response);
+
+  const updatedHtml = html.replace(headMarker, (head) => `${head}\n    ${GOOGLE_VERIFICATION_TAG}`);
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  return new Response(updatedHtml, { status: response.status, statusText: response.statusText, headers });
 }
 
 // h3 swallows in-handler throws into a normal 500 Response with body
@@ -49,7 +66,8 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      return await ensureGoogleVerificationMeta(normalized);
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
