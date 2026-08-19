@@ -7,7 +7,7 @@ export interface Category {
 }
 
 const fallbackCategories: Category[] = [
-  { slug: "health-supplements", name: "Health & Supplements", description: "Evidence-checked supplements, ingredient breakdowns and safety notes.", icon: "HeartPulse" },
+  { slug: "health-supplements", name: "Health & Supplements", description: "Evidence-checked supplements, ingredient breakdowns and safety notes.", icon: "HeartPulse", affiliateUrl: "https://www.amazon.in/s?k=women+health+supplements&crid=363T4N2GRI2GF&sprefix=Health+%26+Supplements+%2Caps%2C1539&ref=nb_sb_ss_mvt-t11-ranker_ci_hl-bn-left_3_21&tag=rehanroshan08-21" },
   { slug: "ai-tools", name: "AI Tools", description: "Hands-on tests of AI writing, image, video and automation platforms.", icon: "Sparkles" },
   { slug: "software", name: "Software", description: "Productivity, marketing and business software compared feature by feature.", icon: "MonitorSmartphone" },
   { slug: "finance", name: "Finance", description: "Trading, budgeting and passive-income programs assessed for real value.", icon: "LineChart" },
