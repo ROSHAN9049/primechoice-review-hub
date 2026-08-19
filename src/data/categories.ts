@@ -9,7 +9,7 @@ export interface Category {
 const fallbackCategories: Category[] = [
   { slug: "health-supplements", name: "Health & Supplements", description: "Evidence-checked supplements, ingredient breakdowns and safety notes.", icon: "HeartPulse", affiliateUrl: "https://www.amazon.in/s?k=women+health+supplements&crid=363T4N2GRI2GF&sprefix=Health+%26+Supplements+%2Caps%2C1539&ref=nb_sb_ss_mvt-t11-ranker_ci_hl-bn-left_3_21&tag=rehanroshan08-21" },
   { slug: "ai-tools", name: "AI Tools", description: "Hands-on tests of AI writing, image, video and automation platforms.", icon: "Sparkles", affiliateUrl: "https://www.amazon.in/s?k=ai+tools+for+engineers&crid=2NETEU04TP6LJ&sprefix=AI+Tools+%2Caps%2C2790&ref=nb_sb_ss_mvt-t11-ranker_8_9&tag=rehanroshan08-21" },
-  { slug: "software", name: "Software", description: "Productivity, marketing and business software compared feature by feature.", icon: "MonitorSmartphone" },
+  { slug: "software", name: "Software", description: "Productivity, marketing and business software compared feature by feature.", icon: "MonitorSmartphone", affiliateUrl: "https://www.amazon.in/s?k=marketing+and+business+software&crid=I1JGEPD66RW9&sprefix=marketing+and+business+software+%2Caps%2C1222&ref=nb_sb_noss&tag=rehanroshan08-21" },
   { slug: "finance", name: "Finance", description: "Trading, budgeting and passive-income programs assessed for real value.", icon: "LineChart" },
   { slug: "education", name: "Education", description: "Online courses and certifications rated on outcomes, not hype.", icon: "GraduationCap" },
   { slug: "mens-health", name: "Men's Health", description: "Performance, prostate and hormone support products under the microscope.", icon: "Shield" },
