@@ -8,6 +8,7 @@ import { ProductShowcase } from "@/components/ProductShowcase";
 
 const amazonAllDealsUrl = "https://www.amazon.in/gp/goldbox/all-deals/?ie=UTF8&ref_=sv_gb_1&tag=rehanroshan08-21";
 const amazonDemoProductUrl = "https://www.amazon.in/dp/B0CGDZC2FK?tag=rehanroshan08-21";
+const healthSupplementsImageUrl = "https://onemg.gumlet.io/l_watermark_346%2Cw_120%2Ch_120/a_ignore%2Cw_120%2Ch_120%2Cc_fit%2Cq_auto%2Cf_auto/bcfe1d5717cd4afba1c87ee6460776fa.jpg";
 
 export function CategoryGrid() {
   return (
@@ -39,13 +40,18 @@ export function CategoryGrid() {
           const Icon = ((Icons as unknown as Record<string, LucideIcon>)[c.icon] ?? Icons.Tag) as LucideIcon;
           const count = reviewsByCategory(c.slug).length;
           const cardClassName = "card-surface group flex h-full items-start gap-4 rounded-xl p-5 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated";
+          const categoryVisual = c.slug === "health-supplements" ? (
+            <img src={healthSupplementsImageUrl} alt="Centrum Women multivitamin supplement" width={96} height={96} loading="lazy" decoding="async" className="size-20 shrink-0 rounded-lg bg-secondary object-contain p-1 sm:size-24" />
+          ) : (
+            <span className="grid size-11 shrink-0 place-items-center rounded-lg text-primary-foreground" style={{ backgroundImage: "var(--gradient-primary)" }}>
+              <Icon className="size-5" aria-hidden="true" />
+            </span>
+          );
           return (
             <li key={c.slug}>
               {c.affiliateUrl ? (
                 <a href={c.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" aria-label={`${c.name} — open Amazon deals`} className={cardClassName}>
-                  <span className="grid size-11 shrink-0 place-items-center rounded-lg text-primary-foreground" style={{ backgroundImage: "var(--gradient-primary)" }}>
-                    <Icon className="size-5" aria-hidden="true" />
-                  </span>
+                  {categoryVisual}
                   <span className="min-w-0">
                     <span className="flex items-center gap-2 font-display font-bold tracking-tight transition-colors group-hover:text-primary-glow">{c.name} <ArrowUpRight className="size-4" aria-hidden="true" /></span>
                     <span className="mt-1 block text-sm text-muted-foreground">{c.description}</span>
@@ -54,9 +60,7 @@ export function CategoryGrid() {
                 </a>
               ) : (
                 <Link to="/categories/$slug" params={{ slug: c.slug }} className={cardClassName}>
-                  <span className="grid size-11 shrink-0 place-items-center rounded-lg text-primary-foreground" style={{ backgroundImage: "var(--gradient-primary)" }}>
-                    <Icon className="size-5" aria-hidden="true" />
-                  </span>
+                  {categoryVisual}
                   <span className="min-w-0">
                     <span className="block font-display font-bold tracking-tight transition-colors group-hover:text-primary-glow">{c.name}</span>
                     <span className="mt-1 block text-sm text-muted-foreground">{c.description}</span>
