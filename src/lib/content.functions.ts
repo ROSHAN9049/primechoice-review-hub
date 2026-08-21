@@ -58,7 +58,7 @@ const toProduct = (r: Row, reviewByProductId: Map<string, string>, reviewByProdu
 
 const REVIEW_COLS = "slug,title,product,vendor,category,image,excerpt,rating,featured,affiliate_product_id,publish_date,content,product_ref";
 const POST_COLS = "slug,title,excerpt,category,image,author,reading_time,publish_date,sections";
-const PRODUCT_COLS = "id,slug,title,description,images,image_url,ai_generated_content,category,brand,rating,price,currency,region,affiliate_link,affiliate_links,specifications,pros,cons,seo,seo_title,seo_description,status,created_at,updated_at";
+const PRODUCT_COLS = "id,slug,title,description,images,category,brand,rating,price,currency,region,affiliate_links,specifications,pros,cons,seo,status,created_at,updated_at";
 
 export const fetchCategories = createServerFn({ method: "GET" }).handler(async () => { try { const { data, error } = await publicClient().from("categories").select("slug,name,description,icon").order("sort_order"); if (error) throw error; return data?.length ? (data as Category[]) : staticCategories; } catch (error) { console.error("fetchCategories: using static fallback", error); return staticCategories; } });
 export const fetchReviews = createServerFn({ method: "GET" }).handler(async () => { try { const { data, error } = await publicClient().from("reviews").select(REVIEW_COLS).eq("status", "published").order("publish_date", { ascending: false }); if (error) throw error; const reviews = (data ?? []).map(toReview); return reviews.length ? reviews : staticReviews; } catch (error) { console.error("fetchReviews: using static fallback", error); return staticReviews; } });
