@@ -9,7 +9,6 @@ import { ReviewCard, ScoreBadge } from "@/components/ReviewCard";
 import { StarRating } from "@/components/StarRating";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
 import { getCategory } from "@/data/categories";
 import type { Post } from "@/data/posts";
 import type { Review } from "@/data/reviews";
@@ -54,8 +53,7 @@ function SectionHead({ kicker, heading, sub, linkTo, linkLabel, id }: { kicker: 
 function Index() {
   const { reviews, posts } = Route.useLoaderData() as { reviews: Review[]; posts: Post[] };
 
-  // Keep every review/product unique across homepage sections. A product shown in an earlier
-  // section is excluded from later sections, preventing the same card from appearing twice.
+  // One review/product can only occupy one homepage product section.
   const seen = new Set<string>();
   const unique = (items: Review[]) => items.filter((item) => {
     const key = item.slug || item.id || item.title;
