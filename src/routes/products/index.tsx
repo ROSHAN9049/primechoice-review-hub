@@ -2,23 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { fetchPublicProducts } from "@/lib/product.functions";
 import type { PublicProduct } from "@/lib/product.functions";
-import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/products/")({
   head: () => ({ meta: [{ title: "Products | PrimeChoiceReviews" }, { name: "description", content: "Browse published products, reviews, pricing and affiliate offers from PrimeChoiceReviews." }] }),
   component: ProductsPage,
 });
-
-function mapProduct(row: Record<string, unknown>): PublicProduct {
-  return {
-    id: String(row.id), slug: String(row.slug), title: String(row.title), description: String(row.description ?? ""),
-    images: Array.isArray(row.images) ? row.images.filter((v): v is string => typeof v === "string" && v.trim().length > 0) : [],
-    category: row.category ? String(row.category) : undefined, brand: row.brand ? String(row.brand) : undefined,
-    rating: Number(row.rating ?? 0), price: row.price == null ? null : Number(row.price), currency: String(row.currency ?? "USD"),
-    region: String(row.region ?? "global"), affiliateLinks: Array.isArray(row.affiliate_links) ? row.affiliate_links as PublicProduct["affiliateLinks"] : [], status: String(row.status ?? "published"),
-  };
-}
 
 function fallbackImage(slug: string) {
   if (slug.includes("iphone-14-pro")) return "/product-iphone-14-pro.svg";
@@ -48,29 +38,18 @@ function ProductsPage() {
       }
     }, 8000);
 
-    void supabase
-      .from("products")
-      .select("id,slug,title,description,images,category,brand,rating,price,currency,region,affiliate_links,status")
-      .eq("status", "published")
-      .order("created_at", { ascending: false })
-      .then(({ data, error }) => {
-        window.clearTimeout(timeout);
+    fetchPublicProducts()
+      .then((data) => {
         if (!active) return;
-        if (error) {
-          console.error("Products fetch failed:", error);
-          setProducts([]);
-          setLoadError("We couldn't load products right now. Please refresh and try again.");
-          setLoading(false);
-          return;
-        }
-        setProducts((data ?? []).map((row) => mapProduct(row as Record<string, unknown>)));
+        window.clearTimeout(timeout);
+        setProducts(data ?? []);
         setLoadError("");
         setLoading(false);
       })
       .catch((error) => {
-        window.clearTimeout(timeout);
         if (!active) return;
-        console.error("Products fetch exception:", error);
+        window.clearTimeout(timeout);
+        console.error("Products server fetch failed:", error);
         setProducts([]);
         setLoadError("We couldn't load products right now. Please refresh and try again.");
         setLoading(false);
