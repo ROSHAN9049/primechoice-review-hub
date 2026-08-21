@@ -13,8 +13,19 @@ import { imageFor } from "@/lib/images";
 const DEFAULT_SUPABASE_URL = "https://whtbrmzkbtlnndpnxgyz.supabase.co";
 const DEFAULT_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_pwtvSMbXIvjhZerLBBs0nA_BliSKeVX";
 
+// Supabase JS expects the project URL only, never the REST endpoint. Some
+// deployments accidentally store a full /rest/v1 URL in an environment var;
+// reduce any configured URL to its origin so PostgREST paths are constructed
+// exactly once by @supabase/supabase-js.
 function normaliseSupabaseUrl(value: string) {
-  return value.trim().replace(/\/+$/, "").replace(/\/rest\/v1$/i, "");
+  const fallback = DEFAULT_SUPABASE_URL;
+  try {
+    const parsed = new URL(value.trim());
+    if (!/^https?:$/.test(parsed.protocol)) return fallback;
+    return parsed.origin;
+  } catch {
+    return fallback;
+  }
 }
 
 function publicClient() {
