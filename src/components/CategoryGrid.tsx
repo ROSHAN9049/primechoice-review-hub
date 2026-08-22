@@ -1,8 +1,9 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { categories } from "@/data/categories";
+import { categoryGuides } from "@/data/categoryGuides";
 import { reviewsByCategory } from "@/data/reviews";
 import { ProductShowcase } from "@/components/ProductShowcase";
 
@@ -34,7 +35,7 @@ export function CategoryGrid() {
   return (
     <>
       <section aria-labelledby="amazon-all-deals-heading" className="mb-8">
-        <a href={amazonAllDealsUrl} target="_blank" rel="noopener noreferrer sponsored" aria-label="Amazon India All Deals — shop all deals" className="group relative block overflow-hidden rounded-2xl border border-border bg-black shadow-elevated transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <a href={amazonAllDealsUrl} target="_blank" rel="noopener noreferrer sponsored" aria-label="Amazon India All Deals — shop all Amazon deals" className="group relative block overflow-hidden rounded-2xl border border-border bg-black shadow-elevated transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl">
           <img src="/amazon-all-deals.svg" alt="Amazon India All Deals — shop all Amazon deals" width={1600} height={520} loading="lazy" decoding="async" className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.01]" />
           <span id="amazon-all-deals-heading" className="sr-only">Amazon India All Deals</span>
         </a>
@@ -44,6 +45,7 @@ export function CategoryGrid() {
         {categories.map((c) => {
           const Icon = ((Icons as unknown as Record<string, LucideIcon>)[c.icon] ?? Icons.Tag) as LucideIcon;
           const count = reviewsByCategory(c.slug).length;
+          const guide = categoryGuides.find((item) => item.slug === c.slug);
           const cardClassName = "card-surface group flex h-full items-start gap-4 rounded-xl p-5 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated";
           const image = categoryImages[c.slug];
           const categoryVisual = image ? (
@@ -53,25 +55,47 @@ export function CategoryGrid() {
               <Icon className="size-5" aria-hidden="true" />
             </span>
           );
+
+          const categoryBody = (
+            <>
+              {categoryVisual}
+              <span className="min-w-0">
+                <span className="flex items-center gap-2 font-display font-bold tracking-tight transition-colors group-hover:text-primary-glow">{c.name} {c.affiliateUrl && <ArrowUpRight className="size-4" aria-hidden="true" />}</span>
+                <span className="mt-1 block text-sm text-muted-foreground">{c.description}</span>
+                {guide && (
+                  <details className="mt-3 rounded-lg border border-border/70 bg-background/50 p-3" onClick={(event) => event.stopPropagation()}>
+                    <summary className="flex cursor-pointer list-none items-center gap-2 text-xs font-bold text-primary-glow">
+                      <BookOpen className="size-3.5" aria-hidden="true" /> Read review & buying guide
+                    </summary>
+                    <div className="mt-3 space-y-3 text-xs leading-relaxed text-muted-foreground">
+                      <p className="font-semibold text-foreground">{guide.title}</p>
+                      <p>{guide.intro}</p>
+                      {guide.sections.map((section) => (
+                        <div key={section.heading}>
+                          <p className="font-semibold text-foreground">{section.heading}</p>
+                          <p>{section.body}</p>
+                        </div>
+                      ))}
+                      <p><span className="font-semibold text-foreground">Our verdict:</span> {guide.verdict}</p>
+                    </div>
+                  </details>
+                )}
+                <span className="mt-2 block text-xs font-semibold text-primary-glow">{c.affiliateUrl ? "Shop on Amazon" : `${count} ${count === 1 ? "review" : "reviews"}`}</span>
+              </span>
+            </>
+          );
+
           return (
             <li key={c.slug}>
               {c.affiliateUrl ? (
-                <a href={c.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" aria-label={`${c.name} — open Amazon deals`} className={cardClassName}>
-                  {categoryVisual}
-                  <span className="min-w-0">
-                    <span className="flex items-center gap-2 font-display font-bold tracking-tight transition-colors group-hover:text-primary-glow">{c.name} <ArrowUpRight className="size-4" aria-hidden="true" /></span>
-                    <span className="mt-1 block text-sm text-muted-foreground">{c.description}</span>
-                    <span className="mt-2 block text-xs font-semibold text-primary-glow">Amazon Fashion Deals</span>
-                  </span>
-                </a>
+                <div className={cardClassName}>
+                  <a href={c.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" aria-label={`${c.name} — open Amazon category`} className="flex min-w-0 flex-1 items-start gap-4">
+                    {categoryBody}
+                  </a>
+                </div>
               ) : (
                 <Link to="/categories/$slug" params={{ slug: c.slug }} className={cardClassName}>
-                  {categoryVisual}
-                  <span className="min-w-0">
-                    <span className="block font-display font-bold tracking-tight transition-colors group-hover:text-primary-glow">{c.name}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">{c.description}</span>
-                    <span className="mt-2 block text-xs font-semibold text-primary-glow">{count} {count === 1 ? "review" : "reviews"}</span>
-                  </span>
+                  {categoryBody}
                 </Link>
               )}
             </li>
