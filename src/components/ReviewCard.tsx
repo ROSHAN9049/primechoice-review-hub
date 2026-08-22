@@ -3,6 +3,7 @@ import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import { StarRating } from "@/components/StarRating";
 import { getCategory } from "@/data/categories";
 import type { Review } from "@/data/reviews";
+import { editorialArtwork } from "@/lib/editorialArtwork";
 import { cn } from "@/lib/utils";
 
 export function ScoreBadge({ rating, className }: { rating: number; className?: string }) {
@@ -16,10 +17,11 @@ export function ScoreBadge({ rating, className }: { rating: number; className?: 
 
 export function ReviewCard({ review, index }: { review: Review; index?: number }) {
   const category = getCategory(review.category);
+  const image = editorialArtwork(review.category);
   return (
     <article className="card-surface group relative flex h-full flex-col overflow-hidden rounded-xl hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-elevated" style={index !== undefined ? { animationDelay: `${index * 70}ms` } : undefined}>
       <Link to="/reviews/$slug" params={{ slug: review.slug }} tabIndex={-1} aria-hidden="true" className="relative block overflow-hidden bg-secondary">
-        <img src={review.image} alt="" loading="lazy" decoding="async" width={1024} height={768} className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]" />
+        <img src={image} alt={`${category?.name ?? "Category"} editorial review`} loading="lazy" decoding="async" width={1024} height={675} className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]" />
         <span className="absolute top-3 left-3 rounded-md bg-background/85 px-2.5 py-1 font-display text-[10px] font-bold tracking-[0.14em] text-foreground uppercase backdrop-blur-sm">{category?.name ?? "Review"}</span>
         <ScoreBadge rating={review.rating} className="absolute right-3 bottom-3" />
       </Link>
