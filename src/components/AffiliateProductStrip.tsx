@@ -48,7 +48,8 @@ function ProductCard({ product }: { product: Product }) {
 
 export function AffiliateProductStrip() {
   const { data: products = [], isLoading } = useQuery({ queryKey: ["homepage-affiliate-products"], queryFn: fetchProducts, staleTime: 60_000 });
-  const uniqueProducts = Array.from(new Map(products.map((product) => [productIdentity(product), product])).values());
+  const filteredProducts = products.filter((product) => productIdentity(product) !== "B0CGDZC2FK");
+  const uniqueProducts = Array.from(new Map(filteredProducts.map((product) => [productIdentity(product), product])).values());
 
   if (isLoading || uniqueProducts.length === 0) return null;
 
