@@ -48,7 +48,14 @@ function ProductCard({ product }: { product: Product }) {
 
 export function AffiliateProductStrip() {
   const { data: products = [], isLoading } = useQuery({ queryKey: ["homepage-affiliate-products"], queryFn: fetchProducts, staleTime: 60_000 });
-  const filteredProducts = products.filter((product) => productIdentity(product) !== "B0CGDZC2FK");
+  // Exclude the retired Amazon ASIN everywhere it can be represented. The old
+  // check only parsed /dp/ URLs, so links such as link.amazon/* could bypass it.
+  const filteredProducts = products.filter((product) => {
+    const isRetiredAsin = product.affiliateLinks.some((link) =>
+      /B0CGDZC2FK/i.test(`${link.url ?? ""} ${link.productId ?? ""}`),
+    );
+    return !isRetiredAsin && productIdentity(product) !== "B0CGDZC2FK";
+  });
   const uniqueProducts = Array.from(new Map(filteredProducts.map((product) => [productIdentity(product), product])).values());
 
   if (isLoading || uniqueProducts.length === 0) return null;
