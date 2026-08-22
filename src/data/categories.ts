@@ -12,7 +12,7 @@ const fallbackCategories: Category[] = [
   { slug: "software", name: "Software", description: "Productivity, marketing and business software compared feature by feature.", icon: "MonitorSmartphone", affiliateUrl: "https://www.amazon.in/s?k=marketing+and+business+software&crid=I1JGEPD66RW9&sprefix=marketing+and+business+software+%2Caps%2C1222&ref=nb_sb_noss&tag=rehanroshan08-21" },
   { slug: "finance", name: "Finance", description: "Trading, budgeting and passive-income programs assessed for real value.", icon: "LineChart", affiliateUrl: "https://link.amazon/B0dMcajvO" },
   { slug: "education", name: "Education", description: "Online courses and certifications rated on outcomes, not hype.", icon: "GraduationCap", affiliateUrl: "https://link.amazon/B02MeBFrh" },
-  { slug: "mens-health", name: "Men's Health", description: "Performance, prostate and hormone support products under the microscope.", icon: "Shield" },
+  { slug: "mens-health", name: "Men's Health", description: "Performance, prostate and hormone support products under the microscope.", icon: "Shield", affiliateUrl: "https://www.amazon.in/s?k=mens+health&ref=nb_sb_noss" },
   { slug: "weight-loss", name: "Weight Loss", description: "Metabolism, appetite and body-composition programs that actually hold up.", icon: "Flame" },
   { slug: "vision", name: "Vision", description: "Eye-health formulas and screen-strain solutions reviewed in depth.", icon: "Eye" },
   { slug: "fitness", name: "Fitness", description: "Training programs, gear and recovery tools tested over real training blocks.", icon: "Dumbbell", affiliateUrl: "https://www.amazon.in/s?k=fitness+equipment+for+home+workout&crid=1DFP688OUB0M9&sprefix=Fitness+%2Caps%2C2075&ref=nb_sb_ss_mvt-t11-ranker_5_8&tag=rehanroshan08-21" },
