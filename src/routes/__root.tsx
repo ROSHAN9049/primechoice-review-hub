@@ -4,7 +4,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "@/config/site";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SiteHeader } from "@/components/SiteHeader";
-import { AffiliateProductStrip } from "@/components/AffiliateProductStrip";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import "../styles.css";
 
@@ -44,7 +43,6 @@ export const Route = createRootRoute({
 function RootComponent() {
   const location = useLocation();
   const isPrivate = location.pathname.startsWith("/admin") || location.pathname.startsWith("/auth");
-  const isHome = location.pathname === "/";
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -53,7 +51,6 @@ function RootComponent() {
         {!isPrivate && <AnalyticsTracker />}
         {!isPrivate && <SiteHeader />}
         <Outlet />
-        {!isPrivate && isHome && <AffiliateProductStrip />}
         <Scripts />
       </AuthProvider>
     </QueryClientProvider>
