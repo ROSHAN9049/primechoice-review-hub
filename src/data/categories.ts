@@ -13,7 +13,7 @@ const fallbackCategories: Category[] = [
   { slug: "finance", name: "Finance", description: "Trading, budgeting and passive-income programs assessed for real value.", icon: "LineChart", affiliateUrl: "https://link.amazon/B0dMcajvO" },
   { slug: "education", name: "Education", description: "Online courses and certifications rated on outcomes, not hype.", icon: "GraduationCap", affiliateUrl: "https://link.amazon/B02MeBFrh" },
   { slug: "mens-health", name: "Men's Health", description: "Performance, prostate and hormone support products under the microscope.", icon: "Shield", affiliateUrl: "https://www.amazon.in/s?k=mens+health&ref=nb_sb_noss" },
-  { slug: "weight-loss", name: "Weight Loss", description: "Metabolism, appetite and body-composition programs that actually hold up.", icon: "Flame" },
+  { slug: "weight-loss", name: "Weight Loss", description: "Metabolism, appetite and body-composition programs that actually hold up.", icon: "Flame", affiliateUrl: "https://www.amazon.in/s?k=weight+loss+products&crid=3MG30XJMIXN2K&sprefix=Weight+loss%2Caps%2C3318&ref=nb_sb_ss_mvt-t11-ranker_1_11" },
   { slug: "vision", name: "Vision", description: "Eye-health formulas and screen-strain solutions reviewed in depth.", icon: "Eye" },
   { slug: "fitness", name: "Fitness", description: "Training programs, gear and recovery tools tested over real training blocks.", icon: "Dumbbell", affiliateUrl: "https://www.amazon.in/s?k=fitness+equipment+for+home+workout&crid=1DFP688OUB0M9&sprefix=Fitness+%2Caps%2C2075&ref=nb_sb_ss_mvt-t11-ranker_5_8&tag=rehanroshan08-21" },
   { slug: "electronics", name: "Electronics", description: "Audio, wearables, smart home and everyday tech put through real-world use.", icon: "Cpu" },
