@@ -17,7 +17,7 @@ import visionImage from "@/assets/product-vision.jpg";
 import fitnessImage from "@/assets/product-fitness.jpg";
 
 const nav = [
-  { label: "Review Guides", to: "/reviews" },
+  { label: "Review Guides", to: "/guides" },
   { label: "Blog", to: "/blog" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
@@ -28,7 +28,7 @@ const guideImages: Record<string, string> = {
   "ai-tools": aiImage,
   finance: financeImage,
   education: educationImage,
-  "weight-loss": weightImage,
+  weight-loss: weightImage,
   vision: visionImage,
   fitness: fitnessImage,
   "mens-health": healthImage,
@@ -59,24 +59,24 @@ function SearchForm({ onDone }: { onDone?: () => void }) {
 function ReviewGuidesMenu() {
   return (
     <div className="group relative">
-      <Link to="/reviews" activeProps={{ className: "text-primary-glow" }} className="inline-flex items-center gap-1 rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow">
+      <Link to="/guides" activeProps={{ className: "text-primary-glow" }} className="inline-flex items-center gap-1 rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow">
         Review Guides <ChevronDown className="size-3.5" aria-hidden="true" />
       </Link>
       <div className="invisible absolute right-0 top-full z-50 w-[760px] translate-y-2 rounded-xl border border-border bg-background p-4 opacity-0 shadow-xl transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
         <div className="mb-3 flex items-end justify-between gap-3">
           <div>
             <p className="kicker">Independent guides</p>
-            <p className="mt-1 text-sm text-muted-foreground">Reviews, buying guides and category research in one place.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Fresh category reviews, buying guides and research.</p>
           </div>
-          <Link to="/reviews" className="text-xs font-bold uppercase text-primary-glow">All reviews →</Link>
+          <Link to="/guides" className="text-xs font-bold uppercase text-primary-glow">All guides →</Link>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {linkedCategories.map((category) => (
-            <Link key={category.slug} to="/categories/$slug" params={{ slug: category.slug }} className="group/card overflow-hidden rounded-lg border border-border bg-secondary/30 transition hover:border-primary/40 hover:bg-secondary/60">
+            <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} className="group/card overflow-hidden rounded-lg border border-border bg-secondary/30 transition hover:border-primary/40 hover:bg-secondary/60">
               <img src={guideImages[category.slug] || healthImage} alt="" className="h-20 w-full object-cover" loading="lazy" />
               <div className="p-2.5">
                 <p className="text-sm font-bold leading-tight group-hover/card:text-primary-glow">{category.name}</p>
-                <p className="mt-1 text-[11px] text-muted-foreground">Review & buying guide</p>
+                <p className="mt-1 text-[11px] text-muted-foreground">Read review & buying guide</p>
               </div>
             </Link>
           ))}
@@ -94,7 +94,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-xl">
       <div className="bg-primary text-primary-foreground">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-1.5 text-[11px] sm:px-6 lg:px-8">
-          <p className="flex min-w-0 items-center gap-1.5 truncate"><Star className="size-3 shrink-0 fill-current" aria-hidden="true" />Independent testing since 2019 — we buy every product we review</p>
+          <p className="flex min-w-0 items-center gap-1.5 truncate"><Star className="size-3 shrink-0 fill-current" aria-hidden="true" />Independent guides — practical reviews and buying research</p>
           <Link to="/about" className="hidden shrink-0 items-center gap-1 font-semibold sm:inline-flex">Our methodology<ArrowUpRight className="size-3" aria-hidden="true" /></Link>
         </div>
       </div>
@@ -117,16 +117,16 @@ export function Header() {
               <SheetTitle className="mb-5 text-left font-display tracking-tight">Review Menu</SheetTitle>
               <SearchForm onDone={() => setOpen(false)} />
               <nav aria-label="Mobile" className="mt-5 flex flex-col">
-                <Link to="/reviews" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">All Reviews</Link>
+                <Link to="/guides" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">All Review Guides</Link>
                 <Link to="/blog" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">Blog & Articles</Link>
                 <p className="kicker mt-5 pt-2">Category Reviews</p>
                 <div className="mt-2 grid grid-cols-2 gap-2">
-                  {linkedCategories.map((category) => <Link key={category.slug} to="/categories/$slug" params={{ slug: category.slug }} onClick={() => setOpen(false)} className="overflow-hidden rounded-lg border border-border bg-secondary/30"><img src={guideImages[category.slug] || healthImage} alt="" className="h-20 w-full object-cover" loading="lazy" /><span className="block p-2 text-xs font-bold">{category.name}</span></Link>)}
+                  {linkedCategories.map((category) => <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} onClick={() => setOpen(false)} className="overflow-hidden rounded-lg border border-border bg-secondary/30"><img src={guideImages[category.slug] || healthImage} alt="" className="h-20 w-full object-cover" loading="lazy" /><span className="block p-2 text-xs font-bold">{category.name}</span></Link>)}
                 </div>
                 <Link to="/about" onClick={() => setOpen(false)} className="rule-line mt-4 py-3.5 font-display text-lg font-bold tracking-tight">About</Link>
                 <Link to="/contact" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">Contact</Link>
               </nav>
-              <Button asChild className="mt-6 min-h-12 w-full rounded-lg"><Link to="/reviews" onClick={() => setOpen(false)}>Browse all reviews</Link></Button>
+              <Button asChild className="mt-6 min-h-12 w-full rounded-lg"><Link to="/guides" onClick={() => setOpen(false)}>Browse all guides</Link></Button>
             </SheetContent>
           </Sheet>
         </div>
