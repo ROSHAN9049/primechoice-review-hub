@@ -1,15 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ArrowUpRight, BadgeCheck, FlaskConical, Scale, ShieldCheck, Users } from "lucide-react";
+import { ArrowRight, BadgeCheck, FlaskConical, Scale, ShieldCheck, Users } from "lucide-react";
 import heroImage from "@/assets/hero.jpg";
 import { BlogCard } from "@/components/BlogCard";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { HomeSearch } from "@/components/HomeSearch";
 import { Newsletter } from "@/components/Newsletter";
-import { ReviewCard, ScoreBadge } from "@/components/ReviewCard";
+import { ReviewCard } from "@/components/ReviewCard";
 import { StarRating } from "@/components/StarRating";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { getCategory } from "@/data/categories";
 import type { Post } from "@/data/posts";
 import type { Review } from "@/data/reviews";
 import { fetchSiteContent } from "@/lib/content.functions";
@@ -45,11 +44,7 @@ const trust = [
 function SectionHead({ kicker, heading, sub, linkTo, linkLabel, id }: { kicker: string; heading: string; sub?: string; linkTo?: "/reviews" | "/blog" | "/categories"; linkLabel?: string; id: string }) { return <div className="rule-line flex flex-wrap items-end justify-between gap-4 pt-6"><div className="max-w-2xl"><span className="kicker">{kicker}</span><h2 id={id} className="mt-2 text-3xl font-bold sm:text-4xl">{heading}</h2>{sub && <p className="mt-2 text-muted-foreground">{sub}</p>}</div>{linkTo && <Link to={linkTo} className="group inline-flex items-center gap-1.5 font-display text-sm font-bold tracking-wide text-primary-glow uppercase">{linkLabel}<ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></Link>}</div>; }
 function Index() {
   const { reviews, posts } = Route.useLoaderData() as { reviews: Review[]; posts: Post[] };
-  const featured = reviews.filter((r) => r.featured);
-  const [lead, ...rest] = featured;
-  const leadCategory = lead ? getCategory(lead.category) : undefined;
   const [leadPost, ...otherPosts] = posts;
-  // Reserve each product/review once, in homepage section order, so cards never repeat.
   const used = new Set<string>();
   const takeUnique = (items: Review[], limit = 3) => items.filter((item) => {
     const key = item.slug || item.id || item.title;
@@ -70,7 +65,6 @@ function Index() {
     <div className="mx-auto max-w-7xl space-y-16 px-4 py-14 sm:px-6 lg:space-y-24 lg:px-8">
       <section aria-labelledby="categories-heading"><SectionHead id="categories-heading" kicker="Browse" heading="Featured categories" sub="Every category has its own testing protocol and scoring rubric." linkTo="/categories" linkLabel="All categories" /><div className="mt-8"><CategoryGrid /></div></section>
       <section aria-labelledby="trending-heading"><SectionHead id="trending-heading" kicker="Most read" heading="Trending reviews" sub="The verdicts readers are checking most this week." linkTo="/reviews" linkLabel="All reviews" /><div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{trending.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}</div></section>
-      <section aria-labelledby="featured-heading"><SectionHead id="featured-heading" kicker="Top rated" heading="Editor's Choice" sub="Our highest-scoring verdicts from the last 90 days of testing." linkTo="/reviews" linkLabel="All reviews" />{lead && <article className="card-surface group relative mt-8 grid overflow-hidden rounded-2xl lg:grid-cols-2"><Link to="/reviews/$slug" params={{ slug: lead.slug }} tabIndex={-1} aria-hidden="true" className="relative block overflow-hidden bg-secondary"><img src={lead.image} alt="" width={1024} height={768} decoding="async" className="h-full min-h-64 w-full object-cover" /><span className="absolute top-4 left-4 rounded-md bg-primary px-3 py-1.5 font-display text-[10px] font-bold tracking-[0.16em] text-primary-foreground uppercase">Editor's pick</span></Link><div className="flex flex-col justify-center gap-4 p-6 sm:p-10"><div className="flex flex-wrap items-center gap-3"><span className="kicker">{leadCategory?.name}</span><ScoreBadge rating={lead.rating} /></div><h3 className="font-display text-2xl leading-tight font-bold tracking-tight sm:text-3xl"><Link to="/reviews/$slug" params={{ slug: lead.slug }} className="editorial-underline"><span className="absolute inset-0" aria-hidden="true" />{lead.title}</Link></h3><StarRating rating={lead.rating} /><p className="text-sm leading-relaxed text-muted-foreground sm:text-base">{lead.excerpt}</p><ul className="grid gap-2 text-sm sm:grid-cols-2">{lead.pros.slice(0, 4).map((pro) => <li key={pro} className="flex items-start gap-2 text-muted-foreground"><BadgeCheck className="mt-0.5 size-4 shrink-0 text-success" aria-hidden="true" /><span className="line-clamp-1">{pro}</span></li>)}</ul><span className="inline-flex items-center gap-1.5 font-display text-sm font-bold tracking-wide text-primary-glow uppercase">Read the full verdict<ArrowUpRight className="size-4" aria-hidden="true" /></span></div></article>}<div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{rest.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}</div></section>
       <section aria-labelledby="latest-heading"><SectionHead id="latest-heading" kicker="Just published" heading="Latest reviews" sub="Freshly tested products, newest verdicts first." linkTo="/reviews" linkLabel="All reviews" /><div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{latest.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}</div></section>
       <section aria-labelledby="deals-heading"><SectionHead id="deals-heading" kicker="Save more" heading="Best deals right now" sub="Current vendor pricing we verified at checkout. Prices change without notice." /><div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{deals.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}</div></section>
       <section aria-labelledby="trust-heading"><SectionHead id="trust-heading" kicker="Our standard" heading="Why readers trust PrimeChoiceReviews" sub="A transparent process, built to keep affiliate incentives out of the verdict." /><div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{trust.map(({ icon: Icon, title, body }) => <div key={title} className="card-surface rounded-2xl p-6"><Icon className="size-6 text-primary-glow" aria-hidden="true" /><h3 className="mt-4 font-display text-base font-bold">{title}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p></div>)}</div></section>
