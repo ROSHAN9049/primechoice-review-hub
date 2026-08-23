@@ -11,6 +11,7 @@ const artworkByCategory: Record<string, string> = {
   "weight-loss": "/emag-weight.svg",
   electronics: "/emag-software.svg",
   office: "/emag-software.svg",
+  "pet-supplies": "/emag-pet-supplies.svg",
 };
 
 export function editorialArtwork(category?: string | null): string {
