@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, LogIn, Menu, Search, ShieldCheck, Star, ArrowUpRight, ChevronDown } from "lucide-react";
+import { LayoutDashboard, LogIn, Menu, Search, ShieldCheck, Star, ArrowUpRight, ChevronDown, BookOpen } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -86,6 +86,7 @@ export function Header() {
         <div className="flex items-center gap-1.5">
           <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
             <ReviewGuidesMenu />
+            <a href="/#emags" className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow"><BookOpen className="size-3.5" aria-hidden="true" />eMags</a>
             {nav.slice(1).map((item) => <Link key={item.to} to={item.to} activeProps={{ className: "text-primary-glow" }} className="relative rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow">{item.label}</Link>)}
           </nav>
           <div className="mx-1 hidden w-52 xl:block"><SearchForm /></div>
@@ -98,6 +99,7 @@ export function Header() {
               <SearchForm onDone={() => setOpen(false)} />
               <nav aria-label="Mobile" className="mt-5 flex flex-col">
                 <Link to="/guides" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">All Review Guides</Link>
+                <a href="/#emags" onClick={() => setOpen(false)} className="rule-line flex items-center gap-2 py-3.5 font-display text-lg font-bold tracking-tight"><BookOpen className="size-5 text-primary-glow" aria-hidden="true" />eMags</a>
                 <Link to="/blog" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">Blog & Articles</Link>
                 <p className="kicker mt-5 pt-2">Category Reviews</p>
                 <div className="mt-2 grid grid-cols-2 gap-2">
