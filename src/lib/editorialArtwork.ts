@@ -1,25 +1,16 @@
-import editorialHealth from "@/assets/editorial-health.svg";
-import editorialAi from "@/assets/editorial-ai.svg";
-import editorialSoftware from "@/assets/editorial-software.svg";
-import editorialFinance from "@/assets/editorial-finance.svg";
-import editorialEducation from "@/assets/editorial-education.svg";
-import editorialFitness from "@/assets/editorial-fitness.svg";
-import editorialVision from "@/assets/editorial-vision.svg";
-import editorialWeight from "@/assets/editorial-weight.svg";
-
 const artworkByCategory: Record<string, string> = {
-  "health-supplements": editorialHealth,
-  "mens-health": editorialHealth,
-  "health-fitness": editorialHealth,
-  "ai-tools": editorialAi,
-  software: editorialSoftware,
-  finance: editorialFinance,
-  education: editorialEducation,
-  fitness: editorialFitness,
-  vision: editorialVision,
-  "weight-loss": editorialWeight,
-  electronics: editorialSoftware,
-  office: editorialSoftware,
+  "health-supplements": "/emag-health.svg",
+  "mens-health": "/emag-health.svg",
+  "health-fitness": "/emag-health.svg",
+  "ai-tools": "/emag-ai.svg",
+  software: "/emag-software.svg",
+  finance: "/emag-finance.svg",
+  education: "/emag-education.svg",
+  fitness: "/emag-fitness.svg",
+  vision: "/emag-vision.svg",
+  "weight-loss": "/emag-weight.svg",
+  electronics: "/emag-software.svg",
+  office: "/emag-software.svg",
 };
 
 export function editorialArtwork(category?: string | null): string {
