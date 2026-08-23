@@ -8,13 +8,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { siteConfig } from "@/config/site";
 import { useAuth } from "@/hooks/useAuth";
 import { categories } from "@/data/categories";
-import healthImage from "@/assets/product-health.jpg";
-import aiImage from "@/assets/product-ai.jpg";
-import financeImage from "@/assets/product-finance.jpg";
-import educationImage from "@/assets/product-education.jpg";
-import weightImage from "@/assets/product-weight.jpg";
-import visionImage from "@/assets/product-vision.jpg";
-import fitnessImage from "@/assets/product-fitness.jpg";
+import { editorialArtwork } from "@/lib/editorialArtwork";
 
 const nav = [
   { label: "Review Guides", to: "/guides" },
@@ -22,20 +16,6 @@ const nav = [
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ] as const;
-
-const guideImages: Record<string, string> = {
-  "health-supplements": healthImage,
-  "ai-tools": aiImage,
-  finance: financeImage,
-  education: educationImage,
-  weight-loss: weightImage,
-  vision: visionImage,
-  fitness: fitnessImage,
-  "mens-health": healthImage,
-  electronics: aiImage,
-  "health-fitness": fitnessImage,
-  office: educationImage,
-};
 
 const linkedCategories = categories.filter((category) => category.affiliateUrl);
 
@@ -73,7 +53,7 @@ function ReviewGuidesMenu() {
         <div className="grid grid-cols-3 gap-3">
           {linkedCategories.map((category) => (
             <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} className="group/card overflow-hidden rounded-lg border border-border bg-secondary/30 transition hover:border-primary/40 hover:bg-secondary/60">
-              <img src={guideImages[category.slug] || healthImage} alt="" className="h-20 w-full object-cover" loading="lazy" />
+              <img src={editorialArtwork(category.slug)} alt={`${category.name} editorial guide`} className="h-20 w-full object-cover" loading="lazy" />
               <div className="p-2.5">
                 <p className="text-sm font-bold leading-tight group-hover/card:text-primary-glow">{category.name}</p>
                 <p className="mt-1 text-[11px] text-muted-foreground">Read review & buying guide</p>
@@ -121,7 +101,7 @@ export function Header() {
                 <Link to="/blog" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">Blog & Articles</Link>
                 <p className="kicker mt-5 pt-2">Category Reviews</p>
                 <div className="mt-2 grid grid-cols-2 gap-2">
-                  {linkedCategories.map((category) => <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} onClick={() => setOpen(false)} className="overflow-hidden rounded-lg border border-border bg-secondary/30"><img src={guideImages[category.slug] || healthImage} alt="" className="h-20 w-full object-cover" loading="lazy" /><span className="block p-2 text-xs font-bold">{category.name}</span></Link>)}
+                  {linkedCategories.map((category) => <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} onClick={() => setOpen(false)} className="overflow-hidden rounded-lg border border-border bg-secondary/30"><img src={editorialArtwork(category.slug)} alt={`${category.name} editorial guide`} className="h-20 w-full object-cover" loading="lazy" /><span className="block p-2 text-xs font-bold">{category.name}</span></Link>)}
                 </div>
                 <Link to="/about" onClick={() => setOpen(false)} className="rule-line mt-4 py-3.5 font-display text-lg font-bold tracking-tight">About</Link>
                 <Link to="/contact" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">Contact</Link>
