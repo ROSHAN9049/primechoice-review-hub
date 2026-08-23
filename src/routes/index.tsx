@@ -3,6 +3,7 @@ import { ArrowRight, BadgeCheck, FlaskConical, Scale, ShieldCheck, Users } from 
 import heroImage from "@/assets/hero.jpg";
 import { BlogCard } from "@/components/BlogCard";
 import { CategoryGrid } from "@/components/CategoryGrid";
+import { EmagsSection } from "@/components/EmagsSection";
 import { HomeSearch } from "@/components/HomeSearch";
 import { Newsletter } from "@/components/Newsletter";
 import { ReviewCard } from "@/components/ReviewCard";
@@ -64,6 +65,7 @@ function Index() {
     <section aria-labelledby="digistore-all-in-one-heading" className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8"><a href={digistoreMarketplaceUrl} target="_blank" rel="noopener noreferrer sponsored" aria-label="All in One Problem Solve — open Digistore24 Marketplace" className="group relative block overflow-hidden rounded-2xl border border-border bg-background shadow-elevated"><img src="/digistore-all-in-one.svg" alt="All in One Problem Solve — explore Digistore24 digital solutions" width={1600} height={520} loading="eager" decoding="async" className="h-auto w-full" /><span id="digistore-all-in-one-heading" className="sr-only">All in One Problem Solve</span></a></section>
     <div className="mx-auto max-w-7xl space-y-16 px-4 py-14 sm:px-6 lg:space-y-24 lg:px-8">
       <section aria-labelledby="categories-heading"><SectionHead id="categories-heading" kicker="Browse" heading="Featured categories" sub="Every category has its own testing protocol and scoring rubric." linkTo="/categories" linkLabel="All categories" /><div className="mt-8"><CategoryGrid /></div></section>
+      <EmagsSection />
       <section aria-labelledby="trending-heading"><SectionHead id="trending-heading" kicker="Most read" heading="Trending reviews" sub="The verdicts readers are checking most this week." linkTo="/reviews" linkLabel="All reviews" /><div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{trending.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}</div></section>
       <section aria-labelledby="latest-heading"><SectionHead id="latest-heading" kicker="Just published" heading="Latest reviews" sub="Freshly tested products, newest verdicts first." linkTo="/reviews" linkLabel="All reviews" /><div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{latest.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}</div></section>
       <section aria-labelledby="deals-heading"><SectionHead id="deals-heading" kicker="Save more" heading="Best deals right now" sub="Current vendor pricing we verified at checkout. Prices change without notice." /><div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{deals.map((r, i) => <ReviewCard key={r.slug} review={r} index={i} />)}</div></section>
