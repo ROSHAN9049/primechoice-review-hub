@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, LogIn, Menu, Search, ShieldCheck, Star, ArrowUpRight, ChevronDown, BookOpen } from "lucide-react";
+import { LayoutDashboard, LogIn, Menu, Search, ShieldCheck, Star, ArrowUpRight, ChevronDown, BookOpen, FileText, PenLine } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -66,6 +66,43 @@ function ReviewGuidesMenu() {
   );
 }
 
+function EmagsMenu() {
+  return (
+    <div className="group relative">
+      <Link to="/guides" activeProps={{ className: "text-primary-glow" }} className="inline-flex items-center gap-1 rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow">
+        <BookOpen className="size-3.5" aria-hidden="true" />eMags <ChevronDown className="size-3.5" aria-hidden="true" />
+      </Link>
+      <div className="invisible absolute right-0 top-full z-50 w-[760px] translate-y-2 rounded-xl border border-border bg-background p-4 opacity-0 shadow-xl transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+        <div className="mb-3 flex items-end justify-between gap-3">
+          <div>
+            <p className="kicker">Featured eMags</p>
+            <p className="mt-1 text-sm text-muted-foreground">Attractive category editions with reviews, comparisons and buying advice.</p>
+          </div>
+          <Link to="/guides" className="text-xs font-bold uppercase text-primary-glow">View all eMags →</Link>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {linkedCategories.slice(0, 6).map((category) => (
+            <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} className="group/emag overflow-hidden rounded-xl border border-border bg-secondary/30 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg">
+              <div className="relative overflow-hidden">
+                <img src={editorialArtwork(category.slug)} alt={`${category.name} eMag cover`} className="h-24 w-full object-cover transition-transform duration-300 group-hover/emag:scale-105" loading="lazy" />
+                <span className="absolute left-2 top-2 rounded-full border border-white/20 bg-background/85 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider backdrop-blur">eMag</span>
+              </div>
+              <div className="p-2.5">
+                <p className="text-sm font-bold leading-tight group-hover/emag:text-primary-glow">{category.name} eMag</p>
+                <p className="mt-1 text-[11px] text-muted-foreground">Review · Blog · Buying guide</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2 border-t border-border pt-3">
+          <Link to="/reviews" className="flex items-center gap-2 rounded-lg bg-secondary/40 px-3 py-2 text-xs font-bold uppercase transition hover:bg-secondary"><FileText className="size-3.5 text-primary-glow" />All Product Reviews</Link>
+          <Link to="/blog" className="flex items-center gap-2 rounded-lg bg-secondary/40 px-3 py-2 text-xs font-bold uppercase transition hover:bg-secondary"><PenLine className="size-3.5 text-primary-glow" />All Review Blogs</Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
@@ -86,7 +123,7 @@ export function Header() {
         <div className="flex items-center gap-1.5">
           <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
             <ReviewGuidesMenu />
-            <a href="/#emags" className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow"><BookOpen className="size-3.5" aria-hidden="true" />eMags</a>
+            <EmagsMenu />
             {nav.slice(1).map((item) => <Link key={item.to} to={item.to} activeProps={{ className: "text-primary-glow" }} className="relative rounded-md px-3 py-2 font-display text-[13px] font-semibold tracking-wide text-foreground/75 uppercase transition-colors hover:text-primary-glow">{item.label}</Link>)}
           </nav>
           <div className="mx-1 hidden w-52 xl:block"><SearchForm /></div>
@@ -100,10 +137,11 @@ export function Header() {
               <nav aria-label="Mobile" className="mt-5 flex flex-col">
                 <Link to="/guides" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">All Review Guides</Link>
                 <a href="/#emags" onClick={() => setOpen(false)} className="rule-line flex items-center gap-2 py-3.5 font-display text-lg font-bold tracking-tight"><BookOpen className="size-5 text-primary-glow" aria-hidden="true" />eMags</a>
-                <Link to="/blog" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">Blog & Articles</Link>
-                <p className="kicker mt-5 pt-2">Category Reviews</p>
+                <Link to="/reviews" onClick={() => setOpen(false)} className="rule-line flex items-center gap-2 py-3.5 font-display text-lg font-bold tracking-tight"><FileText className="size-5 text-primary-glow" aria-hidden="true" />Product Reviews</Link>
+                <Link to="/blog" onClick={() => setOpen(false)} className="rule-line flex items-center gap-2 py-3.5 font-display text-lg font-bold tracking-tight"><PenLine className="size-5 text-primary-glow" aria-hidden="true" />Review Blogs & Articles</Link>
+                <p className="kicker mt-5 pt-2">eMag Category Reviews</p>
                 <div className="mt-2 grid grid-cols-2 gap-2">
-                  {linkedCategories.map((category) => <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} onClick={() => setOpen(false)} className="overflow-hidden rounded-lg border border-border bg-secondary/30"><img src={editorialArtwork(category.slug)} alt={`${category.name} editorial guide`} className="h-20 w-full object-cover" loading="lazy" /><span className="block p-2 text-xs font-bold">{category.name}</span></Link>)}
+                  {linkedCategories.slice(0, 6).map((category) => <Link key={category.slug} to="/guides/$slug" params={{ slug: category.slug }} onClick={() => setOpen(false)} className="group overflow-hidden rounded-xl border border-border bg-secondary/30 transition hover:border-primary/40"><img src={editorialArtwork(category.slug)} alt={`${category.name} eMag cover`} className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" /><span className="block p-2 text-xs font-bold group-hover:text-primary-glow">{category.name} eMag</span><span className="block px-2 pb-2 text-[10px] text-muted-foreground">Review · Blog · Guide</span></Link>)}
                 </div>
                 <Link to="/about" onClick={() => setOpen(false)} className="rule-line mt-4 py-3.5 font-display text-lg font-bold tracking-tight">About</Link>
                 <Link to="/contact" onClick={() => setOpen(false)} className="rule-line py-3.5 font-display text-lg font-bold tracking-tight">Contact</Link>
