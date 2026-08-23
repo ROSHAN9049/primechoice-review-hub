@@ -1,9 +1,23 @@
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { categories } from "@/data/categories";
-import { editorialArtwork } from "@/lib/editorialArtwork";
 
-const emags = categories.filter((category) => category.affiliateUrl).slice(0, 6);
+type FeaturedEmag = {
+  slug: string;
+  name: string;
+  artwork: string;
+  description: string;
+};
+
+// Fresh, self-contained Featured eMags. This intentionally replaces the old
+// category-driven content so a broken category image/data cannot blank the section.
+const featuredEmags: FeaturedEmag[] = [
+  { slug: "health-supplements", name: "Health & Supplements", artwork: "/emag-health.svg", description: "Practical supplement research, safety checks and buying guidance." },
+  { slug: "ai-tools", name: "AI Tools", artwork: "/emag-ai.svg", description: "Useful AI tools, real-world use cases and comparison guides." },
+  { slug: "software", name: "Software", artwork: "/emag-software.svg", description: "Software reviews, comparisons and smarter buying decisions." },
+  { slug: "finance", name: "Finance", artwork: "/emag-finance.svg", description: "Clear finance research, tools and practical decision guides." },
+  { slug: "education", name: "Education", artwork: "/emag-education.svg", description: "Learning resources, study tools and practical education guides." },
+  { slug: "fitness", name: "Fitness", artwork: "/emag-fitness.svg", description: "Fitness gear, training resources and everyday wellness research." },
+];
 
 export function EmagsSection() {
   return (
@@ -12,7 +26,7 @@ export function EmagsSection() {
         <div className="max-w-2xl">
           <span className="kicker">eMags</span>
           <h2 id="emags-heading" className="mt-2 text-3xl font-bold sm:text-4xl">Featured eMags</h2>
-          <p className="mt-2 text-muted-foreground">Attractive, easy-to-read editions with practical reviews, buying advice and category research.</p>
+          <p className="mt-2 text-muted-foreground">Independent guides with practical reviews, buying research and category deep-dives.</p>
         </div>
         <Link to="/guides" className="group inline-flex items-center gap-1.5 font-display text-sm font-bold tracking-wide text-primary-glow uppercase">
           View all eMags <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -20,20 +34,20 @@ export function EmagsSection() {
       </div>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {emags.map((category) => (
+        {featuredEmags.map((emag) => (
           <Link
-            key={category.slug}
+            key={emag.slug}
             to="/guides/$slug"
-            params={{ slug: category.slug }}
+            params={{ slug: emag.slug }}
             className="card-surface group overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated"
           >
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden bg-muted">
               <img
-                src={editorialArtwork(category.slug)}
-                alt={`${category.name} eMag cover`}
+                src={emag.artwork}
+                alt={`${emag.name} eMag cover`}
                 width={800}
                 height={420}
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
               />
@@ -42,8 +56,8 @@ export function EmagsSection() {
               </span>
             </div>
             <div className="p-5">
-              <h3 className="font-display text-lg font-bold tracking-tight transition-colors group-hover:text-primary-glow">{category.name} eMag</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Reviews, comparisons and practical buying guidance for {category.name.toLowerCase()}.</p>
+              <h3 className="font-display text-lg font-bold tracking-tight transition-colors group-hover:text-primary-glow">{emag.name} eMag</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{emag.description}</p>
               <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary-glow">Read eMag <ArrowUpRight className="size-3.5" aria-hidden="true" /></span>
             </div>
           </Link>
