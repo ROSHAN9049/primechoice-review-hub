@@ -26,6 +26,7 @@ const nav = [
   { to: "/admin/brands", label: "Brands", exact: false },
   { to: "/admin/deals", label: "Deals", exact: false },
   { to: "/admin/networks", label: "Affiliate links", exact: false },
+  { to: "/admin/promotion", label: "Auto Promotion", exact: false },
   { to: "/admin/subscribers", label: "Subscribers", exact: false },
   { to: "/admin/users", label: "Users & roles", exact: false },
 ] as const;
