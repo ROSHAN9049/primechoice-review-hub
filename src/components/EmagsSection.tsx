@@ -23,7 +23,7 @@ export function EmagsSection() {
           <h2 id="emags-heading" className="mt-2 text-3xl font-bold sm:text-4xl">All-in-One</h2>
           <p className="mt-2 text-muted-foreground">Independent guides with practical reviews, buying research and category deep-dives.</p>
         </div>
-        <a href="/digistore24" className="group inline-flex items-center gap-1.5 font-display text-sm font-bold tracking-wide text-primary-glow uppercase">View all <ArrowUpRight className="size-4" aria-hidden="true" /></a>
+        <a href="https://independentbackyard.com/my-book/#aff=ROSHANpratibha" className="group inline-flex items-center gap-1.5 font-display text-sm font-bold tracking-wide text-primary-glow uppercase">View all <ArrowUpRight className="size-4" aria-hidden="true" /></a>
       </div>
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {featuredEmags.map((item) => {
