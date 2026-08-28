@@ -21,6 +21,13 @@ import { relatedComparisons, relatedReviews } from "@/lib/related";
 const SITE = "https://primechoice-review-hub.lovable.app";
 const digistore24MarketplaceUrl = "https://www.digistore24-app.com/app/en/affiliate/account/marketplace/all?auth_testpay=1";
 const allInOneImage = "/category-art-default.svg";
+const allInOneCategories = [
+  { slug: "health-supplements", name: "Health & Supplements", description: "Practical supplement research, safety checks and buying guidance.", image: "/category-art-default.svg" },
+  { slug: "ai-tools", name: "AI Tools", description: "Useful AI tools, real-world use cases and comparison guides.", image: "/category-art-default.svg" },
+  { slug: "software", name: "Software", description: "Software reviews, comparisons and smarter buying decisions.", image: "/category-art-default.svg" },
+  { slug: "finance", name: "Finance", description: "Clear finance research, tools and practical decision guides.", image: "/category-art-default.svg" },
+  { slug: "education", name: "Education", description: "Learning resources, study tools and practical education guides.", image: "/category-art-default.svg" },
+];
 
 export const Route = createFileRoute("/guides/$slug")({
   loader: async ({ params }) => {
@@ -92,11 +99,23 @@ function GuidePage() {
 
       <section id="all-in-one" aria-labelledby="all-in-one-heading" className="mt-16 rounded-2xl border border-border bg-card p-5 shadow-elevated sm:p-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex min-w-0 items-center gap-4">
-            <img src={allInOneImage} alt="All-in-One guides" width={112} height={80} className="h-20 w-28 shrink-0 rounded-xl object-cover" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.style.visibility = "hidden"; }} />
-            <div><span className="text-xs font-bold uppercase tracking-[0.18em] text-primary-glow">All-in-One</span><h2 id="all-in-one-heading" className="mt-1 text-2xl font-bold">All-in-One</h2><p className="mt-1 text-sm text-muted-foreground">Independent guides with practical reviews, buying research and category deep-dives.</p></div>
+          <div>
+            <span className="text-xs font-bold uppercase tracking-[0.18em] text-primary-glow">All-in-One</span>
+            <h2 id="all-in-one-heading" className="mt-1 text-2xl font-bold">All-in-One</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Independent guides with practical reviews, buying research and category deep-dives.</p>
           </div>
           <a href={digistore24MarketplaceUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90" aria-label="View all Digistore24 marketplace offers">View all <ArrowUpRight className="size-4" aria-hidden="true" /></a>
+        </div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {allInOneCategories.map((item) => (
+            <article key={item.slug} className="group rounded-xl border border-border bg-background/60 p-4 transition-transform hover:-translate-y-1 hover:shadow-elevated">
+              <img src={item.image} alt={`${item.name} category guide`} width={320} height={180} loading="lazy" decoding="async" className="aspect-[16/9] w-full rounded-lg object-cover bg-secondary" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = allInOneImage; }} />
+              <p className="mt-3 text-xs font-semibold text-primary-glow">{item.name} categoryGuide</p>
+              <h3 className="mt-1 font-display text-lg font-bold">{item.name}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
+              <Link to="/categories/$slug" params={{ slug: item.slug }} className="mt-4 inline-flex text-sm font-bold text-primary hover:underline">Read guide</Link>
+            </article>
+          ))}
         </div>
       </section>
 
