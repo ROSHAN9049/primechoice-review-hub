@@ -8,6 +8,7 @@ import { reviewsByCategory } from "@/data/reviews";
 import { ProductShowcase } from "@/components/ProductShowcase";
 
 const amazonAllDealsUrl = "https://www.amazon.in/gp/goldbox/all-deals/?ie=UTF8&ref_=sv_gb_1&tag=rehanroshan08-21";
+const digistore24MarketplaceUrl = "https://www.digistore24-app.com/app/en/affiliate/account/marketplace/all?auth_testpay=1";
 
 const categoryImages: Record<string, { src: string; alt: string }> = {
   "health-supplements": { src: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=240&q=80", alt: "Health and supplements" },
@@ -31,6 +32,8 @@ const categoryImages: Record<string, { src: string; alt: string }> = {
   "pet-supplies": { src: "https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=240&q=80", alt: "Pet supplies and dog" },
 };
 
+const fallbackCategoryImage = { src: "/amazon-all-deals.svg", alt: "PrimeChoice category" };
+
 export function CategoryGrid() {
   return (
     <>
@@ -41,19 +44,40 @@ export function CategoryGrid() {
         </a>
       </section>
 
+      <section aria-labelledby="all-in-one-heading" className="mb-8 rounded-2xl border border-border bg-card p-5 shadow-elevated">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary-glow">All-in-One</p>
+            <h2 id="all-in-one-heading" className="mt-1 font-display text-2xl font-bold tracking-tight">All-in-One</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Independent guides with practical reviews, buying research and category deep-dives.</p>
+          </div>
+          <a href={digistore24MarketplaceUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90" aria-label="View all Digistore24 marketplace offers">
+            View all <ArrowUpRight className="size-4" aria-hidden="true" />
+          </a>
+        </div>
+      </section>
+
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-label="Product review categories">
         {categories.map((c) => {
           const Icon = ((Icons as unknown as Record<string, LucideIcon>)[c.icon] ?? Icons.Tag) as LucideIcon;
           const count = reviewsByCategory(c.slug).length;
           const guide = categoryGuides.find((item) => item.slug === c.slug);
           const cardClassName = "card-surface group flex h-full items-start gap-4 rounded-xl p-5 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated";
-          const image = categoryImages[c.slug];
-          const categoryVisual = image ? (
-            <img src={image.src} alt={image.alt} width={96} height={96} loading="lazy" decoding="async" className="size-20 shrink-0 rounded-lg bg-secondary object-cover sm:size-24" />
-          ) : (
-            <span className="grid size-11 shrink-0 place-items-center rounded-lg text-primary-foreground" style={{ backgroundImage: "var(--gradient-primary)" }}>
-              <Icon className="size-5" aria-hidden="true" />
-            </span>
+          const image = categoryImages[c.slug] ?? fallbackCategoryImage;
+          const categoryVisual = (
+            <img
+              src={image.src}
+              alt={image.alt}
+              width={96}
+              height={96}
+              loading="lazy"
+              decoding="async"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = fallbackCategoryImage.src;
+              }}
+              className="size-20 shrink-0 rounded-lg bg-secondary object-cover sm:size-24"
+            />
           );
 
           const categoryBody = (
@@ -89,7 +113,7 @@ export function CategoryGrid() {
             <li key={c.slug}>
               {c.affiliateUrl ? (
                 <div className={cardClassName}>
-                  <a href={c.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" aria-label={`${c.name} — open Amazon category`} className="flex min-w-0 flex-1 items-start gap-4">
+                  <a href={c.affiliateUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" aria-label={`${c.name} — open affiliate category`} className="flex min-w-0 flex-1 items-start gap-4">
                     {categoryBody}
                   </a>
                 </div>
