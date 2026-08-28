@@ -35,7 +35,7 @@ export function CategoryGrid() {
   return (
     <>
       <section aria-labelledby="amazon-all-deals-heading" className="mb-8">
-        <a href={amazonAllDealsUrl} target="_blank" rel="noopener noreferrer sponsored" aria-label="Amazon India All Deals — shop all Amazon deals" className="group relative block overflow-hidden rounded-2xl border border-border bg-black shadow-elevated transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <a href={amazonAllDealsUrl} target="_blank" rel="noopener noreferrer sponsored nofollow" aria-label="Amazon India All Deals — shop all Amazon deals" className="group relative block overflow-hidden rounded-2xl border border-border bg-black shadow-elevated transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl">
           <img src="/amazon-all-deals.svg" alt="Amazon India All Deals — shop all Amazon deals" width={1600} height={520} loading="lazy" decoding="async" className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.01]" />
           <span id="amazon-all-deals-heading" className="sr-only">Amazon India All Deals</span>
         </a>
